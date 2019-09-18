@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "play",
+            "type": "shell",
+            "command": "make clean play",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": false,
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": false
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
