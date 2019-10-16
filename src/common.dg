@@ -1,0 +1,19 @@
+#player
+(current player *)
+
+(story author)  Howard M. Lewis Ship
+
+(flow description $Room)
+  <<Override look $Room>>
+
+(describe room $Room) 
+    (descr $Room)
+    (describe pristine $Room)
+
+(describe pristine $Room)
+    <<describe pristine $Room>>
+    (exhaust) {
+        *($Obj has parent $Parent)
+        ($Obj is pristine)
+        (pristine descr $Obj)
+    }
