@@ -6,18 +6,25 @@ default: play
 LIB=/usr/local/share/dialog-if
 OUT = out
 MAIN = inform/3-1.dg
-STORY = $(OUT)/$(patsubst %.dg,%.z8,$(notdir $(MAIN)))
+TEST_STORY = out/$(patsubst %.dg,%d.z8,$(notdir $(MAIN)))
 
-$(STORY): $(MAIN) src/common.dg $(LIB)/stddebug.dg  $(LIB)/stdlib.dg
-	mkdir -p $(dir $(STORY))
+SOURCES = $(MAIN) \
+	src/common.dg
+
+TEST_SOURCES = $(SOURCES) \
+	$(LIB)/stddebug.dg \
+	$(LIB)/stdlib.dg
+
+$(TEST_STORY): $(TEST_SOURCES)
+	mkdir -p $(dir $@)
 	dialogc -t z8 -v -o $@ $^
 
-build: $(STORY)
-
 # Install frotz via `brew install frotz`
-play: $(STORY)
-	frotz -w 120 $(STORY)
+play: $(TEST_STORY)
+	frotz -w 120 $^
 
 clean:
-	- rm -rf $(OUT)
+	rm -rf out
 
+debug:
+	dgdebug $(TEST_SOURCES)
