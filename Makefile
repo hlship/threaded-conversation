@@ -26,5 +26,5 @@ play: $(TEST_STORY)
 clean:
 	rm -rf out
 
-debug:
+repl:
 	dgdebug $(TEST_SOURCES)

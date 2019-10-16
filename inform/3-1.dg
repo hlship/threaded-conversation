@@ -3,9 +3,12 @@
 #cobble-crawl
 (room *)
 (name *)	Cobble Crawl
-(descr *)
+(look *)
 	You are crawling over cobbles in a low passage.
 	There is a dim light at the east end of the passage.
+	(if) (#wicker-cage is pristine) (then)
+		There is a small wicker cage discarded nearby.
+	(endif)
 (from * go #east to #debris-room)	
 (#player is #in *)
 
