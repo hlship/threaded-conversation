@@ -1,0 +1,25 @@
+#jacob
+(* follows #howard)
+(* follows #suzy)
+
+#olivia
+(* follows #howard)
+(* follows #suzy)
+(* follows #jacob)
+
+#howard
+(* follows #scott)
+
+#suzy
+(* follows #howard)
+(* follows #veda)
+
+#veda
+
+(program entry point)
+    let's fire her up!
+
+($Of followers)
+    (collect $Who) *($Who follows $Of) (into $Followers)
+    $Followers
+

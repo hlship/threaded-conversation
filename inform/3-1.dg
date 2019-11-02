@@ -16,14 +16,7 @@
 (item *)
 (name *) small wicker cage
 (* is #in #cobble-crawl)
-(pristine descr *)	There is a small wicker cage discarded nearby.
 (descr *)	The cage is long disused, but still servicable.
-
-#black-box
-(item *)
-(name *)	small black box
-(descr *)	The box is black, or a very dark gray, with splotches of rust here and there.
-(* is #in #cobble-crawl)
 
 #debris-room
 (room *)
@@ -33,14 +26,15 @@
 	A low wide passage with cobbles becomes plugged with mud and debris here,
 	but an awkward canyon leads upward and west.
 	A note on the wall says, "Magic word XYZZY".
+	(if) (#black-rod is pristine) (then)
+		A three foot black rod with a rusty star on one end lies nearby.
+	(endif)
 (from * go #west to #cobble-crawl)
 (from * go #up to #sloping-canyon)
 
 #black-rod
 (item *)
 (name *) black rod
-(pristine descr *)	A three foot black rod with a rusty star on one end lies nearby.
-(descr *)	The rod is black, about three feet long, and has a rusty star at one end.
 (* is #in #debris-room)
 
 #sloping-canyon

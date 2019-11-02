@@ -1,0 +1,62 @@
+(story title) Very Simple
+
+(when play begins)
+    It is a long and riotous evening, full of
+    unlikely stories and tall tales.
+    But now, most of the patrons have gone away
+    to their rooms to sleep, or have passed out
+    before the fire.
+    Even the two black bitch pups are curled on the
+    hearth-stone, snuffling through tiny wet noses,
+    and pawing the air in sleep. Now is the time to find out whether 
+    the rumors that brought you to this neighborhood are true.
+    (par)
+    (banner)
+
+#inn
+(room *)
+(name *)    The Inn
+(look *)
+    The light is low and red. Above the fireplace hangs a map of this part of the Empire, and on the adjacent wall is the crimson and silver banner of Richard the Rose.
+    The barmaid works her way from table to table, clearing away
+    dishes and mugs.
+(#player/#barmaid is #in *)    
+
+#barmaid
+(female *)
+(name *) Bar Maid
+(desc *) A pretty, if bored-looking, wench.
+(dict *) woman barmaid
+
+#whether-rumors-tell-truly
+(questioning quip *)
+(name *) whether the rumors tell truly
+(dict *) rumor
+(comment *)
+    "Where I come from, over the black hills there,
+    they say that men this side of the mountain
+    live as old as Methuselah," you remark. "They
+    say the secret of eternal life is here."
+(reply *)
+    "Oh, do they?" she says, sweeping crumbs of cheese
+    and crusty bread into her hand.
+    "The oldest codger around these parts is old
+    Garrick, and I would't put him beyond his four-score
+    and ten."
+(* supplies #barmaid)
+
+#where-garrick-lives
+(questioning quip *)
+(name *) where does Garrick live
+(dict *) garick %% Common typo
+(comment *)
+    "Where does this old Garrick live?" you ask, trying not to seem too eager.
+(reply *)
+    "Down at the pig farm," she says. "The turn off is just before you come to the river, on the main road west.
+    You can find it by the smell."
+(* supplies #barmaid)
+(* indirectly follows #whether-rumors-tell-truly)
+
+(topic keyword @immortality)
+(understand [eternal life] as topic keyword @immortality)
+(topic keyword @immortal implies @immortality)

@@ -1,0 +1,158 @@
+%% Based on Threaded Conversation by Chris Connelly, et al.
+
+(extension version)
+    Threaded Conversation 0.0.1
+
+%% (quip $)
+%% (one-time $) vs. (repeatable $)
+
+@(one-time $Quip)     ~(repeatable $Quip)
+
+%% (restrictive $) vs. (unrestrictive $)
+%% (player directed $) vs. (npc-directed $)
+%% (beat opened $) vs. (speech opened $)
+%% (comment $) - PC's speach
+%% (response $) -- NPC's response/reply
+%% (nag $) -- optional message 
+%% (name $) -- name, e.g, "about Lily"
+%% ((quip $Follower) directly follows (quip $Leader))
+
+(quip $Quip)    *(questioning quip $Quip)   %% ask
+(quip $Quip)    *(informative quip $Quip)   %% tell
+(quip $Quip)    *(demonstrative quip $Quip) %% other
+
+%% Akin to current interolcutor but easier to remember/type:
+
+(global variable (conversation partner $))
+
+%% (global variable (current quip $))
+%% (global variable (previous quip $))
+%% (global variable (grandparent quip $))
+
+%% quips are objects and related to other objects
+
+%% ((quip $Quip) mentions $Subject)
+
+%% quip supplying
+
+%% ((quip $Quip) supplies (animate $NPC))
+
+%% Quip awareness
+
+%% ($NPC recollects (quip $Quip))
+%% (the player also recollects quips)
+
+%% (quip type (questioning quip $Q))
+%%     #questioning
+
+%% (quip type (performative quip $Q))
+%%     #performative
+
+%% (quip type (informative quip $Q))
+%%     #informative
+
+%% (queue $Quip for $NPC)
+%%     (queued quips $NPC $L)
+%%     ([$Quip | $L] = $New)
+%%     (now) ($NPC queues quips $New)
+
+%% Recollection of quips
+%% When an quip is performed every nearby actor will recollect the quip
+
+%% Dialog doesn't handle multi-valued properties.  So we have
+%% a dynamic property ($Actor recollects quips $QuipList) and a rule
+%% ($Actor recollects $Quip).
+
+(make $Actor recollect $Quip)
+    { ($Actor recollects quips $Quips) (or) ($Quips = []) }
+    ~($Quip is one of $Quips)
+    (now) ($Actor recollects quips [$Quip | $Quips])
+
+($Actor recollects $Quip)
+    ($Actor recollects quips $Quips)
+    ($Quip is one of $Quips)
+
+%% List handling
+
+(remove $E from $L)
+    (collect $X)
+        *($X is one of $L)
+        ~($X = $E)
+    (into $Result)
+    $Result
+
+(debug $C)
+    (line)
+    < (query $C) >
+    (line)
+
+(rewrite [ask | $Words] into [ask | $TailWords])
+    (split $Words by [about] into $Person and $MoreWords)
+    (append $Person $MoreWords $TailWords)
+
+(understand [ask | $Text] as [discuss $Quip with $Person])
+    *(split $Text anywhere into $Someone and $QuipWords)
+    *(understand $Someone as single object $Person preferably animate)
+    *(understand $QuipWords as questioning quip $Quip)
+
+%% Essentially, this is to change the current
+%% conversation partner
+
+(perform [discuss $Quip with (conversation partner $)])
+    (try [discuss $Quip])
+
+(perform [discuss $Quip with $Person])
+    (try [talk to $Person])
+    (try [discuss $Quip])
+
+(perform [talk to $Person])
+    (now) (conversation partner $Person)
+    (narrate $Person greeting)
+
+(narrate $Person greeting)
+    You say hello to (the $Person).
+    (par)
+    
+(understand $Words as questioning quip $Quip)
+    *(understand $Words as quip $Quip)
+    (questioning quip $Quip)
+
+(understand $Words as quip $Quip)
+    (filter $Words into $Filtered)
+    (nonempty $Filtered)
+    (determine object $Quip)
+        *(quip $Quip)
+        
+    (from words)
+        *(dict $Quip)
+    (matching all of $Filtered)
+
+~(refuse [discuss $ with $])    %% Hopefully: don't require the quip to be reachable?
+~(refuse [discuss $])
+
+(unlikely [discuss $Quip]
+    (conversation partner $Partner)
+    (one-time $Quip)
+    ($Partner recollects $Quip))
+
+(perform [discuss $Quip])
+    (narrate discussing $Quip)
+    *(react to discussing $Quip)
+    (make present actors recollect $Quip)
+
+%% Does nothing, ensures that *(react to ...) is successful.
+(react to discussing $Quip)
+
+(make present actors recollect $Quip)
+    %% This extra step because #player isn't animate
+    (current player $Player)
+    (make $Player recollect $Quip)
+    (current visibility ceiling $Ceil)
+    *(animate $Actor)
+    (visibility ceiling of $Actor is $Ceil)
+    (make $Actor recollect $Quip)
+
+(narrate discussing $Quip)
+    (comment $Quip)
+    (par)
+    (reply $Quip)

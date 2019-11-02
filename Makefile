@@ -5,11 +5,12 @@ default: play
 
 LIB=/usr/local/share/dialog-if
 OUT = out
-MAIN = inform/3-1.dg
+MAIN = src/tc-test.dg
 TEST_STORY = out/$(patsubst %.dg,%d.z8,$(notdir $(MAIN)))
 
 SOURCES = $(MAIN) \
-	src/common.dg
+	src/common.dg \
+	src/threaded-conversation.dg
 
 TEST_SOURCES = $(SOURCES) \
 	$(LIB)/stddebug.dg \
