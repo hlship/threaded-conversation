@@ -12,6 +12,8 @@
     the rumors that brought you to this neighborhood are true.
     (par)
     (banner)
+    %% Move this elsewhere?
+    (move all quips to quip respository)
 
 #inn
 (room *)
@@ -20,13 +22,18 @@
     The light is low and red. Above the fireplace hangs a map of this part of the Empire, and on the adjacent wall is the crimson and silver banner of Richard the Rose.
     The barmaid works her way from table to table, clearing away
     dishes and mugs.
-(#player/#barmaid is #in *)    
+(#player/#barmaid/#dog is #in *)    
 
 #barmaid
 (female *)
 (name *) Bar Maid
-(desc *) A pretty, if bored-looking, wench.
+(descr *) A pretty, if bored-looking, wench.
 (dict *) woman barmaid
+
+#dog
+(female *) %% described as "bitches"
+(name *) Dog
+(descr *) A dog sleeping by the fireplace.
 
 #whether-rumors-tell-truly
 (questioning quip *)
@@ -60,3 +67,12 @@
 (topic keyword @immortality)
 (understand [eternal life] as topic keyword @immortality)
 (topic keyword @immortal implies @immortality)
+
+%% Need an empty location to test a few things, like breaking a conversation by moving away.
+
+#outside
+(room *)
+(name *) Outside the Inn
+(look *) It's quiet here, outside the Inn.  But cold.  You should go back in.
+(from #inn go #out to *)
+(from * go #in to #inn)

@@ -13,13 +13,28 @@
 %% (beat opened $) vs. (speech opened $)
 %% (comment $) - PC's speach
 %% (response $) -- NPC's response/reply
-%% (nag $) -- optional message 
+%% (nag $) -- optional message, used with required quips
 %% (name $) -- name, e.g, "about Lily"
 %% ((quip $Follower) directly follows (quip $Leader))
+%% ((quip $Follower) follows (quip $Leader))  -- indirectly follows
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
 (quip $Quip)    *(informative quip $Quip)   %% tell
 (quip $Quip)    *(demonstrative quip $Quip) %% other
+
+%% All available quips go into the quip repository, which
+%% is added to the scope when necessary.
+
+#quip-repository
+(container *)
+(transparent *)
+
+(move all quips to quip respository)
+    (exhaust) {
+        *(quip $Quip)
+        (now) ($Quip is #in #quip-repository)
+    }
+
 
 %% Akin to current interolcutor but easier to remember/type:
 
@@ -148,9 +163,12 @@
     (current player $Player)
     (make $Player recollect $Quip)
     (current visibility ceiling $Ceil)
-    *(animate $Actor)
-    (visibility ceiling of $Actor is $Ceil)
-    (make $Actor recollect $Quip)
+    (exhaust) { 
+        *(animate $Actor)
+        (visibility ceiling of $Actor is $Ceil)
+        (make $Actor recollect $Quip)
+    }
+    
 
 (narrate discussing $Quip)
     (comment $Quip)
