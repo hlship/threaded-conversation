@@ -1,5 +1,7 @@
 %% Based on Threaded Conversation by Chris Connelly, et al.
 
+%% I7 refers to the baseline implementation in Inform7
+
 (extension version)
     Threaded Conversation 0.0.1
 
@@ -8,35 +10,31 @@
 
 @(one-time $Quip)     ~(repeatable $Quip)
 
+%% Prevent warnings at startup:
+
+(repeatable $Quip) (fail)
+($ directly follows $) (fail)
+
 %% (restrictive $) vs. (unrestrictive $)
 %% (player directed $) vs. (npc-directed $)
 %% (beat opened $) vs. (speech opened $)
-%% (comment $) - PC's speach
-%% (response $) -- NPC's response/reply
+%% (comment $) - PC's speech
+%% (reply $) -- NPC's reply
 %% (nag $) -- optional message, used with required quips
 %% (name $) -- name, e.g, "about Lily"
-%% ((quip $Follower) directly follows (quip $Leader))
-%% ((quip $Follower) follows (quip $Leader))  -- indirectly follows
+%% (dict *) -- additional terms
+%% ($Quip directly follows $PriorQuip) -- valid only immediately after $PriorQuip
+%% ($Quip indirectly follows $PriorQuip) -- valid any time after $PriorQuip
+%% ($Quip supplies $Actor) -- only valid with $Actor as conversation partner
+
+@($Quip supplies anyone) ~($Quip supplies $)
+    %% I7 calls this "universally-applicable" vs. "character tailored"
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
 (quip $Quip)    *(informative quip $Quip)   %% tell
 (quip $Quip)    *(demonstrative quip $Quip) %% other
 
-%% All available quips go into the quip repository, which
-%% is added to the scope when necessary.
-
-#quip-repository
-(container *)
-(transparent *)
-
-(move all quips to quip respository)
-    (exhaust) {
-        *(quip $Quip)
-        (now) ($Quip is #in #quip-repository)
-    }
-
-
-%% Akin to current interolcutor but easier to remember/type:
+%% This is "current interlocutor" in I7:
 
 (global variable (conversation partner $))
 
@@ -46,60 +44,53 @@
 
 %% quips are objects and related to other objects
 
-%% ((quip $Quip) mentions $Subject)
-
-%% quip supplying
-
-%% ((quip $Quip) supplies (animate $NPC))
-
-%% Quip awareness
-
-%% ($NPC recollects (quip $Quip))
-%% (the player also recollects quips)
-
-%% (quip type (questioning quip $Q))
-%%     #questioning
-
-%% (quip type (performative quip $Q))
-%%     #performative
-
-%% (quip type (informative quip $Q))
-%%     #informative
-
-%% (queue $Quip for $NPC)
-%%     (queued quips $NPC $L)
-%%     ([$Quip | $L] = $New)
-%%     (now) ($NPC queues quips $New)
+%% ($Quip mentions $Subject)
 
 %% Recollection of quips
 %% When an quip is performed every nearby actor will recollect the quip
 
 %% Dialog doesn't handle multi-valued properties.  So we have
-%% a dynamic property ($Actor recollects quips $QuipList) and a rule
+%% a dynamic property ($Quip is recollected by $ActorList) and a rule
 %% ($Actor recollects $Quip).
 
 (make $Actor recollect $Quip)
-    { ($Actor recollects quips $Quips) (or) ($Quips = []) }
-    ~($Quip is one of $Quips)
-    (now) ($Actor recollects quips [$Quip | $Quips])
+    { ($Quip is recollected by $Actors) (or) ($Actors = []) }
+    ~($Actor is one of $Actors)
+    (now) ($Quip is recollected by [$Actor | $Actors])
+
+@($Quip stands alone)   ~($Quip follows $)
+
+%% Is this sufficient?
+
+($Quip follows $EarlierQuip)
+    { ($Quip directly follows $EarlierQuip) (or)
+      ($Quip indirectly follows $EarlierQuip) }
+    %% Could search transitively, but not sure the logic needs it.
+
+%% I7 does this quite differntly I think, including a pre-parse phase
+%% to identify all the valid quips. For now, we'll do it slow and correct, 
+%% I hope.
+
+($Quip is valid for $Partner)
+    { ($Quip supplies anyone) (or) ($Quip supplies $Partner) }
+    { ($Quip stands alone)
+        (or) *($Partner recollects $EarlierQuip)
+            ($Quip follows $EarlierQuip) }
+    { (repeatable $Quip) (or) ~($Partner recollects $Quip) }
+    %% TODO: $Q directly follows $X means not valid unless $X is the
+    %% most recent quip.
+
+    %% TODO: Don't allow change of subject if the the quip is restrictive
+    %% TODO: Don't allow repeats of one-time quips (possibly limited by $Partner)
+
+%% We have the quip track who recollects it, which seems odd, but if the
+%% actor tracks the recollected quips, then the #player will end up with
+%% a potentially giant list. Ultimately, we may end up marking certain quips
+%% as notable and worthy of recollection, to optimize all this.
 
 ($Actor recollects $Quip)
-    ($Actor recollects quips $Quips)
-    ($Quip is one of $Quips)
-
-%% List handling
-
-(remove $E from $L)
-    (collect $X)
-        *($X is one of $L)
-        ~($X = $E)
-    (into $Result)
-    $Result
-
-(debug $C)
-    (line)
-    < (query $C) >
-    (line)
+    ($Quip is recollected by $Actors)
+    ($Actor is one of $Actors)
 
 (rewrite [ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)
@@ -109,6 +100,12 @@
     *(split $Text anywhere into $Someone and $QuipWords)
     *(understand $Someone as single object $Person preferably animate)
     *(understand $QuipWords as questioning quip $Quip)
+
+(rewrite [ask about/whether $Text] as [ask $Text])
+
+(understand [ask | $Text] as [discuss $Quip])
+    (conversation partner $Partner)
+    *(understand $Text as questioning quip $Quip)
 
 %% Essentially, this is to change the current
 %% conversation partner
@@ -120,9 +117,14 @@
     (try [talk to $Person])
     (try [discuss $Quip])
 
+(prevent [discuss $Quip])
+    (conversation partner $Partner)
+    ~($Quip is valid for $Partner)
+    (when $Quip is not a topic)
+
 (perform [talk to $Person])
     (now) (conversation partner $Person)
-    (narrate $Person greeting)
+    (narrate $Person greeting)  %% Doesn't look like I7 version quite does this?
 
 (narrate $Person greeting)
     You say hello to (the $Person).
@@ -136,8 +138,7 @@
     (filter $Words into $Filtered)
     (nonempty $Filtered)
     (determine object $Quip)
-        *(quip $Quip)
-        
+        *(quip $Quip)        
     (from words)
         *(dict $Quip)
     (matching all of $Filtered)
@@ -145,21 +146,52 @@
 ~(refuse [discuss $ with $])    %% Hopefully: don't require the quip to be reachable?
 ~(refuse [discuss $])
 
+
+%% This rule prevents this odd exchange:
+%% > ask maid where
+%% Did you want to:
+%% 1. discuss the where does Garrick live with the Bar Maid,
+%% 2. discuss the where the Bar Maid comes from with the Bar Maid, or
+%% 3. asking where the Bar Maid comes from?
+%%
+%% Though we could clean that all up and hopefully avoid
+%% that ambiguity by some other means.
+
+(unlikely [discuss $ with $])
+    %% May need to be adjusted to only when the CP matches
+    %% the actor.
+    (conversation partner $)
+
 (unlikely [discuss $Quip]
     (conversation partner $Partner)
-    (one-time $Quip)
+    (repeatable $Quip)
     ($Partner recollects $Quip))
+
+(prevent [discuss $Quip])
+    ~(conversation partner $)
+    We're not talking to anyone right now.
 
 (perform [discuss $Quip])
     (narrate discussing $Quip)
     *(react to discussing $Quip)
     (make present actors recollect $Quip)
 
+(describe action [discuss (questioning quip $Quip)])
+    ask (name $Quip)
+
+(when $ is not a topic)
+    That doesn't seem to be a topic of conversation currently.
+
 %% Does nothing, ensures that *(react to ...) is successful.
+%% I can imagine this being used to push a plot forward, where we
+%% can identify a present Actor who does something when a particular quip is acted out.
 (react to discussing $Quip)
 
+%% Identify all actors in the current location who can see the player (same
+%% visibility ceiling). I think this means that if two actors were in a closed and opaque
+%% vehicle, an actor outside the vehicle would not overhear (and thus recollect) the quip.
 (make present actors recollect $Quip)
-    %% This extra step because #player isn't animate
+    %% This extra step because #player isn't necessarily animate
     (current player $Player)
     (make $Player recollect $Quip)
     (current visibility ceiling $Ceil)
@@ -173,4 +205,5 @@
 (narrate discussing $Quip)
     (comment $Quip)
     (par)
+    %% Does I7 version do this, or queue up the quip with the current interlocutor?
     (reply $Quip)

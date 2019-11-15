@@ -12,8 +12,7 @@
     the rumors that brought you to this neighborhood are true.
     (par)
     (banner)
-    %% Move this elsewhere?
-    (move all quips to quip respository)
+    %% (move all quips to quip respository)
 
 #inn
 (room *)
@@ -30,13 +29,19 @@
 (descr *) A pretty, if bored-looking, wench.
 (dict *) woman barmaid
 
+%% Put this in here just so that there's a third party present,
+%% to test the recollection logic.
 #dog
 (female *) %% described as "bitches"
 (name *) Dog
 (descr *) A dog sleeping by the fireplace.
 
+%% A few things to discuss
+
 #whether-rumors-tell-truly
 (questioning quip *)
+(* supplies #barmaid)
+(* supplies #dog)
 (name *) whether the rumors tell truly
 (dict *) rumor
 (comment *)
@@ -44,13 +49,21 @@
     they say that men this side of the mountain
     live as old as Methuselah," you remark. "They
     say the secret of eternal life is here."
+%% Something to appreciate with Dialog is just how easy
+%% it is to create alternate text based on the
+%% conversation partner.
 (reply *)
+    (conversation partner #barmaid)
     "Oh, do they?" she says, sweeping crumbs of cheese
     and crusty bread into her hand.
     "The oldest codger around these parts is old
     Garrick, and I would't put him beyond his four-score
     and ten."
-(* supplies #barmaid)
+%% This was just a lark to try out multiple versions of
+%% the reply.
+(reply *)
+    (conversation partner #dog)
+    Woof!
 
 #where-garrick-lives
 (questioning quip *)
@@ -64,9 +77,37 @@
 (* supplies #barmaid)
 (* indirectly follows #whether-rumors-tell-truly)
 
+#where-barmaid-comes-from
+(questioning quip *)
+(name *) where the Bar Maid comes from
+(* mentions #barmaid) %% TODO: Does nothing yet
+(* supplies #barmaid)
+(comment *)
+    "What about yourself?" you ask. "Are you from around these parts?"
+(reply *)
+    "If by these parts you mean between the black hills
+    and the river, no," she says. "I was born just at the far side of
+    the ford. But I came over here to work."
+(* indirectly follows #whether-rumors-tell-truly)    
+
 (topic keyword @immortality)
 (understand [eternal life] as topic keyword @immortality)
 (topic keyword @immortal implies @immortality)
+
+#heard-the-stories
+(questioning quip *)
+(* supplies #barmaid)
+(* mentions @immortality)
+(* mentions @rumors)
+(name *) whether She's heard the stories
+(comment *)
+    "Have you heard any stories of long-living men?" you press her.
+(reply *)
+    She purses her lips and scrubs at a circle-shaped stain on the table before her. 
+    "If you're a fool come looking for a spring of life or a vein of immortal gold buried in the black hills, 
+    you'd do better to go back home where you come from."
+(* indirectly follows #whether-rumors-tell-truly)
+
 
 %% Need an empty location to test a few things, like breaking a conversation by moving away.
 
