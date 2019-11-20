@@ -67,7 +67,7 @@
 
 #where-garrick-lives
 (questioning quip *)
-(name *) where does Garrick live
+(name *) where Garrick lives
 (dict *) garick %% Common typo
 (comment *)
     "Where does this old Garrick live?" you ask, trying not to seem too eager.
@@ -79,7 +79,7 @@
 
 #where-barmaid-comes-from
 (questioning quip *)
-(name *) where the Bar Maid comes from
+(name *) where the barmaid comes from
 (* mentions #barmaid) %% TODO: Does nothing yet
 (* supplies #barmaid)
 (comment *)
@@ -88,7 +88,6 @@
     "If by these parts you mean between the black hills
     and the river, no," she says. "I was born just at the far side of
     the ford. But I came over here to work."
-(* indirectly follows #whether-rumors-tell-truly)    
 
 (topic keyword @immortality)
 (understand [eternal life] as topic keyword @immortality)
@@ -99,7 +98,7 @@
 (* supplies #barmaid)
 (* mentions @immortality)
 (* mentions @rumors)
-(name *) whether She's heard the stories
+(name *) whether she's heard the stories
 (comment *)
     "Have you heard any stories of long-living men?" you press her.
 (reply *)

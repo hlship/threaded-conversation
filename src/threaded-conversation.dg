@@ -38,6 +38,10 @@
 
 (global variable (conversation partner $))
 
+%% This are the quips available to the conversation partner, rebuilt on every tick.
+
+(global variable (available quips $))
+
 %% (global variable (current quip $))
 %% (global variable (previous quip $))
 %% (global variable (grandparent quip $))
@@ -67,10 +71,6 @@
       ($Quip indirectly follows $EarlierQuip) }
     %% Could search transitively, but not sure the logic needs it.
 
-%% I7 does this quite differntly I think, including a pre-parse phase
-%% to identify all the valid quips. For now, we'll do it slow and correct, 
-%% I hope.
-
 ($Quip is valid for $Partner)
     { ($Quip supplies anyone) (or) ($Quip supplies $Partner) }
     { ($Quip stands alone)
@@ -81,7 +81,6 @@
     %% most recent quip.
 
     %% TODO: Don't allow change of subject if the the quip is restrictive
-    %% TODO: Don't allow repeats of one-time quips (possibly limited by $Partner)
 
 %% We have the quip track who recollects it, which seems odd, but if the
 %% actor tracks the recollected quips, then the #player will end up with
@@ -91,6 +90,50 @@
 ($Actor recollects $Quip)
     ($Quip is recollected by $Actors)
     ($Actor is one of $Actors)
+
+
+(on every tick)
+    (now) (available quips [])
+    (conversation partner $Partner)
+    (collect $Quip)
+        *(quip $Quip)
+        ($Quip is valid for $Partner)
+    (into $Quips)
+    %% TODO: Filter out less likely candidates when there are normal candidates
+    (now) (available quips $Quips)
+
+(on every tick)
+    (available quips $Quips)
+    ~(empty $Quips)
+    (par)
+    (collect $Action)
+        *($Quip is one of $Quips)
+        ($Action = [discuss $Quip])
+    (into $Actions)
+    (categorize list $Actions by { (unlikely $_) } into $UnlkelyActions and $LikelyActions)
+    %% Not sure this is what I7 does.  Essentially, if there only unlike actions
+    %% (such as repeating a recollected quip) then we'll list those, but if there are
+    %% other likely quips, we list only the likely ones.
+    (if) (empty $LikelyActions) (then)
+        ($ReportableActions = $UnlikelyActions)
+    (else)
+        ($ReportableActions = $LikelyActions)
+    (endif)
+    You could (enumerate actions $ReportableActions).
+
+(enumerate actions [$A1 $A2])
+    (describe action $A1)
+    , %% I'm an Oxford comma kind of guy
+    or
+    (describe action $A2)
+
+(enumerate actions [$A])
+    (describe action $A)
+
+(enumerate actions [$A | $More])
+    (describe action $A)
+    ,
+    (enumerate actions $More)
 
 (rewrite [ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)
@@ -207,3 +250,25 @@
     (par)
     %% Does I7 version do this, or queue up the quip with the current interlocutor?
     (reply $Quip)
+
+%%
+%% Utilities
+%%
+
+(categorize list [$Element | $More] by $Predicate into $Matches and $NonMatches)
+    (if) (query $Predicate $Element) (then)
+        ($Matches = [$Element | $MoreMatches])
+        (categorize list $More by $Predicate into $MoreMatches and $NonMatches)
+    (else)
+        ($NonMatches = [$Element | $MoreNonMatches])
+        (categorize list $More by $Predicate into $Matches and $MoreNonMatches)
+    (endif)
+
+(categorize list [] by $ into $Matches and $NonMatches)
+    ($Matches = [])
+    ($NonMatches = [])
+
+%% (test categorize list)
+%%     (categorize list [1 :foo 2 3 :bar [#foo] 4] by { (number $_) } into $Numbers and $NonNumbers)
+%%     (line) Numbers: $Numbers
+%%     (line) Non-Numbers: $NonNumbers
