@@ -156,6 +156,13 @@
   [_]
   (do-build (read-build-file) false))
 
+(defn ^:command
+  clean
+  "Cleans output"
+  [_]
+  (check-result "Delete"
+                (os/sh "rm" "-rf" "out")))
+
 (defn find-test-paths
   []
   (let [result (os/sh "find" "tests" "-name" "*.txt")]    
