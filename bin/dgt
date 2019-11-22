@@ -1,0 +1,277 @@
+#!/usr/bin/env joker
+
+;; dgt - Dialog Tool
+
+(ns dt
+  (:require
+   [joker.tools.cli :as cli]
+   [joker.os :as os]
+   [joker.string :as str]
+   [joker.filepath :as f]))
+
+(def csi "\u001b[")
+(def reset-font (str csi "m"))
+(def red-font (str csi "31m"))
+(def green-font (str csi "32m"))
+
+;; DT utilities
+(defn fail
+  [msg]
+  (println-err msg)
+  (os/exit -1))
+
+(defn check-result
+  [label result]
+  (when-not (:success result)
+    (fail (str label " failed: " (:err-msg result))))
+  result)
+
+(defn mkdirs
+  "Recursively create a directory, if it doesn't already exist."
+  [path]
+  (check-result "mkdirs"
+                (os/sh "mkdir" "-p" path)))
+
+(defmacro cond-let
+  [& clauses]
+  (cond 
+    (empty? clauses)
+    nil
+
+    (not (even? (count clauses)))
+    (throw (ex-info (str `cond-let " requires an even number of forms")
+                    {:form &form
+                     :meta (meta &form)}))
+
+    :else
+    (let [[test expr-or-binding-form & more-clauses] clauses]
+      (if (= :let test)
+        `(let ~expr-or-binding-form (cond-let ~@more-clauses))
+            ;; Standard case
+        `(if ~test
+           ~expr-or-binding-form
+           (cond-let ~@more-clauses))))))
+
+(defn show-errors
+  [errors]
+  (when (seq errors)
+    (println)
+    (println (if (= 1 (count errors)) "Error:" "Errors:"))
+    (doseq [e errors]
+      (println (str "  " e)))))
+
+(defn extract-command-map
+  "Returns map of command name (string) to var"
+  []
+  (->> (find-ns 'dt)
+       ns-map
+       (reduce (fn [m [sym v]]
+                 (if (-> v meta :command)
+                   (assoc m (name sym) v)
+                   m))
+               {})))
+
+(defn show-help
+  [errors]
+  (let [m (extract-command-map)
+        ks (-> m keys sort)
+        width (+ 2 (apply max (map count ks)))]
+    (println "Usage: dgt COMMAND")
+    (println)
+    (println "Commands:")
+    (doseq [k ks
+            :let [doc-string (-> m (get k) meta :doc)
+                  first-doc (-> doc-string str/split-lines first)]]
+      (println (str (str/pad-left k " " width) ": " first-doc))))
+  (show-errors errors))
+
+(defn show-summary
+  [parsed-opts errors]
+  (let [{:keys [command-name summary args-desc doc]} parsed-opts]
+    (apply println
+           (remove nil? ["Usage: dt" command-name
+                         "[OPTIONS]"
+                         (when args-desc args-desc)]))
+    (when doc
+      (println doc))
+    (println "\nOptions:")
+    (println summary)
+    (show-errors errors)))
+
+(defn ^:command help
+  "Lists available commands"
+  [_]
+  (show-help nil))
+
+(defn read-build-file
+  []
+  (when-not (os/exists? "dialog.edn")
+    (fail "No dialog.edn file in current directory."))
+  
+  (-> "dialog.edn"
+      slurp
+      read-string))
+
+;; Commands
+
+
+(defn extract-sources
+  [build-data for-release?]
+  (let [{:keys [story-sources
+                debug-sources
+                library-sources]} build-data]
+    (reduce into []
+            [story-sources
+             (when-not for-release?
+               debug-sources)
+             library-sources])))
+
+(defn do-build
+  [build-data for-release?]
+  (let [{:keys [output-format]
+         output-name :name} build-data
+        output-dir (str "out/"
+                        (if for-release? "release" "test"))
+        output-path (str output-dir
+                         "/"
+                         output-name
+                         "."
+                         (name output-format))
+        sources (extract-sources build-data for-release?)]
+    (mkdirs output-dir)
+    (check-result "Compile" 
+                  (os/exec "dialogc"
+                           {:stdout *out*
+                            :stderr *err*
+                            :args (into ["-t" (name output-format)
+                                         "-v"
+                                         "-o" output-path]
+                                        sources)}))
+
+    output-dir))
+
+(defn ^:command
+  build
+  "Builds a releasable version of the story"
+  [_]
+  (do-build (read-build-file) false))
+
+(defn find-test-paths
+  []
+  (let [result (os/sh "find" "tests" "-name" "*.txt")]    
+    (check-result "Find" result)  
+    (->> result 
+         :out
+         str/trim
+         str/split-lines
+         (map str/trim))))
+
+(defn execute-test
+  "Executes a single test; the test path is a file containing a transcript
+   to feed into the game.  
+  
+  Returns nil on success and a failure map on failure."
+  [sources test-name test-path]
+  (let [test-input (->> test-path
+                        slurp
+                        str/split-lines
+                        (remove str/blank?)
+                        ;; Allow Dialog-style comments in the source transcript
+                        (remove #(str/starts-with? % "%%"))
+                        (str/join \newline))
+        ;; TODO: Initialize random number generator?
+        args (into ["-q" "-w" "120" "-L"]
+                   sources)
+        result (check-result "Test Execution"
+                             (os/exec "dgdebug" {:args args
+                                                 :stdin test-input}))
+        actual-output (:out result)
+        blessed-path (str "tests/" test-name ".out")
+        expected-output (when (os/exists? blessed-path)
+                          (slurp blessed-path))
+        passed? (= actual-output expected-output)]
+    (when-not passed?
+      (let [output-path (str "out/failed-tests/" test-name ".out")
+            [output-dir _] (f/split output-path)]
+        (mkdirs output-dir)
+        (spit output-path actual-output)
+        {:test-name test-name
+         :output-path output-path
+         :blessed-path blessed-path}))))
+
+(defn ^:command
+  run-tests
+  "Runs tests, capturing output, summarizing failures"
+  [_]
+  (let [build-data (read-build-file)
+        sources (extract-sources build-data false)
+        paths (find-test-paths)
+        test-names (->> paths
+                        (map #(str/replace % "tests/" ""))
+                        (map #(str/replace % #"\.txt" ""))
+                        sort)
+        test-tuples (map vector test-names paths)
+        max-width (apply max (map count test-names))
+        f (fn [failures [test-name test-path]]
+            (print (str/pad-left test-name " " max-width) "... ")
+            (let [failure (execute-test sources test-name test-path)]
+              (if failure
+                (do
+                  (println (str red-font "X" reset-font))
+                  (conj failures failure))
+                (do
+                  (println (str green-font \u2713 reset-font))
+                  failures))))
+        failures (reduce f [] test-tuples)]
+    (mkdirs "out")
+    (if (seq failures)
+      (do
+        (println (str "\n" red-font (count failures) " failures" reset-font))
+        (spit "out/failures.edn"
+              (with-out-str (pprint failures))))
+      (do
+        (println (str "\n" green-font "OK" reset-font))
+        (check-result "Delete failures"
+                      (os/sh "rm" "out/failures.edn"))))))
+
+;; Main "entry point":
+
+(let [[command-name & command-args] *command-line-args*]
+  (try
+    (cond-let
+
+     (or (nil? command-name)
+         (str/starts-with? command-name "-"))
+     (show-help ["No command provided"])
+
+     :let [command-map (extract-command-map)
+           command-var (get command-map command-name)]
+
+     (nil? command-var)
+     (show-help [(format "'%s' is not a command" command-name)])
+
+     :let [{:keys [command-opts args-desc doc]
+            :or {command-opts []}} (meta command-var)
+           parsed-opts (assoc (cli/parse-opts command-args
+                                              (conj command-opts ["-h" "--help" "This command summary"]))
+                              :command-name command-name
+                              :args-desc args-desc
+                              :doc doc)
+           {:keys [options errors arguments]} parsed-opts]
+
+     (:help options)
+     (show-summary parsed-opts nil)
+
+     (seq errors)
+     (show-summary parsed-opts errors)
+
+     (and (nil? args-desc) (seq arguments))
+     (show-summary parsed-opts [(str command-name " command does not take additional arguments")])
+
+     :else
+     (command-var parsed-opts))
+    (catch Error t
+      (println-err "Command failed:" (ex-message t))
+      (when-let [data (ex-data t)]
+        (binding [*out* *err*]
+          (pprint data))))))
