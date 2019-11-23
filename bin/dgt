@@ -9,12 +9,14 @@
    [joker.string :as str]
    [joker.filepath :as f]))
 
+(def failures-path "out/failures.edn")
+
 (def csi "\u001b[")
 (def reset-font (str csi "m"))
 (def red-font (str csi "31m"))
 (def green-font (str csi "32m"))
 
-;; DT utilities
+;; Utilities
 (defn fail
   [msg]
   (println-err msg)
@@ -31,6 +33,11 @@
   [path]
   (check-result "mkdirs"
                 (os/sh "mkdir" "-p" path)))
+
+(defn rm
+  [path]  
+  (if (os/exists? path)
+    (check-result "Remove" (os/sh "rm" path))))
 
 (defmacro cond-let
   [& clauses]
@@ -51,6 +58,8 @@
         `(if ~test
            ~expr-or-binding-form
            (cond-let ~@more-clauses))))))
+
+;; Commands library
 
 (defn show-errors
   [errors]
@@ -102,6 +111,8 @@
   "Lists available commands"
   [_]
   (show-help nil))
+
+;; DGT Commands
 
 (defn read-build-file
   []
@@ -187,7 +198,7 @@
                         (remove #(str/starts-with? % "%%"))
                         (str/join \newline))
         ;; TODO: Initialize random number generator?
-        args (into ["-q" "-w" "120" "-L"]
+        args (into ["-q" "-w" "80" "-L"]
                    sources)
         result (check-result "Test Execution"
                              (os/exec "dgdebug" {:args args
@@ -205,6 +216,11 @@
         {:test-name test-name
          :output-path output-path
          :blessed-path blessed-path}))))
+
+(defn write-failures 
+  [failures]
+  (spit failures-path
+        (with-out-str (pprint failures))))
 
 (defn ^:command
   run-tests
@@ -234,12 +250,64 @@
     (if (seq failures)
       (do
         (println (str "\n" red-font (count failures) " failures" reset-font))
-        (spit "out/failures.edn"
-              (with-out-str (pprint failures))))
+        (write-failures failures))
       (do
         (println (str "\n" green-font "OK" reset-font))
-        (check-result "Delete failures"
-                      (os/sh "rm" "out/failures.edn"))))))
+        (rm failures-path)))))
+
+(defn do-bless
+  "Show diff for test, ask user to bless.
+
+  If user approves, replace blessed file with output file, and return true.
+
+  Otherwise, return false."
+  [failure-map]
+  (let [{:keys [test-name output-path blessed-path]} failure-map]
+    ;; Its goint to fail (with 1) because the files are not the same
+    (os/exec "colordiff" {:args ["-N" "-y" "-W" "170"
+                                 "--label" "Prev Blessed"
+                                 "--label" "Current"
+                                 "--left-column"
+                                 blessed-path output-path]
+                          :stdout *out*
+                          :stderr *err*})
+    (println)
+    (loop []
+      (print (str "Bless differences (" green-font "right column" reset-font ")? [yN] "))
+      (let [input (read-line)]
+            (cond
+              (= input "y")
+              (do
+                (check-result "Move file" (os/sh "mv" "-f" output-path blessed-path))
+                true)
+              
+              (or (= input "")
+                  (= input "n"))
+              false
+
+              :else
+              (do
+                (println (str red-font "Enter 'y' or 'n' (or hit enter)" reset-font))
+                (recur)))))))
+    
+
+(defn ^:command
+  bless
+  "Review failed tests and bless those where the change is allowed"
+  [_]
+  (when-not (os/exists? failures-path)
+    (fail "No failed tests to bless"))
+  (let [failures (-> failures-path
+                     slurp
+                     read-string)
+        f (fn [failures failure-map]
+            (if (do-bless failure-map)
+              failures
+              (conj failures failure-map)))
+        failures' (reduce f [] failures)]
+    (if (seq failures')
+      (write-failures failures')
+      (rm failures-path))))
 
 ;; Main "entry point":
 
