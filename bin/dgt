@@ -7,7 +7,8 @@
    [joker.tools.cli :as cli]
    [joker.os :as os]
    [joker.string :as str]
-   [joker.filepath :as f]))
+   [joker.filepath :as f])
+  (:refer-clojure :exclude [test]))
 
 (def failures-path "out/failures.edn")
 
@@ -223,7 +224,7 @@
         (with-out-str (pprint failures))))
 
 (defn ^:command
-  run-tests
+  test
   "Runs tests, capturing output, summarizing failures"
   [_]
   (let [build-data (read-build-file)
@@ -308,6 +309,17 @@
     (if (seq failures')
       (write-failures failures')
       (rm failures-path))))
+
+(defn ^:command
+  repl
+  "Runs the game in REPL (the debugger)"
+  [_]
+  (let [build-data (read-build-file)
+        sources (extract-sources build-data true)]
+    (os/exec "dgdebug" {:args sources
+                        :stdin *in*
+                        :stdout *out*
+                        :stderr *err*})))
 
 ;; Main "entry point":
 
