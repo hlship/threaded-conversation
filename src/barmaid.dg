@@ -43,6 +43,7 @@
 (* supplies #barmaid/#dog)
 (name *) whether the rumors tell truly
 (dict *) rumor
+(repeatable *)
 (comment *)
     "Where I come from, over the black hills there,
     they say that men this side of the mountain
