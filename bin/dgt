@@ -223,11 +223,59 @@
   (spit failures-path
         (with-out-str (pprint failures))))
 
-(defn ^:command
+
+(defn bless-test
+  "Show diff for test, ask user to bless.
+
+  If user approves, replace blessed file with output file, and return true.
+
+  Otherwise, return false."
+  [failure-map]
+  (let [{:keys [test-name output-path blessed-path]} failure-map]
+    ;; Its goint to fail (with 1) because the files are not the same
+    (os/exec "colordiff" {:args ["-N" "-y" "-W" "170"
+                                 "--left-column"
+                                 blessed-path output-path]
+                          :stdout *out*
+                          :stderr *err*})
+    (println)
+    (loop []
+      (print (str "Bless " test-name " differences (" green-font "right column" reset-font ")? [yN] "))
+      (let [input (read-line)]
+        (cond
+          (= input "y")
+          (do
+            (check-result "Move file" (os/sh "mv" "-f" output-path blessed-path))
+            true)
+
+          (or (= input "")
+              (= input "n"))
+          false
+
+          :else
+          (do
+            (println (str red-font "Enter 'y' or 'n' (or hit enter)" reset-font))
+            (recur)))))))
+
+(defn do-bless
+  [failures]
+  (let [f (fn [failures failure-map]
+            (if (bless-test failure-map)
+              failures
+              (conj failures failure-map)))
+        failures' (reduce f [] failures)]
+    (if (seq failures')
+      (write-failures failures')
+      (rm failures-path))))
+
+(defn 
+  ^{:command true
+    :command-opts [["-b" "--bless" "Immediately bless changes if there are failures"]]}
   test
   "Runs tests, capturing output, summarizing failures"
-  [_]
-  (let [build-data (read-build-file)
+  [parsed-opts]
+  (let [{:keys [options]} parsed-opts 
+        build-data (read-build-file)
         sources (extract-sources build-data false)
         paths (find-test-paths)
         test-names (->> paths
@@ -251,64 +299,23 @@
     (if (seq failures)
       (do
         (println (str "\n" red-font (count failures) " failures" reset-font))
-        (write-failures failures))
+        (if (:bless options)
+          (do-bless failures)
+          (write-failures failures)))
       (do
         (println (str "\n" green-font "OK" reset-font))
         (rm failures-path)))))
 
-(defn do-bless
-  "Show diff for test, ask user to bless.
-
-  If user approves, replace blessed file with output file, and return true.
-
-  Otherwise, return false."
-  [failure-map]
-  (let [{:keys [test-name output-path blessed-path]} failure-map]
-    ;; Its goint to fail (with 1) because the files are not the same
-    (os/exec "colordiff" {:args ["-N" "-y" "-W" "170"
-                                 "--label" "Prev Blessed"
-                                 "--label" "Current"
-                                 "--left-column"
-                                 blessed-path output-path]
-                          :stdout *out*
-                          :stderr *err*})
-    (println)
-    (loop []
-      (print (str "Bless differences (" green-font "right column" reset-font ")? [yN] "))
-      (let [input (read-line)]
-            (cond
-              (= input "y")
-              (do
-                (check-result "Move file" (os/sh "mv" "-f" output-path blessed-path))
-                true)
-              
-              (or (= input "")
-                  (= input "n"))
-              false
-
-              :else
-              (do
-                (println (str red-font "Enter 'y' or 'n' (or hit enter)" reset-font))
-                (recur)))))))
-    
-
 (defn ^:command
   bless
-  "Review failed tests and bless those where the change is allowed"
+  "Review failed tests and bless those where the change is acceptable"
   [_]
   (when-not (os/exists? failures-path)
     (fail "No failed tests to bless"))
-  (let [failures (-> failures-path
-                     slurp
-                     read-string)
-        f (fn [failures failure-map]
-            (if (do-bless failure-map)
-              failures
-              (conj failures failure-map)))
-        failures' (reduce f [] failures)]
-    (if (seq failures')
-      (write-failures failures')
-      (rm failures-path))))
+  (-> failures-path
+      slurp
+      read-string
+      do-bless))
 
 (defn ^:command
   repl
