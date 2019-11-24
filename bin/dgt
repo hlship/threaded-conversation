@@ -185,13 +185,23 @@
          str/split-lines
          (map str/trim))))
 
+(defn overrides-for-test
+  [test-path]
+  (let [[dir _] (f/split test-path)
+        override-path (f/join dir "override.edn")]
+    (when (os/exists? override-path)
+      (-> override-path slurp read-string))))
+
 (defn execute-test
   "Executes a single test; the test path is a file containing a transcript
    to feed into the game.  
   
   Returns nil on success and a failure map on failure."
-  [sources test-name test-path]
-  (let [test-input (->> test-path
+  [build-data test-name test-path]
+  (let [overrides (overrides-for-test test-path)
+        build-data' (merge build-data overrides)
+        sources (extract-sources build-data' false)
+        test-input (->> test-path
                         slurp
                         str/split-lines
                         (remove str/blank?)
@@ -276,7 +286,6 @@
   [parsed-opts]
   (let [{:keys [options]} parsed-opts 
         build-data (read-build-file)
-        sources (extract-sources build-data false)
         paths (find-test-paths)
         test-names (->> paths
                         (map #(str/replace % "tests/" ""))
@@ -286,7 +295,7 @@
         max-width (apply max (map count test-names))
         f (fn [failures [test-name test-path]]
             (print (str/pad-left test-name " " max-width) "... ")
-            (let [failure (execute-test sources test-name test-path)]
+            (let [failure (execute-test build-data test-name test-path)]
               (if failure
                 (do
                   (println (str red-font "X" reset-font))
