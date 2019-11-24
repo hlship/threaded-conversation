@@ -38,7 +38,8 @@
 
 (global variable (conversation partner $))
 
-%% This are the quips available to the conversation partner, rebuilt on every tick.
+%% This are the quips available to the player, based on
+%% the conversation partner, rebuilt on every tick.
 
 (global variable (available quips $))
 
@@ -254,6 +255,8 @@
 (perform [discuss $Quip])
     (narrate discussing $Quip)
     %% TODO: Rule to react to the player's side of the quip
+    %% TODO: Possibly, only the conversation partner should recollect the
+    %% quip, even if others are present.
     (make present actors recollect $Quip)
 
 (describe action [discuss (questioning quip $Quip)])
