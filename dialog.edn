@@ -1,7 +1,7 @@
 {
  :output-format :z8
- :name "tc-test"
- :story-sources ["src/tc-test.dg"]
+ :name "threaded-conversation-demo"
+ :story-sources ["src/barmaid.dg"]
  :debug-sources ["/usr/local/share/dialog-if/stddebug.dg"]
  :library-sources ["src/common.dg"
                    "src/threaded-conversation.dg"
