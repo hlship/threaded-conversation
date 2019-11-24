@@ -87,10 +87,47 @@
 %% a potentially giant list. Ultimately, we may end up marking certain quips
 %% as notable and worthy of recollection, to optimize all this.
 
-($Actor recollects $Quip)
+($Actor recollects (quip $Quip))
     ($Quip is recollected by $Actors)
     ($Actor is one of $Actors)
 
+%% Queuing of quips
+%% The player talks, and a response is queued for the next tick
+%% Sometimes, as a side effect of other quips (or other actions)
+%% additional NPC-directed quips are queued as well.
+
+%% Queue a quip for the NPC at precendence
+%% precedences:
+%% #immediate-obligatory - answer to player's question
+%% #postponed-obligatory - important, survives change of subject
+%% #postponed-optional - casual, cleared on change of subject
+%% #immediate-optional - casual, cleared on any player comment
+
+(queue $Quip for $NPC)
+    (queue $Quip for $NPC as #immediate-obligatory)
+
+(queue $Quip for $NPC as $Precedence)
+    %% I7 just queues the quips and sets a quip property to identify
+    %% how it is queued. That just doesn't feel right.
+    { ($NPC has conversation queue $Queue) (or) ($Queue = []) }
+    %% TODO: May need to ensure quip or tuple not already queued?
+    (now) ($NPC has conversation queue [[$Precedence $Quip] | $Queue])
+    
+(extract next quip for $NPC as $Quip)
+    %% TODO: Find first immediate obligatory, then (if not found) any other
+    ($NPC has conversation queue $Queue)
+    *($Tuple is one of $Queue)
+    ($Tuple = [$ $Quip])
+    (remove $Tuple from $Queue as $NewQueue)
+    (now) ($NPC has conversation queue $NewQueue)
+
+(on every tick)
+    (conversation partner $NPC)
+    (extract next quip for $NPC as $Quip)
+    %% If found (and removed from queue) print the reply now
+    %% TODO: Lots of logic from I7 about paragraph breaks, no talking heads, etc.
+    (par)
+    (reply $Quip)
 
 (on every tick)
     (now) (available quips [])
@@ -216,7 +253,7 @@
 
 (perform [discuss $Quip])
     (narrate discussing $Quip)
-    *(react to discussing $Quip)
+    %% TODO: Rule to react to the player's side of the quip
     (make present actors recollect $Quip)
 
 (describe action [discuss (questioning quip $Quip)])
@@ -224,11 +261,6 @@
 
 (when $ is not a topic)
     That doesn't seem to be a topic of conversation currently.
-
-%% Does nothing, ensures that *(react to ...) is successful.
-%% I can imagine this being used to push a plot forward, where we
-%% can identify a present Actor who does something when a particular quip is acted out.
-(react to discussing $Quip)
 
 %% Identify all actors in the current location who can see the player (same
 %% visibility ceiling). I think this means that if two actors were in a closed and opaque
@@ -244,12 +276,10 @@
         (make $Actor recollect $Quip)
     }
     
-
 (narrate discussing $Quip)
+    (conversation partner $NPC)
     (comment $Quip)
-    (par)
-    %% Does I7 version do this, or queue up the quip with the current interlocutor?
-    (reply $Quip)
+    (queue $Quip for $NPC as #immediate-obligatory)
 
 %%
 %% Utilities
@@ -268,7 +298,8 @@
     ($Matches = [])
     ($NonMatches = [])
 
-%% (test categorize list)
-%%     (categorize list [1 :foo 2 3 :bar [#foo] 4] by { (number $_) } into $Numbers and $NonNumbers)
-%%     (line) Numbers: $Numbers
-%%     (line) Non-Numbers: $NonNumbers
+(remove $Value from $List as $NewList)
+    (collect $Term)
+        *($Term is one of $List)
+        ~($Term = $Value)
+    (into $NewList)

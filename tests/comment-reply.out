@@ -1,0 +1,36 @@
+
+
+It is a long and riotous evening, full of unlikely stories and tall tales. But
+now, most of the patrons have gone away to their rooms to sleep, or have passed
+out before the fire. Even the two black bitch pups are curled on the hearth-
+stone, snuffling through tiny wet noses, and pawing the air in sleep. Now is the
+time to find out whether the rumors that brought you to this neighborhood are
+true.
+
+Very Simple
+An interactive fiction by Howard M. Lewis Ship.
+Release 1. Serial number DEBUG.
+Dialog Interactive Debugger (dgdebug) version 0h/03. Library version 0.30.
+Debugging extension 1.1. Threaded Conversation 0.0.1
+
+The Inn
+The light is low and red. Above the fireplace hangs a map of this part of the
+Empire, and on the adjacent wall is the crimson and silver banner of Richard the
+Rose. The barmaid works her way from table to table, clearing away dishes and
+mugs.
+
+> ask barmaid about rumors
+You say hello to the Bar Maid.
+
+"Where I come from, over the black hills there, they say that men this side of
+the mountain live as old as Methuselah," you remark. "They say the secret of
+eternal life is here."
+
+"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
+hand. "The oldest codger around these parts is old Garrick, and I would't put
+him beyond his four-score and ten."
+
+You could ask where Garrick lives, ask where the barmaid comes from, or ask
+whether she's heard the stories.
+
+> 
