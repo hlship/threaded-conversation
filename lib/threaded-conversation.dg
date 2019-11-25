@@ -65,19 +65,20 @@
 
 @($Quip stands alone)   ~($Quip follows $)
 
-%% Is this sufficient?
+%% I7 makes all directly follows also indirectly follows, but
+%% don't think that is necessary.
 
 ($Quip follows $EarlierQuip)
     { ($Quip directly follows $EarlierQuip) (or)
       ($Quip indirectly follows $EarlierQuip) }
-    %% Could search transitively, but not sure the logic needs it.
 
-($Quip is valid for $Partner)
-    { ($Quip supplies anyone) (or) ($Quip supplies $Partner) }
+($Quip is valid for $NPC)
+    { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
     { ($Quip stands alone)
-        (or) *($Partner recollects $EarlierQuip)
-            ($Quip follows $EarlierQuip) }
-    { (repeatable $Quip) (or) ~($Partner recollects $Quip) }
+        (or) *($Quip follows $EarlierQuip)
+             ($NPC recollects $EarlierQuip)
+            }
+    { (repeatable $Quip) (or) ~($NPC recollects $Quip) }
     %% TODO: $Q directly follows $X means not valid unless $X is the
     %% most recent quip.
 
@@ -130,14 +131,16 @@
     (par)
     (reply $Quip)
 
+($NPC has available quips $Quips)
+    (collect $Quip)
+        *(quip $Quip)
+        ($Quip is valid for $NPC)
+    (into $Quips)
+
 (on every tick)
     (now) (available quips [])
     (conversation partner $Partner)
-    (collect $Quip)
-        *(quip $Quip)
-        ($Quip is valid for $Partner)
-    (into $Quips)
-    %% TODO: Filter out less likely candidates when there are normal candidates?
+    ($Partner has available quips $Quips)
     (now) (available quips $Quips)
 
 (on every tick)
@@ -180,16 +183,31 @@
 (understand [ask | $Text] as [discuss $Quip with $Person])
     *(split $Text anywhere into $Someone and $QuipWords)
     *(understand $Someone as single object $Person preferably animate)
-    *(understand $QuipWords as questioning quip $Quip)
+    (filter $QuipWords into $Filtered) 
+    (nonempty $Filtered)
+    (if) (conversation partner $Person) (then)
+        %% If mid-conversation with someone, then the available quips were calculated
+        %% at the start of the tick.
+        (available quips $Quips)
+    (else)
+        %% This could get expensive if several words each identify the same NPC
+        ($Person has available quips $Quips)
+    (endif)
+    *(understand $Filtered as quip $Quip from $Quips)
+    (questioning quip $Quip)
 
 (rewrite [ask about/whether $Text] as [ask $Text])
 
 (understand [ask | $Text] as [discuss $Quip])
+    (filter $Text into $Filtered)
+    (nonempty $Filtered)
     (conversation partner $Partner)
-    *(understand $Text as questioning quip $Quip)
+    (available quips $Quips)
+    *(understand $Text as quip $Quip from $Quips)
+    (questioning quip $Quip)
 
 %% Essentially, this is to change the current
-%% conversation partner
+%% conversation partner.
 
 (perform [discuss $Quip with (conversation partner $)])
     (try [discuss $Quip])
@@ -197,6 +215,9 @@
 (perform [discuss $Quip with $Person])
     (try [talk to $Person])
     (try [discuss $Quip])
+
+%% This is the real discuss, where we knew the NPC before understanding the
+%% command, so we know the quip is valid for that NPC.
 
 (prevent [discuss $Quip])
     (conversation partner $Partner)
@@ -211,18 +232,19 @@
     You say hello to (the $Person).
     (par)
     
-(understand $Words as questioning quip $Quip)
-    *(understand $Words as quip $Quip)
-    (questioning quip $Quip)
-
-(understand $Words as quip $Quip)
-    (filter $Words into $Filtered)
-    (nonempty $Filtered)
+%% Take 1: The words identify the quip by dict name
+(understand $Words as quip $Quip from $Quips)
     (determine object $Quip)
-        *(quip $Quip)        
+        *($Quip is one of $Quips)
     (from words)
         *(dict $Quip)
-    (matching all of $Filtered)
+    (matching all of $Words)
+
+%% Take 2: understand quips that mention a topic that matches the words
+(understand $Words as quip $Quip from $Quips)
+    *(understand $Words as topic $Topic)
+    *($Quip is one of $Quips)
+    *($Quip mentions $Topic)
 
 ~(refuse [discuss $ with $])    %% Hopefully: don't require the quip to be reachable?
 ~(refuse [discuss $])
@@ -274,7 +296,8 @@
     (make $Player recollect $Quip)
     (current visibility ceiling $Ceil)
     (exhaust) { 
-        *(animate $Actor)
+
+    *(animate $Actor)
         (visibility ceiling of $Actor is $Ceil)
         (make $Actor recollect $Quip)
     }

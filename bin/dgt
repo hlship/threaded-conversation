@@ -326,12 +326,20 @@
       read-string
       do-bless))
 
-(defn ^:command
+(defn ^{:command true
+        :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]]}
   repl
   "Runs the game in REPL (the debugger)"
-  [_]
-  (let [build-data (read-build-file)
-        sources (extract-sources build-data true)]
+  [parsed-options]
+  (let [{:keys [options]} parsed-options
+        overrides-path (:overrides options)
+        build-data (read-build-file)
+        overrides (when overrides-path
+                    (-> overrides-path 
+                        slurp
+                        read-string))
+        build-data' (merge build-data overrides)
+        sources (extract-sources build-data' true)]
     (os/exec "dgdebug" {:args sources
                         :stdin *in*
                         :stdout *out*

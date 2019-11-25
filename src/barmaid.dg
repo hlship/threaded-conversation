@@ -12,7 +12,6 @@
     the rumors that brought you to this neighborhood are true.
     (par)
     (banner)
-    %% (move all quips to quip respository)
 
 #inn
 (room *)
@@ -43,7 +42,7 @@
 (* supplies #barmaid/#dog)
 (name *) whether the rumors tell truly
 (dict *) rumor
-(repeatable *)
+(repeatable *)  %% Just to test repeatability
 (comment *)
     "Where I come from, over the black hills there,
     they say that men this side of the mountain
