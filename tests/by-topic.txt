@@ -1,4 +1,3 @@
 ask barmaid about rumors
 %% ask barmaid about eternal life
 ask barmaid about immortality
-dgt
