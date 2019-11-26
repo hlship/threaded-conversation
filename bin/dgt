@@ -7,7 +7,8 @@
    [joker.tools.cli :as cli]
    [joker.os :as os]
    [joker.string :as str]
-   [joker.filepath :as f])
+   [joker.filepath :as f]
+   [joker.time :as t])
   (:refer-clojure :exclude [test]))
 
 (def failures-path "out/failures.edn")
@@ -295,13 +296,17 @@
         max-width (apply max (map count test-names))
         f (fn [failures [test-name test-path]]
             (print (str/pad-left test-name " " max-width) "... ")
-            (let [failure (execute-test build-data test-name test-path)]
+            (let [start-time (t/now)
+                  failure (execute-test build-data test-name test-path)
+                  elapsed (str/pad-left 
+                           (t/string (t/since start-time))
+                           " " 18)]
               (if failure
                 (do
-                  (println (str red-font "X" reset-font))
+                  (println (str red-font "X" reset-font) elapsed)
                   (conj failures failure))
                 (do
-                  (println (str green-font \u2713 reset-font))
+                  (println (str green-font \u2713 reset-font) elapsed)
                   failures))))
         failures (reduce f [] test-tuples)]
     (mkdirs "out")
