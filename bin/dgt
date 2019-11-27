@@ -138,7 +138,7 @@
 (defn overrides-for-test
   [test-path]
   (let [[dir _] (f/split test-path)
-        override-path (f/join dir "override.edn")]
+        override-path (f/join dir "overrides.edn")]
     (when (os/exists? override-path)
       (-> override-path slurp read-string))))
 
