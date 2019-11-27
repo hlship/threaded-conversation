@@ -33,7 +33,33 @@ him beyond his four-score and ten."
 You could ask where Garrick lives, ask where the barmaid comes from, or ask
 whether she's heard the stories.
 
+> ask barmaid about eternal life
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives, or ask where the barmaid comes from.
+
+> undo
+Undoing the last turn.
+The Inn
+
 > ask barmaid about immortality
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives, or ask where the barmaid comes from.
+
+> undo
+Undoing the last turn.
+The Inn
+
+> ask barmaid about immortal
 "Have you heard any stories of long-living men?" you press her.
 
 She purses her lips and scrubs at a circle-shaped stain on the table before her.

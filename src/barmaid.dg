@@ -89,7 +89,7 @@
     the ford. But I came over here to work."
 
 (topic keyword @immortality)
-(understand [eternal life] as topic keyword @immortality)
+(understand [eternal life] as topic @immortality)
 (topic keyword @immortal implies @immortality)
 
 #heard-the-stories

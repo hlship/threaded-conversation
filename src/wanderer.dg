@@ -148,5 +148,5 @@
     They are painted so small it would be hard to guarantee that you would recognize them again.
 
 (topic keyword @immortality)
-(understand [eternal life] as topic keyword @immortality)
+(understand [eternal life] as topic @immortality)
 (topic keyword @immortal implies @immortality)
