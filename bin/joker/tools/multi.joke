@@ -1,0 +1,175 @@
+(ns joker.tools.multi
+  "A complement to joker.tools.cli that allows a single tool, a Joker script, to 
+  contain multiple commands, each with its own command line options and arguments.
+
+  joker.tools.multi makes use of meta-data on the vars of one or
+  more namespaces to identify the available commands, and the command line options
+  and arguments allowed for each command.
+
+  multi uses the following meta data keys:
+
+  :command (boolean) - indicates the function is a command
+  :command-name (string, optional) -- overrides the name of the command, normally the symbol
+  :doc (string) -- the command's docstring is the command description, used when help
+  :command-opts - a list of options, passed to joker.tools.cli/parse-opts
+  :args-desc (string) - decribes non-option arguments  TODO: to be expanded
+
+  A command option, -h / --help, is added to all commands automatically.
+
+  A help command is also added; it displays the list of commands available.
+
+  The help command displays the first line of each command's docstring, as a summary
+  of the command."
+  (:require
+   [joker.tools.cli :as cli]
+   [joker.string :as str]
+   [joker.os :as os]))
+
+(defmacro ^:private cond-let
+  [& clauses]
+  (cond
+    (empty? clauses)
+    nil
+
+    (not (even? (count clauses)))
+    (throw (ex-info (str `cond-let " requires an even number of forms")
+                    {:form &form
+                     :meta (meta &form)}))
+
+    :else
+    (let [[test expr-or-binding-form & more-clauses] clauses]
+      (if (= :let test)
+        `(let ~expr-or-binding-form (cond-let ~@more-clauses))
+            ;; Standard case
+        `(if ~test
+           ~expr-or-binding-form
+           (cond-let ~@more-clauses))))))
+
+(defn ^:private show-errors
+  [errors]
+  (when (seq errors)
+    (println)
+    (println (if (= 1 (count errors)) "Error:" "Errors:"))
+    (doseq [e errors]
+      (println (str "  " e)))))
+
+(defn ^:private show-tool-help
+  [parsed-opts errors]
+  (let [{:keys [tool-name ::command-map]} parsed-opts
+        ks (-> command-map keys sort)
+        width (+ 2 (apply max (map count ks)))]
+    (println "Usage:" tool-name "COMMAND ...")
+    (println)
+    (println "Commands:")
+    (doseq [k ks
+            :let [doc-string (-> command-map (get k) meta :doc)
+                  first-doc (-> doc-string str/split-lines first)]]
+      (println (str (str/pad-left k " " width) ": " first-doc))))
+  (show-errors errors))
+
+(defn ^:private help
+  "Lists available commands"
+  [parsed-opts]
+  (show-tool-help parsed-opts nil))
+
+(defn ^:private extract-command-map
+  "Returns map of command name (string) to var"
+  [namespace-symbols]
+  (let [f (fn [m namespace-symbol]
+            (->> (find-ns namespace-symbol)
+                 ns-map
+                 (reduce (fn [m [sym v]]
+                           (if (-> v meta :command)
+                             (let [command-name (or (-> v meta :command-name)
+                                                    (name sym))]
+                               (assoc m command-name v))
+                             m))
+                         m)))]
+    (reduce f
+            {"help" #'help}
+            namespace-symbols)))
+
+(defn show-summary
+  "Can be invoked from a command function to show the usage summary for the
+   specific command.
+
+  errors is a seq of strings to display as errors."
+  [parsed-opts errors]
+  (let [{:keys [tool-name command-name summary args-desc doc]} parsed-opts]
+    (apply println
+           (remove nil? ["Usage: " tool-name command-name
+                         "[OPTIONS]"
+                         (when args-desc args-desc)]))
+    (when doc
+      (println doc))
+      ;; There's always at least -h/--help:
+    (println "\nOptions:")
+    (println summary)
+    (show-errors errors)))
+
+(defn dispatch
+  "Locates commands in namespaces, finds the command for the command (as identified by the first string
+  in command args) and processes CLI options.
+
+  If option parsing is succesful, the parsed options map (from joker.tools.cli/parse-opts)
+  is passed to the command function.  
+
+  The parsed options maps has additional keys:
+  :tool-name - the name of the tool (useful for error messages)
+  :command-name - the name of the command
+  :args-desc - the description of arguments for the command TODO: to be reworked
+  :doc - the documentation (docstring) of the comamnd
+
+"
+  [tool-name command-line-args & namespace-symbols]
+  (try
+    (cond-let
+
+     :let [[command-name & command-args] command-line-args
+           command-map (extract-command-map namespace-symbols)
+           base-parsed-opts {:tool-name tool-name
+                             ::command-map command-map}]
+
+     (or (nil? command-name)
+         (str/starts-with? command-name "-"))
+     (do
+       (show-tool-help base-parsed-opts ["No command provided"])
+       (os/exit 1))
+
+     :let [command-var (get command-map command-name)]
+
+     (nil? command-var)
+     (show-tool-help base-parsed-opts
+                     [(format "'%s' is not a command" command-name)])
+
+     :let [{:keys [command-opts args-desc doc]
+            :or {command-opts []}} (meta command-var)
+           parsed-opts (merge base-parsed-opts
+                              (cli/parse-opts command-args
+                                              (conj command-opts ["-h" "--help" "This command summary"]))
+                              {:command-name command-name
+                               :args-desc args-desc
+                               :doc doc})
+           {:keys [options errors arguments]} parsed-opts]
+
+     (:help options)
+     (show-summary parsed-opts nil)
+
+     (seq errors)
+     (do
+       (show-summary parsed-opts errors)
+       (os/exit 1))
+
+     ;; TODO: Define a cli-like approach to identifying arguments
+
+     (and (nil? args-desc) (seq arguments))
+     (show-summary parsed-opts [(str command-name " command does not take additional arguments")])
+
+     :else
+     (command-var parsed-opts))
+    (catch Error t
+      (println-err "Command failed:" (ex-message t))
+      (when-let [data (ex-data t)]
+        (binding [*out* *err*]
+          (pprint data)))
+      (os/exit 1))))

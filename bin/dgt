@@ -2,14 +2,14 @@
 
 ;; dgt - Dialog Tool
 
-(ns dt
+(ns dgt
   (:require
    [joker.tools.cli :as cli]
    [joker.os :as os]
    [joker.string :as str]
    [joker.filepath :as f]
-   [joker.time :as t])
-  (:refer-clojure :exclude [test]))
+   [joker.time :as t]
+   [joker.tools.multi :as multi]))
 
 (def failures-path "out/failures.edn")
 
@@ -62,57 +62,6 @@
            (cond-let ~@more-clauses))))))
 
 ;; Commands library
-
-(defn show-errors
-  [errors]
-  (when (seq errors)
-    (println)
-    (println (if (= 1 (count errors)) "Error:" "Errors:"))
-    (doseq [e errors]
-      (println (str "  " e)))))
-
-(defn extract-command-map
-  "Returns map of command name (string) to var"
-  []
-  (->> (find-ns 'dt)
-       ns-map
-       (reduce (fn [m [sym v]]
-                 (if (-> v meta :command)
-                   (assoc m (name sym) v)
-                   m))
-               {})))
-
-(defn show-help
-  [errors]
-  (let [m (extract-command-map)
-        ks (-> m keys sort)
-        width (+ 2 (apply max (map count ks)))]
-    (println "Usage: dgt COMMAND")
-    (println)
-    (println "Commands:")
-    (doseq [k ks
-            :let [doc-string (-> m (get k) meta :doc)
-                  first-doc (-> doc-string str/split-lines first)]]
-      (println (str (str/pad-left k " " width) ": " first-doc))))
-  (show-errors errors))
-
-(defn show-summary
-  [parsed-opts errors]
-  (let [{:keys [command-name summary args-desc doc]} parsed-opts]
-    (apply println
-           (remove nil? ["Usage: dt" command-name
-                         "[OPTIONS]"
-                         (when args-desc args-desc)]))
-    (when doc
-      (println doc))
-    (println "\nOptions:")
-    (println summary)
-    (show-errors errors)))
-
-(defn ^:command help
-  "Lists available commands"
-  [_]
-  (show-help nil))
 
 ;; DGT Commands
 
@@ -281,9 +230,12 @@
 
 (defn 
   ^{:command true
+    :command-name "test"
     :command-opts [["-b" "--bless" "Immediately bless changes if there are failures"]]}
-  test
-  "Runs tests, capturing output, summarizing failures"
+  run-tests
+  "Runs tests, capturing output, summarizing failures.
+
+Any failures are recorded, for use by the bless command."
   [parsed-opts]
   (let [{:keys [options]} parsed-opts 
         build-data (read-build-file)
@@ -350,44 +302,5 @@
                         :stdout *out*
                         :stderr *err*})))
 
-;; Main "entry point":
 
-(let [[command-name & command-args] *command-line-args*]
-  (try
-    (cond-let
-
-     (or (nil? command-name)
-         (str/starts-with? command-name "-"))
-     (show-help ["No command provided"])
-
-     :let [command-map (extract-command-map)
-           command-var (get command-map command-name)]
-
-     (nil? command-var)
-     (show-help [(format "'%s' is not a command" command-name)])
-
-     :let [{:keys [command-opts args-desc doc]
-            :or {command-opts []}} (meta command-var)
-           parsed-opts (assoc (cli/parse-opts command-args
-                                              (conj command-opts ["-h" "--help" "This command summary"]))
-                              :command-name command-name
-                              :args-desc args-desc
-                              :doc doc)
-           {:keys [options errors arguments]} parsed-opts]
-
-     (:help options)
-     (show-summary parsed-opts nil)
-
-     (seq errors)
-     (show-summary parsed-opts errors)
-
-     (and (nil? args-desc) (seq arguments))
-     (show-summary parsed-opts [(str command-name " command does not take additional arguments")])
-
-     :else
-     (command-var parsed-opts))
-    (catch Error t
-      (println-err "Command failed:" (ex-message t))
-      (when-let [data (ex-data t)]
-        (binding [*out* *err*]
-          (pprint data))))))
+(multi/dispatch "dgt" *command-line-args* 'dgt)
