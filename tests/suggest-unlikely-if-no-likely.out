@@ -57,8 +57,6 @@ You could ask where the barmaid comes from.
 says. "I was born just at the far side of the ford. But I came over here to
 work."
 
-You could ask whether the rumors tell truly.
-
 > ask rumors
 "Where I come from, over the black hills there, they say that men this side of
 the mountain live as old as Methuselah," you remark. "They say the secret of
@@ -67,7 +65,5 @@ eternal life is here."
 "Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
 hand. "The oldest codger around these parts is old Garrick, and I would't put
 him beyond his four-score and ten."
-
-You could ask whether the rumors tell truly.
 
 > 
