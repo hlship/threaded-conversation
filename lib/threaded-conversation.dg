@@ -157,7 +157,6 @@
         ($Action = [discuss $Quip])
     (into $Actions)
     (nonempty $Actions)
-    (par)
     (categorize list $Actions by { (unlikely $_) } into $UnlikelyActions and $LikelyActions)
     %% Not sure this is what I7 does.  Essentially, if there only unlikely actions
     %% (such as repeating a recollected quip) then we'll list those, but if there are
@@ -167,6 +166,7 @@
     (else)
         ($ReportableActions = $LikelyActions)
     (endif)
+    (par)
     You could (enumerate actions $ReportableActions).
 
 (enumerate actions [$A1 $A2])
@@ -192,6 +192,8 @@
 (understand [ask | $Text] as [discuss $Quip with $Person])
     *(split $Text anywhere into $Someone and $QuipWords)
     *(understand $Someone as single object $Person preferably animate)
+    %% No, we really mean animate. Was getting odd disambiguiting prompts like
+    %% "Do you mean to ask the miniature something?"
     (animate $Person)
     (filter $QuipWords into $Filtered) 
     (nonempty $Filtered)
