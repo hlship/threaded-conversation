@@ -1,0 +1,11 @@
+%% Same quip may have different text based on who is being talked to
+%% This also tests pronouns
+
+talk to the barmaid
+ask the barmaid about rumors 
+ask about garrick
+talk to the wanderer 
+ask him about the rumors
+ask knows
+%% It should be the miniature
+ask about it

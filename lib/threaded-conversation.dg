@@ -130,6 +130,9 @@
     %% TODO: Lots of logic from I7 about paragraph breaks, no talking heads, etc.
     (par)
     (reply $Quip)
+    %% The player recollects it on the prior tick; the NPC
+    %% recollects after the reply is produced.
+    (make $NPC recollect $Quip)
 
 ($NPC has available quips $Quips)
     (collect $Quip)
@@ -178,11 +181,14 @@
 
 (rewrite [ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)
+    (nonempty $Person)
+    (nonempty $MoreWords)
     (append $Person $MoreWords $TailWords)
 
 (understand [ask | $Text] as [discuss $Quip with $Person])
     *(split $Text anywhere into $Someone and $QuipWords)
     *(understand $Someone as single object $Person preferably animate)
+    (animate $Person)
     (filter $QuipWords into $Filtered) 
     (nonempty $Filtered)
     (if) (conversation partner $Person) (then)
@@ -196,7 +202,7 @@
     *(understand $Filtered as quip $Quip from $Quips)
     (questioning quip $Quip)
 
-(rewrite [ask about/whether $Text] as [ask $Text])
+(rewrite [ask about/whether $Text] into [ask $Text])
 
 (understand [ask | $Text] as [discuss $Quip])
     (filter $Text into $Filtered)
@@ -205,6 +211,9 @@
     (available quips $Quips)
     *(understand $Text as quip $Quip from $Quips)
     (questioning quip $Quip)
+
+(unlikely [ask $Someone])
+    ~(animate $Someone)
 
 %% Essentially, this is to change the current
 %% conversation partner.
@@ -227,12 +236,14 @@
 (perform [talk to $Person])
     (now) (conversation partner $Person)
     (narrate $Person greeting)  %% Doesn't look like I7 version quite does this?
+    (notice $Person)
 
 (narrate $Person greeting)
     You say hello to (the $Person).
     (par)
     
 %% Take 1: The words identify the quip by dict name
+
 (understand $Words as quip $Quip from $Quips)
     (determine object $Quip)
         *($Quip is one of $Quips)
@@ -241,12 +252,19 @@
     (matching all of $Words)
 
 %% Take 2: understand quips that mention a topic that matches the words
+%% This also works with quips that mention objects (that are in scope).
+%% This also understands 'it' as an object that is mentioned by a quip.
+
 (understand $Words as quip $Quip from $Quips)
     *(understand $Words as topic $Topic)
     *($Quip is one of $Quips)
-    *($Quip mentions $Topic)
+    ($Quip mentions $Topic)
 
-~(refuse [discuss $ with $])    %% Hopefully: don't require the quip to be reachable?
+%% By default, the standard library ensures that any objects identified
+%% in an action list are in scope; quips are like topics, abstract,
+%% so these two negated predicates disable that check when discussing.
+
+~(refuse [discuss $ with $])
 ~(refuse [discuss $])
 
 
@@ -276,32 +294,16 @@
 
 (perform [discuss $Quip])
     (narrate discussing $Quip)
-    %% TODO: Rule to react to the player's side of the quip
-    %% TODO: Possibly, only the conversation partner should recollect the
-    %% quip, even if others are present.
-    (make present actors recollect $Quip)
+    %% TODO: Maybe a predicate to allow reactions to the player's side of the quip
+    (current player $Player)
+    (make $Player recollect $Quip)
 
 (describe action [discuss (questioning quip $Quip)])
     ask (name $Quip)
-
+ 
 (when $ is not a topic)
     That doesn't seem to be a topic of conversation currently.
 
-%% Identify all actors in the current location who can see the player (same
-%% visibility ceiling). I think this means that if two actors were in a closed and opaque
-%% vehicle, an actor outside the vehicle would not overhear (and thus recollect) the quip.
-(make present actors recollect $Quip)
-    %% This extra step because #player isn't necessarily animate
-    (current player $Player)
-    (make $Player recollect $Quip)
-    (current visibility ceiling $Ceil)
-    (exhaust) { 
-
-    *(animate $Actor)
-        (visibility ceiling of $Actor is $Ceil)
-        (make $Actor recollect $Quip)
-    }
-    
 (narrate discussing $Quip)
     (conversation partner $NPC)
     (comment $Quip)

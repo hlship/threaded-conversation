@@ -1,0 +1,152 @@
+(story title) Very Simple
+
+(when play begins)
+    It is a long and riotous evening, full of
+    unlikely stories and tall tales.
+    But now, most of the patrons have gone away
+    to their rooms to sleep, or have passed out
+    before the fire.
+    Even the two black bitch pups are curled on the
+    hearth-stone, snuffling through tiny wet noses,
+    and pawing the air in sleep. Now is the time to find out whether 
+    the rumors that brought you to this neighborhood are true.
+    (par)
+    (banner)
+
+#inn
+(room *)
+(name *)    The Inn
+(look *)
+    The light is low and red. Above the fireplace hangs a map of this part of the Empire, and on the adjacent wall is the crimson and silver banner of Richard the Rose.
+    The barmaid works her way from table to table, clearing away
+    dishes and mugs.
+    (par)
+    A wanderer in grubby trousers slouches at the seat nearest the fire.
+(#player/#barmaid/#wanderer is #in *)    
+
+#barmaid
+(female *)
+(name *) Bar Maid
+(dict *) woman barmaid
+
+#wanderer
+(male *)
+(name *) Wanderer
+(#miniature is #heldby *)
+
+#miniature
+(name *) antique miniature
+
+#whether-rumors-tell-truly
+(questioning quip *)
+%% Universal -- doesn't supply any single person
+(name *) whether the rumors tell truly
+(dict *) rumor
+(comment *)
+    "Where I come from, over the black hills there,
+    they say that men this side of the mountain
+    live as old as Methuselah," you remark. "They
+    say the secret of eternal life is here."
+%% Something to appreciate with Dialog is just how easy
+%% it is to create alternate text based on the
+%% conversation partner.
+(reply *)
+    (conversation partner #barmaid)
+    "Oh, do they?" she says, sweeping crumbs of cheese
+    and crusty bread into her hand.
+    "The oldest codger around these parts is old
+    Garrick, and I would't put him beyond his four-score
+    and ten."
+(reply *)
+    (conversation partner $NPC)
+    "That's true enough," says (the $NPC).
+    "Though there are plenty around here that will deny it."
+
+#where-garrick-lives
+(questioning quip *)
+(name *) where Garrick lives
+(dict *) garick %% Common typo
+(comment *)
+    "Where does this old Garrick live?" you ask, trying not to seem too eager.
+(reply *)
+    "Down at the pig farm," she says. "The turn off is just before you come to the river, on the main road west.
+    You can find it by the smell."
+(* supplies #barmaid)
+(* indirectly follows #whether-rumors-tell-truly)
+
+#heard-the-stories
+(questioning quip *)
+(* supplies #barmaid)
+(* mentions @immortality)
+(* mentions @rumors)
+(name *) whether she's heard the stories
+(comment *)
+    "Have you heard any stories of long-living men?" you press her.
+(reply *)
+    She purses her lips and scrubs at a circle-shaped stain on the table before her. 
+    "If you're a fool come looking for a spring of life or a vein of immortal gold buried in the black hills, 
+    you'd do better to go back home where you come from."
+(* indirectly follows #whether-rumors-tell-truly)
+
+#where-barmaid-comes-from
+(questioning quip *)
+(name *) where the barmaid comes from
+(* mentions #barmaid) %% TODO: Does nothing yet
+(* supplies #barmaid)
+(comment *)
+    "What about yourself?" you ask. "Are you from around these parts?"
+(reply *)
+    "If by these parts you mean between the black hills
+    and the river, no," she says. "I was born just at the far side of
+    the ford. But I came over here to work."
+
+#what-the-wanderer-knows
+(questioning quip *)
+(name *) what the wanderer knows
+(* supplies #wanderer)
+%% TODO: It mentions rumors, wanderer
+(repeatable *)
+(* indirectly follows #whether-rumors-tell-truly)
+(comment *)
+    (select)
+        "What do you know about those who live forever?" you ask.
+    (or)
+        "Tell me more about the secrets of eternal life concealed here," you plead.
+    (stopping)
+(reply *)
+    (select)
+        "I met last month a man that used to be a friend of my grandfather.
+        My grandfather's long dead and in the ground, and this man looks
+        younger than myself. I have a miniature painting of them two together,
+        and I tell you he has not aged a moment."
+        (notice #miniature)
+    (or)
+        "I've told you all I know -- which is almost nothing," he says.
+        "Only that I've met a man that has not aged since my
+        grandfather's day, and maybe longer than that."
+    (or)
+        He tells you again about his encounter with this inplausibly
+        young man, embellishing the story a little -- though not with
+        any details that would help you find the fellow.
+    (stopping)
+
+#see-miniature
+(questioning quip *)
+(name *) whether you may see the miniature
+(* supplies #wanderer)
+(* indirectly follows #what-the-wanderer-knows)
+(* mentions #miniature)
+(comment *)
+    "May I see this miniature? I'm curious to see the man who has lived without aging."
+(reply *)
+    "Why not?" He searches through the pockets of his coat, then the pockets of his trousers, and finally
+    -- looking surprised and much relieved -- finds what he was looking for tucked away in his boot.
+    "Here is is: have a look."
+    (par)
+    And he extends for view an old-fashioned locket: painted on an ivory rectangle are the images of
+    two young men. 
+    They are painted so small it would be hard to guarantee that you would recognize them again.
+
+(topic keyword @immortality)
+(understand [eternal life] as topic keyword @immortality)
+(topic keyword @immortal implies @immortality)
