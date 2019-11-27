@@ -4,5 +4,5 @@
 (story author)  Howard M. Lewis Ship
 
 (intro)
-    (when play begins)
+    (exhaust) (when play begins)
     (try [look])
