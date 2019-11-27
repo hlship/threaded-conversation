@@ -38,8 +38,9 @@
 
 (defn rm
   [path]  
-  (if (os/exists? path)
-    (check-result "Remove" (os/sh "rm" path))))
+  (when (os/exists? path)
+    (check-result "Remove" 
+                  (os/sh "rm" path))))
 
 (defmacro cond-let
   [& clauses]
@@ -127,7 +128,7 @@
 
 (defn find-test-paths
   []
-  (let [result (os/sh "find" "tests" "-name" "*.txt")]    
+  (let [result (os/sh "find" "tests" "-name" "*.txt")]
     (check-result "Find" result)  
     (->> result 
          :out
@@ -237,7 +238,7 @@
 
 Any failures are recorded, for use by the bless command."
   [parsed-opts]
-  (let [{:keys [options]} parsed-opts 
+  (let [{:keys [options]} parsed-opts
         build-data (read-build-file)
         paths (find-test-paths)
         test-names (->> paths
@@ -250,7 +251,7 @@ Any failures are recorded, for use by the bless command."
             (print (str/pad-left test-name " " max-width) "... ")
             (let [start-time (t/now)
                   failure (execute-test build-data test-name test-path)
-                  elapsed (str/pad-left 
+                  elapsed (str/pad-left
                            (t/string (t/since start-time))
                            " " 18)]
               (if failure
@@ -304,3 +305,7 @@ Any failures are recorded, for use by the bless command."
 
 
 (multi/dispatch "dgt" *command-line-args* 'dgt)
+
+(multi/dispatch {:tool-name "dgt"
+                 :arguments *command-line-args*
+                 :namespaces ['dgt]})
