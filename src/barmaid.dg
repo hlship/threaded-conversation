@@ -1,6 +1,6 @@
 (story title) Very Simple
 
-(when play begins)
+(intro)
     It is a long and riotous evening, full of
     unlikely stories and tall tales.
     But now, most of the patrons have gone away
@@ -11,7 +11,10 @@
     and pawing the air in sleep. Now is the time to find out whether 
     the rumors that brought you to this neighborhood are true.
     (par)
-    (banner)
+    (try [look])
+
+#player
+(current player *)
 
 #inn
 (room *)

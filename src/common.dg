@@ -1,8 +1,0 @@
-#player
-(current player *)
-
-(story author)  Howard M. Lewis Ship
-
-(intro)
-    (exhaust) (when play begins)
-    (try [look])
