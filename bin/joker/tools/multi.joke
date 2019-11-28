@@ -25,7 +25,11 @@
   The :options map contains the command options, and the :arguments
   map contains parsed and validated command line arguments.
 
-  command ar specs are similgar to command option specs; each spec is a vector that starts
+  Whereas command option parsing is driven by the option names, command argument
+  parsing is positional. Each command option spec will consume one command line argument
+  (exception: the last spec may be repeatable).
+
+  command arg specs are similgar to command option specs; each spec is a vector that starts
   with one or two strings; the first string is always the label (by convention,
   in upper case). The optional second string is the documentation of the argument.
 
@@ -89,6 +93,13 @@
    [joker.string :as str]
    [joker.os :as os]))
 
+;; TODO:
+;; Make :update-fn simpler, add :assoc-fn
+;; Add :default and maybe :default-fn
+;; Maybe invert :optional and :required to aligne with j.t.cli
+;; Pass thru options to j.t.cli
+
+
 (defmacro ^:private cond-let
   [& clauses]
   (cond
@@ -144,6 +155,8 @@
   "Returns map of command name (string) to var"
   [namespace-symbols]
   (let [f (fn [m namespace-symbol]
+            ;; Ensure the namespace is loaded
+            (require namespace-symbol)
             (->> (find-ns namespace-symbol)
                  ns-map
                  (reduce (fn [m [sym v]]
@@ -204,15 +217,20 @@
 
 (defn ^:private compile-arg-spec
   "Arg specs are similar to option specs."
-  [terms]
+  [command-name terms]
   (let [[label & more] terms]
     ;; The label is required, then it's the optional documentation string
     (if (-> more first string?)
-      (recur (into [label :doc (first more)]
+      (recur command-name
+             (into [label :doc (first more)]
                    (rest more)))
       (let [spec-map (apply hash-map more)
             id (or (:id spec-map)
                    (-> label str/lower-case keyword))
+            invalid-keys (-> spec-map
+                             (dissoc :id :doc :optional :repeatable :default :parse-fn :update-fn)
+                             keys
+                             sort)
             {:keys [validate update-fn repeatable doc optional parse-fn]} spec-map
             update-fn' (cond
                          update-fn
@@ -226,6 +244,11 @@
             validate-pairs (when (seq validate)
                              (->> (partition 2 2 validate)
                                   (map vec)))]
+        (when (seq invalid-keys)
+          (println-err (format "Warning: command %s, argument %s contains invalid keys: %s"
+                               command-name
+                               id
+                               (str/join ", " invalid-keys))))
         {:label label
          :id id
          :doc doc
@@ -237,7 +260,7 @@
 
 (defn ^:private compile-arg-specs
   [command-name specs]
-  (let [compiled (map compile-arg-spec specs)]
+  (let [compiled (map #(compile-arg-spec command-name %) specs)]
     (loop [[this-spec & more-specs] compiled
            optional-id nil
            repeatable-id nil]
@@ -345,6 +368,8 @@
   :tool-name (required, string) - used in command summary and errors
   :arguments - command line arguments to parse
   :namespaces - symbols identifying namespaces to search for commands
+
+  dispatch will load any namespaces specified.
 
   If option and argument parsing is unsuccesful, then
   a command usage summary is printed, along with errors, and the program exits

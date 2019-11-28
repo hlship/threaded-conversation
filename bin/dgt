@@ -4,7 +4,6 @@
 
 (ns dgt
   (:require
-   [joker.tools.cli :as cli]
    [joker.os :as os]
    [joker.string :as str]
    [joker.filepath :as f]
@@ -303,9 +302,7 @@ Any failures are recorded, for use by the bless command."
                         :stdout *out*
                         :stderr *err*})))
 
-
-(multi/dispatch "dgt" *command-line-args* 'dgt)
-
+;; Main entry point.
 (multi/dispatch {:tool-name "dgt"
                  :arguments *command-line-args*
                  :namespaces ['dgt]})
