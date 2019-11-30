@@ -82,7 +82,7 @@
 #where-barmaid-comes-from
 (questioning quip *)
 (name *) where the barmaid comes from
-(* mentions #barmaid) %% TODO: Does nothing yet
+(* mentions #barmaid)
 (* supplies #barmaid)
 (comment *)
     "What about yourself?" you ask. "Are you from around these parts?"

@@ -12,8 +12,12 @@
 
 %% Prevent warnings at startup:
 
-(repeatable $Quip) (fail)
+(repeatable $) (fail)
 ($ directly follows $) (fail)
+(restrictive $) (fail)
+(questioning quip $) (fail)
+(informative quip $) (fail)
+(demonstrative quip $) (fail)
 
 %% (restrictive $) vs. (unrestrictive $)
 %% (player directed $) vs. (npc-directed $)
@@ -27,6 +31,7 @@
 %% ($Quip indirectly follows $PriorQuip) -- valid any time after $PriorQuip
 %% ($Quip supplies $Actor) -- only valid with $Actor as conversation partner
 
+@(unrestrictive $Quip)   ~(restrictive $Quip)
 @($Quip supplies anyone) ~($Quip supplies $)
     %% I7 calls this "universally-applicable" vs. "character tailored"
 
@@ -75,14 +80,17 @@
 ($Quip is valid for $NPC)
     { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
     { ($Quip stands alone)
-        (or) *($Quip follows $EarlierQuip)
+        (or) *($Quip indirectly follows $EarlierQuip)
              ($NPC recollects $EarlierQuip)
-            }
+        (or) (current quip $CurrentQuip) %% Player *just* discussed it
+             ($Quip directly follows $CurrentQuip)
+    }
     { (repeatable $Quip) (or) ~($NPC recollects $Quip) }
-    %% TODO: $Q directly follows $X means not valid unless $X is the
-    %% most recent quip.
-
-    %% TODO: Don't allow change of subject if the the quip is restrictive
+    %% This should guard against changing the subject
+    (if) (current quip $CurrentQuip)
+         (restrictive $CurrentQuip)
+    (then) ($Quip directly follows $CurrentQuip)
+    (endif)
 
 %% We have the quip track who recollects it, which seems odd, but if the
 %% actor tracks the recollected quips, then the #player will end up with
@@ -155,19 +163,12 @@
         %% Never suggest to the player a quip they've already performed.
         ~($Player recollects $Quip)
         ($Action = [discuss $Quip])
+        %% Only interested in likely actions
+        ~(unlikely $Action)
     (into $Actions)
     (nonempty $Actions)
-    (categorize list $Actions by { (unlikely $_) } into $UnlikelyActions and $LikelyActions)
-    %% Not sure this is what I7 does.  Essentially, if there only unlikely actions
-    %% (such as repeating a recollected quip) then we'll list those, but if there are
-    %% other likely quips, we list only the likely ones.
-    (if) (empty $LikelyActions) (then)
-        ($ReportableActions = $UnlikelyActions)
-    (else)
-        ($ReportableActions = $LikelyActions)
-    (endif)
     (par)
-    You could (enumerate actions $ReportableActions).
+    You could (enumerate actions $Actions).
 
 (enumerate actions [$A1 $A2])
     (describe action $A1)
@@ -190,12 +191,39 @@
     (append $Person $MoreWords $TailWords)
 
 (understand [ask | $Text] as [discuss $Quip with $Person])
+    *(understand $Text as $Quip with $Person)
+    (questioning quip $Quip)
+
+(understand [say | $Text] as [discuss $Quip with $Person])
+    *(understand $Text as $Quip with $Person)
+    (informative quip $Quip)
+
+(understand $Text as $Quip with $Person)
     *(split $Text anywhere into $Someone and $QuipWords)
     *(understand $Someone as single object $Person preferably animate)
     %% No, we really mean animate. Was getting odd disambiguiting prompts like
     %% "Do you mean to ask the miniature something?"
     (animate $Person)
-    (filter $QuipWords into $Filtered) 
+    *(understand $QuipWords as quip $Quip for $Person)
+
+(rewrite [ask about/whether $Text] into [ask $Text])
+
+(understand [ask | $Text] as [discuss $Quip])
+    (conversation partner $Partner)
+    *(understand $Text as quip $Quip for $Partner)
+    (questioning quip $Quip)
+
+(understand [say/tell | $Text] as [discuss $Quip])
+    (conversation partner $Partner)
+    *(understand $Text as quip $Quip for $Partner)
+    (informative quip $Quip)
+
+(understand $Text as [discuss $Quip])
+    (conversation partner $Partner)
+    *(understand $Text as quip $Quip for $Partner)
+
+(understand $Text as quip $Quip for $Person)
+    (filter $Text into $Filtered)
     (nonempty $Filtered)
     (if) (conversation partner $Person) (then)
         %% If mid-conversation with someone, then the available quips were calculated
@@ -204,19 +232,8 @@
     (else)
         %% This could get expensive if several words each identify the same NPC
         ($Person has available quips $Quips)
-    (endif)
-    *(understand $Filtered as quip $Quip from $Quips)
-    (questioning quip $Quip)
-
-(rewrite [ask about/whether $Text] into [ask $Text])
-
-(understand [ask | $Text] as [discuss $Quip])
-    (filter $Text into $Filtered)
-    (nonempty $Filtered)
-    (conversation partner $Partner)
-    (available quips $Quips)
+    (endif)    
     *(understand $Text as quip $Quip from $Quips)
-    (questioning quip $Quip)
 
 (unlikely [ask $Someone])
     ~(animate $Someone)
@@ -228,7 +245,7 @@
     (try [discuss $Quip])
 
 (perform [discuss $Quip with $Person])
-    (try [talk to $Person])
+    (try [talk to $Person])  %% Maybe should be a before rule?
     (try [discuss $Quip])
 
 %% This is the real discuss, where we knew the NPC before understanding the
@@ -237,7 +254,7 @@
 (prevent [discuss $Quip])
     (conversation partner $Partner)
     ~($Quip is valid for $Partner)
-    (when $Quip is not a topic)
+    (when $Quip is not a topic)  %% Not sure this is reachable now
 
 (perform [talk to $Person])
     (now) (conversation partner $Person)
@@ -303,17 +320,24 @@
     %% TODO: Maybe a predicate to allow reactions to the player's side of the quip
     (current player $Player)
     (make $Player recollect $Quip)
+    (conversation partner $NPC)
+    (queue $Quip for $NPC as #immediate-obligatory)
+    (now) (current quip $Quip)
 
 (describe action [discuss (questioning quip $Quip)])
     ask (name $Quip)
+
+(describe action [discuss (informative quip $Quip)])
+    say (name $Quip)
+
+(describe action [discuss (demonstrative quip $Quip)])
+    (name $Quip)
  
 (when $ is not a topic)
     That doesn't seem to be a topic of conversation currently.
 
 (narrate discussing $Quip)
-    (conversation partner $NPC)
     (comment $Quip)
-    (queue $Quip for $NPC as #immediate-obligatory)
 
 %%
 %% Utilities

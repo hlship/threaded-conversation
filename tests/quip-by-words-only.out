@@ -13,9 +13,13 @@ Empire, and on the adjacent wall is the crimson and silver banner of Richard the
 Rose. The barmaid works her way from table to table, clearing away dishes and
 mugs.
 
-> ask maid about rumors
+> talk to barmaid
 You say hello to the Bar Maid.
 
+You could ask whether the rumors tell truly, or ask where the barmaid comes
+from.
+
+> truly
 "Where I come from, over the black hills there, they say that men this side of
 the mountain live as old as Methuselah," you remark. "They say the secret of
 eternal life is here."
@@ -27,7 +31,7 @@ him beyond his four-score and ten."
 You could ask where Garrick lives, ask where the barmaid comes from, or ask
 whether she's heard the stories.
 
-> ask maid about stories
+> heard
 "Have you heard any stories of long-living men?" you press her.
 
 She purses her lips and scrubs at a circle-shaped stain on the table before her.
@@ -36,28 +40,19 @@ buried in the black hills, you'd do better to go back home where you come from."
 
 You could ask where Garrick lives, or ask where the barmaid comes from.
 
-> ask garrick
-"Where does this old Garrick live?" you ask, trying not to seem too eager.
-
-"Down at the pig farm," she says. "The turn off is just before you come to the
-river, on the main road west. You can find it by the smell."
-
-You could ask where the barmaid comes from.
-
-> ask from
+> barmaid
 "What about yourself?" you ask. "Are you from around these parts?"
 
 "If by these parts you mean between the black hills and the river, no," she
 says. "I was born just at the far side of the ford. But I came over here to
 work."
 
-> ask rumors
-"Where I come from, over the black hills there, they say that men this side of
-the mountain live as old as Methuselah," you remark. "They say the secret of
-eternal life is here."
+You could ask where Garrick lives.
 
-"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
-hand. "The oldest codger around these parts is old Garrick, and I would't put
-him beyond his four-score and ten."
+> lives
+"Where does this old Garrick live?" you ask, trying not to seem too eager.
+
+"Down at the pig farm," she says. "The turn off is just before you come to the
+river, on the main road west. You can find it by the smell."
 
 > 
