@@ -275,13 +275,22 @@
     (matching all of $Words)
 
 %% Take 2: understand quips that mention a topic that matches the words
-%% This also works with quips that mention objects (that are in scope).
-%% This also understands 'it' as an object that is mentioned by a quip.
 
 (understand $Words as quip $Quip from $Quips)
     *(understand $Words as topic $Topic)
     *($Quip is one of $Quips)
     ($Quip mentions $Topic)
+
+%% Take 3: understand quips that mention an object (which doesn't have to be in scope)
+
+(understand $Words as quip $Quip from $Quips)
+    *($Quip is one of $Quips)
+    (determine object $Mention)
+        *($Quip mentions $Mention)
+        (object $Mention)
+    (from words)
+        *(dict $Mention)
+    (matching all of $Words)
 
 %% By default, the standard library ensures that any objects identified
 %% in an action list are in scope; quips are like topics, abstract,

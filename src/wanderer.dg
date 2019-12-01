@@ -64,10 +64,16 @@
     "That's true enough," says (the $NPC).
     "Though there are plenty around here that will deny it."
 
+#garrick
+(animate *)
+(dict *)
+    codger
+    garick %% common typo
+
 #where-garrick-lives
 (questioning quip *)
 (name *) where Garrick lives
-(dict *) garick %% Common typo
+(* mentions #garrick)
 (comment *)
     "Where does this old Garrick live?" you ask, trying not to seem too eager.
 (reply *)
