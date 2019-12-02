@@ -64,7 +64,7 @@
 (prevent [drop *])
     The phrase "over my dead body" is usually an exaggeration.  In this case, it is chillingly accurate.
 (prevent [open *])
-    Excessive curiousity is not an admirable trait in an agent.
+    Excessive curiosity is not an admirable trait in an agent.
 
 #have-you-got-it
 (informative quip *)
@@ -142,10 +142,10 @@
 (name *) for the pass phrase
 (* indirectly follows #precautions)
 (comment *)
-    "I'm certainly not handing over something this valuable without the proper pass phrase" you announce.
+    "I'm certainly not handing over something this valuable without the proper pass phrase," you announce.
 (reply *)
     Malory's eyes flash left and right, and he leans in close.
-    He whispers the correct pass phrase almost unaudibly.
+    He whispers the correct pass phrase almost inaudibly.
     You're somewhat relieved
     (if) ~(safe house ok)
     (then)
@@ -159,7 +159,7 @@
     (safe house ok)
     (par)
     (select)
-    Are you satisified?  Hard to say in this business. People have secrets,
+    Are you satisfied?  Hard to say in this business. People have secrets,
     wheels within wheels. Still,
     (or)
     Begrudgingly,
