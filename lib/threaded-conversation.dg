@@ -17,7 +17,12 @@
 (restrictive $) (fail)
 (questioning quip $) (fail)
 (informative quip $) (fail)
-(demonstrative quip $) (fail)
+(performative quip $) (fail)
+($ supplies $) (fail)
+($ indirectly follows $) (fail)
+(reply $) (fail)
+($ mentions $) (fail)
+
 
 %% (restrictive $) vs. (unrestrictive $)
 %% (player directed $) vs. (npc-directed $)
@@ -36,8 +41,8 @@
     %% I7 calls this "universally-applicable" vs. "character tailored"
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
-(quip $Quip)    *(informative quip $Quip)   %% tell
-(quip $Quip)    *(demonstrative quip $Quip) %% other
+(quip $Quip)    *(informative quip $Quip)   %% say/tell
+(quip $Quip)    *(performative quip $Quip)  %% other
 
 %% This is "current interlocutor" in I7:
 
@@ -48,7 +53,8 @@
 
 (global variable (available quips $))
 
-%% (global variable (current quip $))
+(global variable (current quip $))
+
 %% (global variable (previous quip $))
 %% (global variable (grandparent quip $))
 
@@ -141,6 +147,10 @@
     %% The player recollects it on the prior tick; the NPC
     %% recollects after the reply is produced.
     (make $NPC recollect $Quip)
+    %% TODO: A queued quip may not be recollected by the player!
+    %% This may have been a queued quip, it is now the current quip
+    %% which will affect quip availability.
+    (now) (current quip $Quip)
 
 ($NPC has available quips $Quips)
     (collect $Quip)
@@ -339,7 +349,7 @@
 (describe action [discuss (informative quip $Quip)])
     say (name $Quip)
 
-(describe action [discuss (demonstrative quip $Quip)])
+(describe action [discuss (performative quip $Quip)])
     (name $Quip)
  
 (when $ is not a topic)
@@ -347,6 +357,20 @@
 
 (narrate discussing $Quip)
     (comment $Quip)
+
+%% When the current quip is restrictive, and the player doesn't respond
+%% properly, output the nag.
+(perform [$verb | $])
+    ~($verb = @discuss)
+    (current quip $Quip)
+    (restrictive $Quip)
+    (nag $Quip)
+
+%% Default nag:
+
+(nag $)
+    (conversation partner $NPC)
+    (The $NPC) awaits a response.
 
 %%
 %% Utilities
