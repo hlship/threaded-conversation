@@ -2,13 +2,16 @@
 
 ;; dgt - Dialog Tool
 
+(ns-sources
+ {"net.lewisship.multi" {:url "https://raw.githubusercontent.com/hlship/multi/v1.0.0/src/net/lewisship/multi.joke"}})
+
 (ns dgt
   (:require
    [joker.os :as os]
    [joker.string :as str]
    [joker.filepath :as f]
    [joker.time :as t]
-   [joker.tools.multi :as multi]))
+   [net.lewisship.multi :as multi]))
 
 (def failures-path "out/failures.edn")
 
@@ -304,5 +307,4 @@ Any failures are recorded, for use by the bless command."
 
 ;; Main entry point.
 (multi/dispatch {:tool-name "dgt"
-                 :arguments *command-line-args*
                  :namespaces ['dgt]})
