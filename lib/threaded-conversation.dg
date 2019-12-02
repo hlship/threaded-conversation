@@ -29,7 +29,7 @@
 %% (beat opened $) vs. (speech opened $)
 %% (comment $) - PC's speech
 %% (reply $) -- NPC's reply
-%% (nag $) -- optional message, used with required quips
+%% (nag $) -- optional message, used with restrictive quips
 %% (name $) -- name, e.g, "about Lily"
 %% (dict *) -- additional terms
 %% ($Quip directly follows $PriorQuip) -- valid only immediately after $PriorQuip
@@ -63,7 +63,10 @@
 %% ($Quip mentions $Subject)
 
 %% Recollection of quips
-%% When an quip is performed every nearby actor will recollect the quip
+%% When the player's comment is printed, the player will recollect the quip
+%% When the NPC's reply is printed, the NPC will recollect the quip
+%% TODO: Currently, a queued quip may not have a comment, and the player will
+%% not recollect the quip even though the NPC does.
 
 %% Dialog doesn't handle multi-valued properties.  So we have
 %% a dynamic property ($Quip is recollected by $ActorList) and a rule
@@ -74,7 +77,24 @@
     ~($Actor is one of $Actors)
     (now) ($Quip is recollected by [$Actor | $Actors])
 
+%% We have the quip track who recollects it, which seems odd, but if the
+%% actor tracks the recollected quips, then the #player will end up with
+%% a potentially giant list. Ultimately, we may end up marking certain quips
+%% as notable and worthy of recollection, to optimize all this.
+
+($Actor recollects (quip $Quip))
+    ($Quip is recollected by $Actors)
+    ($Actor is one of $Actors)
+
+%% Rules for quips, threads, availablility, etc.
+
 @($Quip stands alone)   ~($Quip follows $)
+
+@($Quip is dead ended)  ~($ follows $Quip)
+
+@($Quip is mid thread)
+    ~($Quip stands alone)
+    ~($Quip is dead ended)
 
 %% I7 makes all directly follows also indirectly follows, but
 %% don't think that is necessary.
@@ -97,15 +117,6 @@
          (restrictive $CurrentQuip)
     (then) ($Quip directly follows $CurrentQuip)
     (endif)
-
-%% We have the quip track who recollects it, which seems odd, but if the
-%% actor tracks the recollected quips, then the #player will end up with
-%% a potentially giant list. Ultimately, we may end up marking certain quips
-%% as notable and worthy of recollection, to optimize all this.
-
-($Actor recollects (quip $Quip))
-    ($Quip is recollected by $Actors)
-    ($Actor is one of $Actors)
 
 %% Queuing of quips
 %% The player talks, and a response is queued for the next tick
@@ -193,6 +204,13 @@
     (describe action $A)
     ,
     (enumerate actions $More)
+
+%% Unlikely helps weed out non-relevant quips, and is tied into the
+%% "You could ..." every tick rules.
+(unlikely [discuss $Quip])
+    (current quip $Current)
+    ($Current is mid thread)
+    ~($Quip follows $Current)
 
 (rewrite [ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)

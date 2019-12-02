@@ -53,7 +53,7 @@
     be pretty important.
 (* is #heldby #player)
 (prevent [give * to $])
-    { ~(pass phrase exchanged) (or) ~(safe house ok) }
+    { ~(#malory recollects #pass-phrase) (or) ~(#malory recollects #safe-house) }
     Protocol dictates that important assets should not be
     released until the responsible agent confirms security
     precautions.
@@ -135,7 +135,6 @@
     Malory scoffs: "Yes, there's a safe house.
     No, I won't reveal its location.
     This is not a training exercise, why are you being so obtuse?"
-    (now) (safe house ok)
 
 #pass-phrase
 (questioning quip *)
@@ -147,16 +146,15 @@
     Malory's eyes flash left and right, and he leans in close.
     He whispers the correct pass phrase almost inaudibly.
     You're somewhat relieved
-    (if) ~(safe house ok)
+    (if) ~(#malory recollects #safe-house)
     (then)
         , but you still have your orders
     (endif)
     .
-    (now) (pass phrase exchanged)
 
 (on every tick)
-    (pass phrase exchanged)
-    (safe house ok)
+    (#malory recollects #pass-phrase) 
+    (#malory recollects #safe-house)
     (par)
     (select)
     Are you satisfied?  Hard to say in this business. People have secrets,
