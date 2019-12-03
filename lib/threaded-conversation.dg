@@ -211,6 +211,14 @@
     (current quip $Current)
     ($Current is mid thread)
     ~($Quip follows $Current)
+ 
+%% Repeatable quips can be returned to, but are unlikely, so they are never
+%% suggested.
+
+(unlikely [discuss $Quip])
+    (repeatable $Quip)
+    (current player $Player)
+    ($Player recollects $Quip)
 
 (rewrite [ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)
@@ -376,12 +384,13 @@
 (narrate discussing $Quip)
     (comment $Quip)
 
-%% When the current quip is restrictive, and the player doesn't respond
+%% When the player does anything but discuss a quip when there's a quip hanging
 %% properly, output the nag.
+%% It would be nice to find a way to defer the nag a bit ... perhaps set a flag
+%% that is executed at the start of the next tick?
 (perform [$verb | $])
     ~($verb = @discuss)
     (current quip $Quip)
-    (restrictive $Quip)
     (nag $Quip)
 
 %% Default nag:
