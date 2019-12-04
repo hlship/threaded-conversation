@@ -288,8 +288,8 @@ Any failures are recorded, for use by the bless command."
 
 (defn ^{:command true
         :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]]}
-  repl
-  "Runs the game in REPL (the debugger)"
+  debug
+  "Runs the game in Dialog debugger"
   [parsed-options]
   (let [{:keys [options]} parsed-options
         overrides-path (:overrides options)

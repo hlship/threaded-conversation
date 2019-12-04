@@ -3,10 +3,11 @@
 `dgt` is a tool to assist in the development of games
 written in [Dialog](https://linusakesson.net/dialog/index.php).
 
-`dgt` simplifies development, it provides commands to:
+`dgt` simplifies development, it allows you to specify the details of your project,
+including what individual source files to use, and then provides commands to:
 
-- run your game in the dialog debugger
-- run tests, identify failure
+- run your game in the Dialog debugger
+- run tests and identify failures
 - review failed tests and "bless" updates
 - build a compiled game for distribution
 - more to come ...
@@ -33,12 +34,12 @@ as other things.
 ```                   
 
 `dgt` uses three sets of sources; the `:debug-sources` are only used
-when running the game interactively in the REPL.
+when running the game interactively in `dgdebug`.
 
 ## Write / Run / Test Loop
 
 Dialog makes it easy to code and test at the same time; the
-REPL (the debugger) does a great job of updating in-place
+`dgdebug` does a great job of updating in-place
 when any of the source files change.
 
 `dgt`s approach to testing is really simple:
