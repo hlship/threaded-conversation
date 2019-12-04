@@ -7,7 +7,7 @@ z
 precautions
 pass phrase
 give case to malory
-ask house
+a house
 weather
 drop case
 give it to him

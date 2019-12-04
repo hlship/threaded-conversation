@@ -220,13 +220,13 @@
     (current player $Player)
     ($Player recollects $Quip)
 
-(rewrite [ask | $Words] into [ask | $TailWords])
+(rewrite [a/ask | $Words] into [ask | $TailWords])
     (split $Words by [about] into $Person and $MoreWords)
     (nonempty $Person)
     (nonempty $MoreWords)
     (append $Person $MoreWords $TailWords)
 
-(understand [ask | $Text] as [discuss $Quip with $Person])
+(understand [a/ask | $Text] as [discuss $Quip with $Person])
     *(understand $Text as $Quip with $Person)
     (questioning quip $Quip)
 
@@ -244,7 +244,7 @@
 
 (rewrite [ask about/whether $Text] into [ask $Text])
 
-(understand [ask | $Text] as [discuss $Quip])
+(understand [a/ask | $Text] as [discuss $Quip])
     (conversation partner $Partner)
     *(understand $Text as quip $Quip for $Partner)
     (questioning quip $Quip)
