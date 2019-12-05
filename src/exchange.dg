@@ -72,14 +72,23 @@
 (reply *)
     "Well," asks Malory, "do you have the package?"
     Always a bit too direct, this one, everything's so urgent, no sense of panache.
-(nag *)
+(beat *)
     Malory
     (select)
-        grows impatient. "The package!" he insists.
+        grows impatient
     (or)
-        raises his voice a hair. "A simple 'yes' or 'no' would do."
+        raises his voice a hair
     (or)
-        visibly seethes.
+        visibly seethes
+    (stopping)
+    .
+(nag *)
+    (beat *)
+    (select)
+        "The package!" he insists.
+    (or)
+        "A simple 'yes' or 'no' would do."
+    (or)
         "Out with it, man, I haven't got all day."
     (stopping)
 

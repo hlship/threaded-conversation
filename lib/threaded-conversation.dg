@@ -22,6 +22,7 @@
 ($ indirectly follows $) (fail)
 (reply $) (fail)
 ($ mentions $) (fail)
+(nag $) (fail)
 
 
 %% (restrictive $) vs. (unrestrictive $)
@@ -29,7 +30,8 @@
 %% (beat opened $) vs. (speech opened $)
 %% (comment $) - PC's speech
 %% (reply $) -- NPC's reply
-%% (nag $) -- optional message, used with restrictive quips
+%% (nag $) -- optional message, mostly used with restrictive quips
+%% (beat $) -- 
 %% (name $) -- name, e.g, "about Lily"
 %% (dict *) -- additional terms
 %% ($Quip directly follows $PriorQuip) -- valid only immediately after $PriorQuip
@@ -386,18 +388,23 @@
 
 %% When the player does anything but discuss a quip when there's a quip hanging
 %% properly, output the nag.
-%% It would be nice to find a way to defer the nag a bit ... perhaps set a flag
-%% that is executed at the start of the next tick?
 (perform [$verb | $])
     ~($verb = @discuss)
     (current quip $Quip)
+    %% You'll almost always want a nag to start with `(beat $)`.
+    %% An attempt to collect the output from nag and do the beat automatically
+    %% didn't work ... text came out all lower case, or each word capitalized.
     (nag $Quip)
+    (par)
+    (fail)
 
-%% Default nag:
+%% A beat is used to break up quips and such. Excellent chance to provide
+%% some varied, quip-specific output.
 
-(nag $)
-    (conversation partner $NPC)
-    (The $NPC) awaits a response.
+(beat $)
+    A moment passes.
+    (par)
+
 
 %%
 %% Utilities
