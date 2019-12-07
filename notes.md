@@ -45,3 +45,18 @@ Suprisingly hard to get error output for unrecognized quip
 ```
 
 But want it to say: `That not a current topic of conversation.`
+
+
+
+```
+> sell
+You try a joke: "Planning on selling this to the highest bidder? Might be your best shot out of the game."
+
+Begrudgingly, it's time to hand him the package and hope for the best.
+
+Malory is taken aback. "if that's an attempt at humor, now is not the time or place. We'll be having words about this back at the den."
+
+Perhaps this was not the best gambit. Malory has friends among the Oxford crowd, so the consequences of this unseamly exchange could be quite dire.
+```
+
+The `(on every tick)` rules are hard to schedule; the `Begrudingly` output should be towards the end, though this might be better accomplished with queued quips in any case.

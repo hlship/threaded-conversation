@@ -169,11 +169,11 @@
     You try a joke: "Planning on selling this to the highest bidder? Might be
     your best shot out of the game."
 (reply *)
-    Malory is taken aback. "if that's an attempt at humor, now is not the time
+    Malory is taken aback. "If that's an attempt at humor, now is not the time
     or place. We'll be having words about this back at the den."
     (par)
     Perhaps this was not the best gambit. Malory has friends among the Oxford
-    crowd, so the consequences of this unseamly exchange could be quite dire.
+    crowd, so the consequences of this unseemly exchange could be quite dire.
 
 (on every tick)
     (#malory recollects #pass-phrase) 

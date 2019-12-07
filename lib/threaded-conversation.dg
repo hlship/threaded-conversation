@@ -241,9 +241,14 @@
 %% "You could ..." every tick rules.
 (unlikely [discuss $Quip])
     (current quip $Current)
-    { (implausible $Quip) (or)    
     ($Current is mid thread)
-    ~($Quip follows $Current) }
+    ~($Quip follows $Current)
+
+%% All implausible quips are unlikely actions; this again keeps
+%% them from being suggested.
+
+(unlikely [discuss $Quip])
+    (implausible $Quip)    
  
 %% Repeatable quips can be returned to, but are unlikely, so they are never
 %% suggested.
