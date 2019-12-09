@@ -37,11 +37,11 @@
 
 @(unrestrictive $Quip)   ~(restrictive $Quip)
 
-%% Quips are normally plausible, but implausible clips are allowed.
-%% You have to be specific to choose an implausible quip, normally
-%% all implausible quips are discarded if any plausible quips match.
+%% Quips are normally plausible, but dubious clips are allowed.
+%% You have to be specific to choose an dubious quip, normally
+%% all dubious quips are discarded if any plausible quips match.
 
-@(plausible $Quip)   ~(implausible $Quip)
+@(plausible $Quip)   ~(dubious $Quip)
 
 %% Prevent warnings at startup:
 
@@ -57,7 +57,7 @@
 ($ mentions $) (fail)
 (nag $) (fail)
 (off limits $) (fail)
-(implausible $) (fail)
+(dubious $) (fail)
 
 
 %% (player directed $) vs. (npc-directed $)
@@ -195,6 +195,15 @@
     %% which will affect quip availability.
     (now) (current quip $Quip)
 
+%% Identifying available quips
+%%
+%% As an optimization, at the start of each tick, the possible available quips
+%% (based on conversations partner, current quip, thread of converstation, etc.)
+%% is identified and stored in the (available quips $List) global.
+%% Some of these quips may be dubious or represent a change of subject, in which case
+%% they are unlikely (but still possible), but only likely (e.g., continuations of
+%% the current thread) are ever suggested to the player.
+
 ($NPC has available quips $Quips)
     (collect $Quip)
         *(quip $Quip)
@@ -244,11 +253,11 @@
     ($Current is mid thread)
     ~($Quip follows $Current)
 
-%% All implausible quips are unlikely actions; this again keeps
+%% All dubious quips are unlikely actions; this again keeps
 %% them from being suggested.
 
 (unlikely [discuss $Quip])
-    (implausible $Quip)    
+    (dubious $Quip)
  
 %% Repeatable quips can be returned to, but are unlikely, so they are never
 %% suggested.
