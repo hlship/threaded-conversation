@@ -6,12 +6,14 @@
     Threaded Conversation 0.0.1
 
 
-%% There are three types of player-directed quips.  NPC-directed
-%% quips are just (quip $).
+%% There are three types of player-directed quips.
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
 (quip $Quip)    *(informative quip $Quip)   %% say/tell
 (quip $Quip)    *(performative quip $Quip)  %% other
+
+%% NPC-directed quips (currently) are just objects.  Not even (quip $).
+%% They just have a (reply $) and other quips may follow them.
 
 %% (comment $) - PC's speech
 %% (reply $) -- NPC's reply
@@ -84,7 +86,11 @@
 
 (global variable (current quip $))
 
-%% (global variable (previous quip $))
+%% After an NPC performs their part of a comment/reply (via the NPC's queue)
+%% the current quip becomes the previous quip.
+
+(global variable (previous quip $))
+
 %% (global variable (grandparent quip $))
 
 %% quips are objects and related to other objects
@@ -180,6 +186,13 @@
     (remove $Tuple from $Queue as $NewQueue)
     (now) ($NPC has conversation queue $NewQueue)
 
+(record current quip $Quip)
+    (if) (current quip $Previous)
+    (then)
+        (now) (previous quip $Previous)
+    (endif)
+    (now) (current quip $Quip)
+
 (on every tick)
     (conversation partner $NPC)
     (extract next quip for $NPC as $Quip)
@@ -193,7 +206,7 @@
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip availability.
-    (now) (current quip $Quip)
+    (record current quip $Quip)
 
 %% Identifying available quips
 %%

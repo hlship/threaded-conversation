@@ -144,6 +144,18 @@
     Malory scoffs: "Yes, there's a safe house.
     No, I won't reveal its location.
     This is not a training exercise, why are you being so obtuse?"
+    (queue #field-work-too-taxing for #malory as #postponed-obligatory)
+    (queue #what-are-you-up-to for #malory as #postponed-obligatory)
+
+#what-are-you-up-to
+(reply *)
+    Malory asks "What the devil are you up to?  This whole exchange should be cut and dried."
+    He searches out your face in the gloom, looking for something.
+
+#field-work-too-taxing
+(reply *)
+    "Perhaps field work has grown too taxing for you," he says, "we may need to have
+    a post-mortem back at the den." That sounds ominous.    
 
 #pass-phrase
 (questioning quip *)
