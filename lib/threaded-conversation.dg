@@ -223,11 +223,16 @@
         ($Quip is valid for $NPC)
     (into $Quips)
 
+%% Identify which quips (even if dubious or unlikely) are available for the current NPC
+%% for the player to select.
+
 (on every tick)
     (now) (available quips [])
-    (conversation partner $Partner)
-    ($Partner has available quips $Quips)
+    (conversation partner $NPC)
+    ($NPC has available quips $Quips)
     (now) (available quips $Quips)
+
+%% Identify likely quips; nothing dubious and nothing unlikely (generally, switching out of the current thread).
 
 (on every tick)
     (available quips $Quips)
@@ -238,7 +243,7 @@
         %% Never suggest to the player a quip they've already performed.
         ~($Player recollects $Quip)
         ($Action = [discuss $Quip])
-        %% Only interested in likely actions
+        %% Only interested in likely actions -- this excludes quips that are dubious, or change the current thread (if any).
         ~(unlikely $Action)
     (into $Actions)
     (nonempty $Actions)
@@ -423,7 +428,6 @@
     (make $Player recollect $Quip)
     (conversation partner $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
-    (now) (current quip $Quip)
 
 (describe action [discuss (questioning quip $Quip)])
     ask (name $Quip)
