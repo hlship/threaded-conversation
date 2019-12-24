@@ -1,0 +1,45 @@
+
+
+Portland's a small town, so you never know quite who you are going to run into
+You're old buddy Ted is waiting for the bus, and you haven't seen him in a
+while--long enough for him to grow some serious facial hair.
+
+Sidewalk
+Waiting for the bus at the sidewalk outside your office. You see your old friend
+Ted also waiting; you lost track of him a couple of gigs ago. He looks changed,
+though.
+
+> talk ted
+"Hey big man!" you say to Ted. "Oh hey! You take the 17 bus too? I've never seen
+you here before." he replies.
+
+You could ask about the beard.
+
+> ask beard
+"I've never seen you with a beard before" you say, "what's up with that?"
+
+"Just needed a change, I guess" Ted replies.
+
+You could ask to borrow Ted's razor, ask if he has found a girlfriend, or sing
+the lumberjack song.
+
+> lumberjack
+You start to sing the Monty Python lumberjack song. "Oh, I'm a lumberjack and
+I'm OK, I sleep all night and I work all day..."
+
+Ted chimes in, skipping to the end: "I cut down trees. I wear high heels,
+suspendies, and a bra. I wish I'd been a girlie, Just like my dear Papa!"
+
+You both chuckle a little, while the others waiting for the bus studiously avoid
+eye contact.
+
+You could ask to borrow Ted's razor, or ask if he has found a girlfriend.
+
+> a girlfriend
+"All kidding aside, do you have a girlfriend now?" you ask.
+
+"Is that really so surprising?" he responds.
+
+You could ask to borrow Ted's razor.
+
+> 

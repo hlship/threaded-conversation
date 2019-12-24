@@ -35,7 +35,7 @@
     and his shoes entirely lack in scuffs. He looks just a bit out of place
     in the kinds of seedy locations these kinds of exchanges take place in.
 (* is #in #foggy-alley)
-(narrate * greeting)
+(narrate greeting *)
     (select)
     "Malory" is all you say. We're taught to keep these exchanges brief.
     (queue #have-you-got-it for *)

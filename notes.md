@@ -24,6 +24,10 @@ shallowly buried
 current quip
 - Setting action variables for an actor discussing rule sets all three
 
+dead ended
+- No quip follows the current quip
+- After comment of current quip, if dead ended, then see if there's another queued quip
+
 previous quip
 
 grandparent quip

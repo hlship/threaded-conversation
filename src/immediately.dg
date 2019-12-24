@@ -1,0 +1,84 @@
+(story title) The Beard
+
+(intro)
+    Portland's a small town, so you never know quite who you are going
+    to run into  You're old buddy Ted is waiting for the bus, and you haven't
+    seen him in a while -- long enough for him to grow some serious facial hair.
+    (par)
+    (try [look])
+
+(current player #player)
+
+#ted
+(name *)    Ted
+(proper *)
+(animate *)
+(descr *)
+    Somehow, since you last saw him, Ted has gone from
+    baby-faced to lumberjack, at least in terms of
+    facial hair.
+(narrate greeting *)
+    "Hey big man!" you say to Ted.  "Oh hey!  You take the 17 bus too?  I've never seen you here before." he replies.
+    (par)
+
+#sidewalk
+(name *)    Sidewalk
+(room *)
+(look *)
+    Waiting for the bus at the sidewalk outside your office. You see your old friend Ted
+    also waiting; you lost track of him a couple of gigs ago.  He looks changed, though.
+(#player/#ted is #in *) 
+
+#about-beard
+(questioning quip *)
+(name *) about the beard
+(comment *)
+    "I've never seen you with a beard before" you say, "what's up with that?"
+(reply *)
+    "Just needed a change, I guess" Ted replies.
+
+#ask-to-borrow-razor
+(questioning quip *)
+(name *)    to borrow Ted's razor
+(* indirectly follows #about-beard)
+(comment *)
+    "Hey Ted," you ask, "can I borrow your razor?  You're obviously not using it."
+(reply *)
+    Ted matches snark for snark. 
+    "If I had a razor," he replies, "do you really think I would look like this?"
+
+#sing-lumberjack-song
+(performative quip *)
+(name *)    sing the lumberjack song
+(* indirectly follows #about-beard)
+(comment *)
+    You start to sing the Monty Python lumberjack song. "Oh, I'm a lumberjack and I'm OK, I sleep all night
+    and I work all day..."
+(reply *)
+    Ted chimes in, skipping to the end: "I cut down trees. I wear high heels,
+    suspendies, and a bra. I wish I'd been a girlie, Just like my dear Papa!"
+    (par)
+    You both chuckle a little, while the others waiting for the bus studiously avoid eye contact.
+
+#girlfriend
+(questioning quip *)
+(name *) if he has found a girlfriend
+(dict *) girl
+(* indirectly follows #about-beard)
+(comment *)
+    (if) (immediately)
+    (then)
+        You have a sudden insight: "You dog, you found yourself a girlfriend, didn't you?"
+    (else)
+    "All kidding aside, do you have a girlfriend now?" you ask.
+    (endif)
+(reply *)
+    (if) (immediately)
+    (then)
+        "Uh, yes" he replies. "Why do you ask?"
+    (else)
+        "Is that really so surprising?" he responds.
+    (endif)
+    
+    
+    

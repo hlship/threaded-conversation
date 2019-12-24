@@ -91,6 +91,14 @@
 
 (global variable (previous quip $))
 
+%% Used to vary the text when a quip immediately follows its prior quip.
+%% If the player goes off on a tangent before returning to this quip,
+%% then (immediately) will fail.
+(immediately)
+    (current quip $Current)
+    (previous quip $Previous)
+    ($Current indirectly follows $Previous)
+
 %% (global variable (grandparent quip $))
 
 %% quips are objects and related to other objects
@@ -187,11 +195,16 @@
     (now) ($NPC has conversation queue $NewQueue)
 
 (record current quip $Quip)
-    (if) (current quip $Previous)
+    %% This gets called just before the players comment, then again
+    %% just before the NCPs reply.  Have to check that we don't overdo it.
+    (if) ~(current quip $Quip) 
     (then)
-        (now) (previous quip $Previous)
+        (if) (current quip $Previous)
+        (then)
+            (now) (previous quip $Previous)
+        (endif)
+        (now) (current quip $Quip)
     (endif)
-    (now) (current quip $Quip)
 
 (on every tick)
     (conversation partner $NPC)
@@ -199,6 +212,7 @@
     %% If found (and removed from queue) print the reply now
     %% TODO: Lots of logic from I7 about paragraph breaks, no talking heads, etc.
     (par)
+    (record current quip $Quip)
     (reply $Quip)
     %% The player recollects it on the prior tick; the NPC
     %% recollects after the reply is produced.
@@ -206,7 +220,6 @@
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip availability.
-    (record current quip $Quip)
 
 %% Identifying available quips
 %%
@@ -227,6 +240,9 @@
 %% for the player to select.
 
 (on every tick)
+    (rebuild available quips)
+
+(rebuild available quips)
     (now) (available quips [])
     (conversation partner $NPC)
     ($NPC has available quips $Quips)
@@ -301,13 +317,12 @@
 
 (understand $Text as $Quip with $Person)
     *(split $Text anywhere into $Someone and $QuipWords)
-    *(understand $Someone as single object $Person preferably animate)
-    %% No, we really mean animate. Was getting odd disambiguiting prompts like
-    %% "Do you mean to ask the miniature something?"
+    *(understand $Someone as single object $Person)
+    %% Using `preferably animate` above caused some odd disambiguation errors
     (animate $Person)
     *(understand $QuipWords as quip $Quip for $Person)
 
-(rewrite [ask about/whether $Text] into [ask $Text])
+(rewrite [a/ask about/whether $Text] into [ask $Text])
 
 (understand [a/ask | $Text] as [discuss $Quip])
     (conversation partner $Partner)
@@ -338,7 +353,7 @@
     (endif)    
     *(understand $Text as quip $Quip from $Quips)
 
-(unlikely [ask $Someone])
+(unlikely [ask/tell $Someone])
     ~(animate $Someone)
 
 %% Essentially, this is to change the current
@@ -356,10 +371,10 @@
 
 (perform [talk to $Person])
     (now) (conversation partner $Person)
-    (narrate $Person greeting)  %% Doesn't look like I7 version quite does this?
+    (narrate greeting $Person)  %% Doesn't look like I7 version quite does this?
     (notice $Person)
 
-(narrate $Person greeting)
+(narrate greeting $Person)
     You say hello to (the $Person).
     (par)
     
@@ -380,6 +395,7 @@
     ($Quip mentions $Topic)
 
 %% Take 3: understand quips that mention an object (which doesn't have to be in scope)
+%% This should also work with topic objects.
 
 (understand $Words as quip $Quip from $Quips)
     *($Quip is one of $Quips)
@@ -422,6 +438,9 @@
     We're not talking to anyone right now.
 
 (perform [discuss $Quip])
+    %% Record the quip as the current quip now, which ensures that the
+    %% (immediately) predicate operates correctly.
+    (record current quip $Quip)
     (narrate discussing $Quip)
     %% TODO: Maybe a predicate to allow reactions to the player's side of the quip
     (current player $Player)
@@ -446,7 +465,7 @@
 (perform [$verb | $])
     ~($verb = @discuss)
     (current quip $Quip)
-    %% You'll almost always want a nag to start with `(beat $)`.
+    %% You'll almost always want a nag to start with `(beat *)`.
     %% An attempt to collect the output from nag and do the beat automatically
     %% didn't work ... text came out all lower case, or each word capitalized.
     (nag $Quip)
@@ -460,12 +479,15 @@
     A moment passes.
     (par)
 
+%% This is not currently used because the logic for changing "I don't understand" is hard to override.
 (when not a topic of conversation)
     That doesn't seem to be a topic of conversation at the moment.
  
 %%
 %% Utilities
 %%
+
+%% Some of these are not used and may go away
 
 (categorize list [$Element | $More] by $Predicate into $Matches and $NonMatches)
     (if) (query $Predicate $Element) (then)

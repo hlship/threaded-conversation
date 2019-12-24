@@ -15,6 +15,7 @@
 
 #player
 (current player *)
+
 #inn
 (room *)
 (name *)    The Inn

@@ -1,0 +1,34 @@
+
+
+Portland's a small town, so you never know quite who you are going to run into
+You're old buddy Ted is waiting for the bus, and you haven't seen him in a
+while--long enough for him to grow some serious facial hair.
+
+Sidewalk
+Waiting for the bus at the sidewalk outside your office. You see your old friend
+Ted also waiting; you lost track of him a couple of gigs ago. He looks changed,
+though.
+
+> talk ted
+"Hey big man!" you say to Ted. "Oh hey! You take the 17 bus too? I've never seen
+you here before." he replies.
+
+You could ask about the beard.
+
+> ask beard
+"I've never seen you with a beard before" you say, "what's up with that?"
+
+"Just needed a change, I guess" Ted replies.
+
+You could ask to borrow Ted's razor, ask if he has found a girlfriend, or sing
+the lumberjack song.
+
+> a girlfriend
+You have a sudden insight: "You dog, you found yourself a girlfriend, didn't
+you?"
+
+"Uh, yes" he replies. "Why do you ask?"
+
+You could ask to borrow Ted's razor, or sing the lumberjack song.
+
+> 
