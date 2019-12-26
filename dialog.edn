@@ -1,7 +1,6 @@
 {
  :output-format :z8
  :name "threaded-conversation-demo"
- :story-sources ["src/barmaid.dg"]
  :debug-sources ["/usr/local/share/dialog-if/stddebug.dg"]
  :library-sources ["lib/threaded-conversation.dg"
                    "/usr/local/share/dialog-if/stdlib.dg"]}
