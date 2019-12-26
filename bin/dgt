@@ -16,7 +16,7 @@
 (def failures-path "out/failures.edn")
 
 (def csi "\u001b[")
-(def reset-font (str csi "m"))
+(def reset-font (str csi "m")) 
 (def red-font (str csi "31m"))
 (def green-font (str csi "32m"))
 

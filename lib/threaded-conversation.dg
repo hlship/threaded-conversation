@@ -84,12 +84,19 @@
 
 (global variable (available quips $))
 
+
+%% The most recently quip for which the comment or reply has been discussed.
+
 (global variable (current quip $))
 
 %% After an NPC performs their part of a comment/reply (via the NPC's queue)
 %% the current quip becomes the previous quip.
 
 (global variable (previous quip $))
+
+%% Set when the discussed quip represents a change in subject
+
+(global variable (grandparent quip $))
 
 %% Used to vary the text when a quip immediately follows its prior quip.
 %% If the player goes off on a tangent before returning to this quip,
@@ -187,11 +194,21 @@
     (now) ($NPC has conversation queue [[$Precedence $Quip] | $Queue])
     
 (extract next quip for $NPC as $Quip)
-    %% TODO: Find first immediate obligatory, then (if not found) any other
     ($NPC has conversation queue $Queue)
     *($Tuple is one of $Queue)
     ($Tuple = [$ $Quip])
     (remove $Tuple from $Queue as $NewQueue)
+    (now) ($NPC has conversation queue $NewQueue)
+
+(purge conversation queue for $NPC)
+    (now) ~($NPC has conversation queue)
+
+(purge $Precendence from conversation queue for $NPC)
+    ($NPC has conversation queue $OldQueue)
+    (collect $Tuple)
+        ($Tuple is one of $OldQueue)
+        ~($Tuple = [$Precedence $])
+    (into $NewQueue)
     (now) ($NPC has conversation queue $NewQueue)
 
 (record current quip $Quip)
@@ -206,8 +223,12 @@
         (now) (current quip $Quip)
     (endif)
 
+%% Handle the reply to the PC's comment
 (on every tick)
-    (conversation partner $NPC)
+    %% TODO: Could be multiple NPCs ready to chat!
+    (perform queued quip for $NPC)
+
+(perform queued quip for $NPC)
     (extract next quip for $NPC as $Quip)
     %% If found (and removed from queue) print the reply now
     %% TODO: Lots of logic from I7 about paragraph breaks, no talking heads, etc.
@@ -220,6 +241,22 @@
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip availability.
+
+%% Here was allow NPCs to, perhaps, speak something from their queue
+(on every tick)
+    (conversation partner $NPC)
+    %% TODO: Perhaps alternate check for 'no current quip'?
+    (current quip $Quip)
+    ($Quip is dead ended)
+    %% TODO: I7's "avoid talking heads activity"
+    (perform queued quip for $NPC)
+
+(change subject to $Quip)
+    (now) (grandparent quip $Quip)
+
+
+
+
 
 %% Identifying available quips
 %%
