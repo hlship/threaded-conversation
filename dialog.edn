@@ -1,6 +1,3 @@
-{
- :output-format :z8
- :name "threaded-conversation-demo"
- :debug-sources ["/usr/local/share/dialog-if/stddebug.dg"]
+{:name "threaded-conversation-demo"
  :library-sources ["lib/threaded-conversation.dg"
                    "/usr/local/share/dialog-if/stdlib.dg"]}

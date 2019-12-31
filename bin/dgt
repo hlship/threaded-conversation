@@ -20,6 +20,12 @@
 (def red-font (str csi "31m"))
 (def green-font (str csi "32m"))
 
+(def default-build-data
+  {:output-format :z8
+   :name (f/base (joker.os/cwd))
+   :debug-sources ["/usr/local/share/dialog-if/stddebug.dg"]
+   :library-sources ["/usr/local/share/dialog-if/stdlib.dg"]})
+
 ;; Utilities
 (defn fail
   [msg]
@@ -29,7 +35,7 @@
 (defn check-result
   [label result]
   (when-not (:success result)
-    (fail (str label " failed: " (:err-msg result))))
+    (fail (str label " failed: " (:err-msg result) \n (:err result))))
   result)
 
 (defn mkdirs
@@ -73,9 +79,10 @@
   (when-not (os/exists? "dialog.edn")
     (fail "No dialog.edn file in current directory."))
   
-  (-> "dialog.edn"
-      slurp
-      read-string))
+  (let [build-data (-> "dialog.edn"
+                       slurp
+                       read-string)]
+    (merge default-build-data build-data)))
 
 ;; Commands
 
@@ -161,8 +168,11 @@
                         ;; Allow Dialog-style comments in the source transcript
                         (remove #(str/starts-with? % "%%"))
                         (str/join \newline))
-        ;; TODO: Initialize random number generator?
-        args (into ["-q" "-w" "80" "-L"]
+        seed (get build-data' :seed (hash test-path))
+        args (into ["--quit" 
+                    "--width" "80" ;; Good for comparing test output
+                    "-L"
+                    "--seed" (str seed)]
                    sources)
         result (check-result "Test Execution"
                              (os/exec "dgdebug" {:args args
@@ -299,8 +309,12 @@ Any failures are recorded, for use by the bless command."
                         slurp
                         read-string))
         build-data' (merge build-data overrides)
-        sources (extract-sources build-data' true)]
-    (os/exec "dgdebug" {:args sources
+        seed (:seed build-data)        
+        sources (extract-sources build-data' false)
+        args (cond-> ["--quit"]
+               seed (into ["--seed" seed])
+               true (into sources))]
+    (os/exec "dgdebug" {:args args
                         :stdin *in*
                         :stdout *out*
                         :stderr *err*})))

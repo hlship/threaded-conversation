@@ -36,6 +36,13 @@ as other things.
 `dgt` uses three sets of sources; the `:debug-sources` are only used
 when running the game interactively in `dgdebug`.
 
+You may specify a numeric `:seed` value, used to initialize the random number
+generator. 
+
+When `:seed` is omitted when running tests, a default seed value, based on a hash
+of the path to the test input script, is supplied.
+
+
 ## Write / Run / Test Loop
 
 Dialog makes it easy to code and test at the same time; the
