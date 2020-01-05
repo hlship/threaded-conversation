@@ -486,13 +486,34 @@
     (queue $Quip for $NPC as #immediate-obligatory)
 
 (describe action [discuss (questioning quip $Quip)])
-    ask (name $Quip)
+    (if) (library links enabled) (then)
+        (collect words)
+            (name $Quip)
+        (into $Words)
+        (link [ask | $Words]) { ask (name $Quip) }
+    (else)
+        ask (name $Quip)
+    (endif)
 
 (describe action [discuss (informative quip $Quip)])
-    say (name $Quip)
+    (if) (library links enabled) (then)
+        (collect words)
+            (name $Quip)
+        (into $Words)
+        (link [say | $Words]) { say (name $Quip) }
+    (else)
+        say (name $Quip)
+    (endif)
 
 (describe action [discuss (performative quip $Quip)])
-    (name $Quip)
+    (if) (library links enabled) (then)
+        (collect words)
+            (name $Quip)
+        (into $Words)
+        (link $Words) { (name $Quip) }
+    (else)
+        (name $Quip)
+    (endif)
  
 (narrate discussing $Quip)
     (comment $Quip)
