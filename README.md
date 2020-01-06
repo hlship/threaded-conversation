@@ -30,3 +30,6 @@ implemented.
 (c) 2019-present Howard M. Lewis Ship
 
 Licensed under the terms of the Apache Sofware Licence 2.0.
+
+Pull Requests are encouraged; by submitting a pull request, you are irrevocably assigning copyright for any submitted
+materials to the repository owner, Howard Lewis Ship.
