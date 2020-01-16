@@ -50,26 +50,6 @@
     (check-result "Remove" 
                   (os/sh "rm" path))))
 
-(defmacro cond-let
-  [& clauses]
-  (cond 
-    (empty? clauses)
-    nil
-
-    (not (even? (count clauses)))
-    (throw (ex-info (str `cond-let " requires an even number of forms")
-                    {:form &form
-                     :meta (meta &form)}))
-
-    :else
-    (let [[test expr-or-binding-form & more-clauses] clauses]
-      (if (= :let test)
-        `(let ~expr-or-binding-form (cond-let ~@more-clauses))
-            ;; Standard case
-        `(if ~test
-           ~expr-or-binding-form
-           (cond-let ~@more-clauses))))))
-
 ;; Commands library
 
 ;; DGT Commands
@@ -85,7 +65,6 @@
     (merge default-build-data build-data)))
 
 ;; Commands
-
 
 (defn extract-sources
   [build-data for-release?]
@@ -297,7 +276,8 @@ Any failures are recorded, for use by the bless command."
       do-bless))
 
 (defn ^{:command true
-        :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]]}
+        :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]
+                       ["-d" "--debug" "Print out command that will run."]]}
   debug
   "Runs the game in Dialog debugger"
   [parsed-options]
@@ -314,6 +294,8 @@ Any failures are recorded, for use by the bless command."
         args (cond-> ["--quit"]
                seed (into ["--seed" seed])
                true (into sources))]
+    (when (:debug options)
+      (apply println "dgdebug" args))
     (os/exec "dgdebug" {:args args
                         :stdin *in*
                         :stdout *out*
