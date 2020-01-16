@@ -228,8 +228,8 @@
   "Runs tests, capturing output, summarizing failures.
 
 Any failures are recorded, for use by the bless command."
-  [parsed-opts]
-  (let [{:keys [options]} parsed-opts
+  [command-options]
+  (let [{:keys [options]} command-options
         build-data (read-build-file)
         paths (find-test-paths)
         test-names (->> paths
@@ -280,8 +280,8 @@ Any failures are recorded, for use by the bless command."
                        ["-d" "--debug" "Print out command that will run."]]}
   debug
   "Runs the game in Dialog debugger"
-  [parsed-options]
-  (let [{:keys [options]} parsed-options
+  [command-options]
+  (let [{:keys [options]} command-options
         overrides-path (:overrides options)
         build-data (read-build-file)
         overrides (when overrides-path
