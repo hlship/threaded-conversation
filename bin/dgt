@@ -3,7 +3,7 @@
 ;; dgt - Dialog Tool
 
 (ns-sources
- {"net.lewisship.multi" {:url "https://raw.githubusercontent.com/hlship/multi/v1.0.0/src/net/lewisship/multi.joke"}})
+ {"net.lewisship.multi" {:url "https://raw.githubusercontent.com/hlship/multi/v1.1.0/src/net/lewisship/multi.joke"}})
 
 (ns dgt
   (:require
@@ -11,7 +11,7 @@
    [joker.string :as str]
    [joker.filepath :as f]
    [joker.time :as t]
-   [net.lewisship.multi :as multi]))
+   [net.lewisship.multi :as multi :refer [defcommand]]))
 
 (def failures-path "out/failures.edn")
 
@@ -107,24 +107,19 @@
                             :args args}))
     output-path))
 
-(defn ^{:command true
-        :command-opts [["-d" "--debug" "Print out the dialogc command to be executed"]
-                       ["-t" "--testing" "Compile for testing, including debug sources"]
-                       ["-v" "--verbose" "Enable additional compiler output"]]}
-  build
+(defcommand build
   "Builds a compiled version of the story"
-  [command-options]
-  (let [{:keys [options]} command-options
-        {:keys [debug testing verbose]} options
-        output (do-build (read-build-file) {:debug debug
+  [debug ["-d" "--debug" "Print out the dialogc command to be executed"]
+   testing ["-t" "--testing" "Compile for testing, including debug sources"]
+   verbose ["-v" "--verbose" "Enable additional compiler output"]]
+  (let [output (do-build (read-build-file) {:debug debug
                                             :release (not testing)
                                             :verbose verbose})]
     (println "Wrote file" output)))
 
-(defn ^:command
-  clean
+(defcommand clean
   "Cleans output"
-  [_]
+  []
   (check-result "Delete"
                 (os/sh "rm" "-rf" "out")))
 
@@ -147,7 +142,7 @@
 
 (defn execute-test
   "Executes a single test; the test path is a file containing a transcript
-   to feed into the game.  
+  to feed into the game.
   
   Returns nil on success and a failure map on failure."
   [build-data test-name test-path]
@@ -233,17 +228,12 @@
       (write-failures failures')
       (rm failures-path))))
 
-(defn 
-  ^{:command true
-    :command-name "test"
-    :command-opts [["-b" "--bless" "Immediately bless changes if there are failures"]]}
-  run-tests
+(defcommand run-tests
   "Runs tests, capturing output, summarizing failures.
 
-Any failures are recorded, for use by the bless command."
-  [command-options]
-  (let [{:keys [options]} command-options
-        build-data (read-build-file)
+  Any failures are recorded, for use by the bless command."
+  [bless ["-b" "--bless" "Immediately bless changes if there are failures"]]
+  (let [build-data (read-build-file)
         paths (find-test-paths)
         test-names (->> paths
                         (map #(str/replace % "tests/" ""))
@@ -270,17 +260,16 @@ Any failures are recorded, for use by the bless command."
     (if (seq failures)
       (do
         (println (str "\n" red-font (count failures) " failures" reset-font))
-        (if (:bless options)
+        (if bless
           (do-bless failures)
           (write-failures failures)))
       (do
         (println (str "\n" green-font "OK" reset-font))
         (rm failures-path)))))
 
-(defn ^:command
-  bless
+(defcommand bless
   "Review failed tests and bless those where the change is acceptable"
-  [_]
+  []
   (when-not (os/exists? failures-path)
     (fail "No failed tests to bless"))
   (-> failures-path
@@ -288,15 +277,11 @@ Any failures are recorded, for use by the bless command."
       read-string
       do-bless))
 
-(defn ^{:command true
-        :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]
-                       ["-d" "--debug" "Print out dgdebug command to be execute"]]}
-  debug
-  "Runs the game in Dialog debugger"
-  [command-options]
-  (let [{:keys [options]} command-options
-        overrides-path (:overrides options)
-        build-data (read-build-file)
+(defcommand debug
+  "Runs the game in the Dialog debugger"
+  [overrides-path ["-o" "--overrides PATH" "Path to overrides for dialog.edn"]
+   debug ["-d" "--debug" "Print out dgdebug command to be execute"]]
+  (let [ build-data (read-build-file)
         overrides (when overrides-path
                     (-> overrides-path 
                         slurp
@@ -307,7 +292,7 @@ Any failures are recorded, for use by the bless command."
         args (cond-> ["--quit"]
                seed (into ["--seed" seed])
                true (into sources))]
-    (when (:debug options)
+    (when debug
       (apply println "dgdebug" args))
     (os/exec "dgdebug" {:args args
                         :stdin *in*
