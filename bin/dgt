@@ -78,34 +78,48 @@
              library-sources])))
 
 (defn do-build
-  [build-data for-release?]
+  [build-data options]
   (let [{:keys [output-format]
          output-name :name} build-data
+        {:keys [release debug verbose]
+         :or {:release true
+              :debug false
+              :verbose true}} options
         output-dir (str "out/"
-                        (if for-release? "release" "test"))
+                        (if release "release" "test"))
         output-path (str output-dir
                          "/"
                          output-name
                          "."
                          (name output-format))
-        sources (extract-sources build-data for-release?)]
+        sources (extract-sources build-data release)
+        args (into (cond-> ["--format" (name output-format)
+                            "--output" output-path]
+                     verbose (conj "--verbose"))
+                   sources)]
     (mkdirs output-dir)
+    (when debug
+      (apply println "dialogc" args))
     (check-result "Compile" 
                   (os/exec "dialogc"
                            {:stdout *out*
                             :stderr *err*
-                            :args (into ["-t" (name output-format)
-                                         "-v"
-                                         "-o" output-path]
-                                        sources)}))
+                            :args args}))
+    output-path))
 
-    output-dir))
-
-(defn ^:command
+(defn ^{:command true
+        :command-opts [["-d" "--debug" "Print out the dialogc command to be executed"]
+                       ["-t" "--testing" "Compile for testing, including debug sources"]
+                       ["-v" "--verbose" "Enable additional compiler output"]]}
   build
-  "Builds a releasable version of the story"
-  [_]
-  (do-build (read-build-file) false))
+  "Builds a compiled version of the story"
+  [command-options]
+  (let [{:keys [options]} command-options
+        {:keys [debug testing verbose]} options
+        output (do-build (read-build-file) {:debug debug
+                                            :release (not testing)
+                                            :verbose verbose})]
+    (println "Wrote file" output)))
 
 (defn ^:command
   clean
@@ -174,7 +188,6 @@
   [failures]
   (spit failures-path
         (with-out-str (pprint failures))))
-
 
 (defn bless-test
   "Show diff for test, ask user to bless.
@@ -277,7 +290,7 @@ Any failures are recorded, for use by the bless command."
 
 (defn ^{:command true
         :command-opts [["-o" "--overrides PATH" "Path to overrides for dialog.edn"]
-                       ["-d" "--debug" "Print out command that will run."]]}
+                       ["-d" "--debug" "Print out dgdebug command to be execute"]]}
   debug
   "Runs the game in Dialog debugger"
   [command-options]
