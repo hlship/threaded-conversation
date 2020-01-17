@@ -228,7 +228,7 @@
       (write-failures failures')
       (rm failures-path))))
 
-(defcommand run-tests
+(defcommand ^{:command-name "test"} run-tests
   "Runs tests, capturing output, summarizing failures.
 
   Any failures are recorded, for use by the bless command."
