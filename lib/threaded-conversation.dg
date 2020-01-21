@@ -166,7 +166,7 @@
     %% Watch out for on-time quips that this NPC has already performed
     { (repeatable $Quip) (or) ~($NPC recollects $Quip) }
     %% Guard against changing the subject during
-    %% a restrictive qup
+    %% a restrictive quip
     (if) (current quip $CurrentQuip)
          (restrictive $CurrentQuip)
     (then) ($Quip directly follows $CurrentQuip)
