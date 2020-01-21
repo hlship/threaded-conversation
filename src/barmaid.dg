@@ -83,7 +83,7 @@
     "Down at the pig farm," she says. "The turn off is just before you come to the river, on the main road west.
     You can find it by the smell."
 (* supplies #barmaid)
-(* indirectly follows #whether-rumors-tell-truly)
+(* follows #whether-rumors-tell-truly)
 
 #where-barmaid-comes-from
 (questioning quip *)
@@ -113,7 +113,7 @@
     She purses her lips and scrubs at a circle-shaped stain on the table before her. 
     "If you're a fool come looking for a spring of life or a vein of immortal gold buried in the black hills, 
     you'd do better to go back home where you come from."
-(* indirectly follows #whether-rumors-tell-truly)
+(* follows #whether-rumors-tell-truly)
 
 
 %% Need an empty location to test a few things, like breaking a conversation by moving away.

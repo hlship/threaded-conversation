@@ -81,7 +81,7 @@
     "Down at the pig farm," she says. "The turn off is just before you come to the river, on the main road west.
     You can find it by the smell."
 (* supplies #barmaid)
-(* indirectly follows #whether-rumors-tell-truly)
+(* follows #whether-rumors-tell-truly)
 
 #heard-the-stories
 (questioning quip *)
@@ -95,7 +95,7 @@
     She purses her lips and scrubs at a circle-shaped stain on the table before her. 
     "If you're a fool come looking for a spring of life or a vein of immortal gold buried in the black hills, 
     you'd do better to go back home where you come from."
-(* indirectly follows #whether-rumors-tell-truly)
+(* follows #whether-rumors-tell-truly)
 
 #where-barmaid-comes-from
 (questioning quip *)
@@ -115,7 +115,7 @@
 (* supplies #wanderer)
 %% TODO: It mentions rumors, wanderer
 (repeatable *)
-(* indirectly follows #whether-rumors-tell-truly)
+(* follows #whether-rumors-tell-truly)
 (comment *)
     (select)
         "What do you know about those who live forever?" you ask.
@@ -143,7 +143,7 @@
 (questioning quip *)
 (name *) whether you may see the miniature
 (* supplies #wanderer)
-(* indirectly follows #what-the-wanderer-knows)
+(* follows #what-the-wanderer-knows)
 (* mentions #miniature)
 (comment *)
     "May I see this miniature? I'm curious to see the man who has lived without aging."

@@ -40,7 +40,7 @@
 #ask-to-borrow-razor
 (questioning quip *)
 (name *)    to borrow Ted's razor
-(* indirectly follows #about-beard)
+(* follows #about-beard)
 (comment *)
     "Hey Ted," you ask, "can I borrow your razor?  You're obviously not using it."
 (reply *)
@@ -50,7 +50,7 @@
 #sing-lumberjack-song
 (performative quip *)
 (name *)    sing the lumberjack song
-(* indirectly follows #about-beard)
+(* follows #about-beard)
 (comment *)
     You start to sing the Monty Python lumberjack song. "Oh, I'm a lumberjack and I'm OK, I sleep all night
     and I work all day..."
@@ -64,7 +64,7 @@
 (questioning quip *)
 (name *) if he has found a girlfriend
 (dict *) girl
-(* indirectly follows #about-beard)
+(* follows #about-beard)
 (comment *)
     (if) (immediately)
     (then)

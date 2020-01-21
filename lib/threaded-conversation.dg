@@ -54,7 +54,7 @@
 (informative quip $) (fail)
 (performative quip $) (fail)
 ($ supplies $) (fail)
-($ indirectly follows $) (fail)
+($ follows $) (fail)
 (reply $) (fail)
 ($ mentions $) (fail)
 (nag $) (fail)
@@ -65,9 +65,11 @@
 %% (player directed $) vs. (npc-directed $)
 %% (beat opened $) vs. (speech opened $)
 
+%% ($Quip follows $PriorQuip) -- valid any time after $PriorQuip
 %% ($Quip directly follows $PriorQuip) -- valid only immediately after $PriorQuip
-%% ($Quip indirectly follows $PriorQuip) -- valid any time after $PriorQuip
 %% ($Quip supplies $Actor) -- only valid with $Actor as conversation partner
+%% A quip may supply multiple actors.  If it supplies none, then it is valid with any
+%% conversation partner.
 
 @($Quip supplies anyone) ~($Quip supplies $)
     %% I7 calls this "universally-applicable" vs. "character tailored"
@@ -83,7 +85,6 @@
 %% the conversation partner, rebuilt on every tick.
 
 (global variable (available quips $))
-
 
 %% The most recently quip for which the comment or reply has been discussed.
 
@@ -104,7 +105,7 @@
 (immediately)
     (current quip $Current)
     (previous quip $Previous)
-    ($Current indirectly follows $Previous)
+    ($Current follows $Previous)
 
 %% (global variable (grandparent quip $))
 
@@ -138,26 +139,26 @@
 
 %% Rules for quips, threads, availablility, etc.
 
-@($Quip stands alone)   ~($Quip follows $)
+@($Quip stands alone)   ~($Quip continues from $)
 
-@($Quip is dead ended)  ~($ follows $Quip)
+@($Quip is dead ended)  ~($ continues from $Quip)
 
 @($Quip is mid thread)
     ~($Quip stands alone)
     ~($Quip is dead ended)
 
-%% I7 makes all directly follows also indirectly follows, but
+%% I7 makes all directly follows also follows, but
 %% don't think that is necessary.
 
-($Quip follows $EarlierQuip)
+($Quip continues from $EarlierQuip)
     { ($Quip directly follows $EarlierQuip) (or)
-      ($Quip indirectly follows $EarlierQuip) }
+      ($Quip follows $EarlierQuip) }
 
 ($Quip is valid for $NPC)
     (available $Quip)
     { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
     { ($Quip stands alone)
-        (or) *($Quip indirectly follows $EarlierQuip)
+        (or) *($Quip follows $EarlierQuip)
              ($NPC recollects $EarlierQuip)
         (or) (current quip $CurrentQuip) %% Player *just* discussed it
              ($Quip directly follows $CurrentQuip)
@@ -212,7 +213,7 @@
     (now) ($NPC has conversation queue $NewQueue)
 
 (record current quip $Quip)
-    %% This gets called just before the players comment, then again
+    %% This gets called just before the player's comment, then again
     %% just before the NCPs reply.  Have to check that we don't overdo it.
     (if) ~(current quip $Quip) 
     (then)
@@ -226,6 +227,7 @@
 %% Handle the reply to the PC's comment
 (on every tick)
     %% TODO: Could be multiple NPCs ready to chat!
+    (conversation partner $NPC)
     (perform queued quip for $NPC)
 
 (perform queued quip for $NPC)
@@ -253,10 +255,6 @@
 
 (change subject to $Quip)
     (now) (grandparent quip $Quip)
-
-
-
-
 
 %% Identifying available quips
 %%
@@ -301,28 +299,16 @@
     (into $Actions)
     (nonempty $Actions)
     (par)
-    You could (enumerate actions $Actions).
-
-(enumerate actions [$A1 $A2])
-    (describe action $A1)
-    , %% I'm an Oxford comma kind of guy
-    or
-    (describe action $A2)
-
-(enumerate actions [$A])
-    (describe action $A)
-
-(enumerate actions [$A | $More])
-    (describe action $A)
-    ,
-    (enumerate actions $More)
+    You could 
+    (listing $Actions { (describe action $_) } @or 0)
+    .
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
 %% "You could ..." every tick rules.
 (unlikely [discuss $Quip])
     (current quip $Current)
     ($Current is mid thread)
-    ~($Quip follows $Current)
+    ~($Quip continues from $Current)
 
 %% All dubious quips are unlikely actions; this again keeps
 %% them from being suggested.
@@ -478,7 +464,7 @@
     %% Record the quip as the current quip now, which ensures that the
     %% (immediately) predicate operates correctly.
     (record current quip $Quip)
-    (narrate discussing $Quip)
+    (comment $Quip)
     %% TODO: Maybe a predicate to allow reactions to the player's side of the quip
     (current player $Player)
     (make $Player recollect $Quip)
@@ -515,9 +501,6 @@
         (name $Quip)
     (endif)
  
-(narrate discussing $Quip)
-    (comment $Quip)
-
 %% When the player does anything but discuss a quip when there's a quip hanging
 %% properly, output the nag.
 (perform [$verb | $])
@@ -538,8 +521,8 @@
     (par)
 
 %% This is not currently used because the logic for changing "I don't understand" is hard to override.
-(when not a topic of conversation)
-    That doesn't seem to be a topic of conversation at the moment.
+%% (when not a topic of conversation)
+%%     That doesn't seem to be a topic of conversation at the moment.
  
 %%
 %% Utilities
@@ -547,35 +530,8 @@
 
 %% Some of these are not used and may go away
 
-(categorize list [$Element | $More] by $Predicate into $Matches and $NonMatches)
-    (if) (query $Predicate $Element) (then)
-        ($Matches = [$Element | $MoreMatches])
-        (categorize list $More by $Predicate into $MoreMatches and $NonMatches)
-    (else)
-        ($NonMatches = [$Element | $MoreNonMatches])
-        (categorize list $More by $Predicate into $Matches and $MoreNonMatches)
-    (endif)
-
-(categorize list [] by $ into $Matches and $NonMatches)
-    ($Matches = [])
-    ($NonMatches = [])
-
 (remove $Value from $List as $NewList)
     (collect $Term)
         *($Term is one of $List)
         ~($Term = $Value)
     (into $NewList)
-
-(drop leading $ from [] into $Output)
-    ($Output = [])
-
-(drop leading $Keywords from $List into $Output)
-    ([$Term | $More] = $List)
-    (if) ($Term is one of $Keywords)
-    (then)
-        (drop leading $Keywords from $More into $Output)
-    (else)
-        ($Output = $List)
-    (endif)
-
-    

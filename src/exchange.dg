@@ -127,7 +127,7 @@
 (questioning quip *)
 (name *)
     if all precautions have been made
-(* indirectly follows #all-in-good-time)
+(* follows #all-in-good-time)
 (comment *)
     "Fine, then. On to business," you begin, "have all proper precautions been taken?"
 (reply *)
@@ -137,7 +137,7 @@
 #safe-house
 (questioning quip *)
 (name *) whether the safe house is ready
-(* indirectly follows #precautions)
+(* follows #precautions)
 (comment *)
     "The safe house, is it ready?" you inquire.
 (reply *)
@@ -160,7 +160,7 @@
 #pass-phrase
 (questioning quip *)
 (name *) for the pass phrase
-(* indirectly follows #precautions)
+(* follows #precautions)
 (comment *)
     "I'm certainly not handing over something this valuable without the proper pass phrase," you announce.
 (reply *)
