@@ -133,7 +133,7 @@
 %% a potentially giant list. Ultimately, we may end up marking certain quips
 %% as notable and worthy of recollection, to optimize all this.
 
-($Actor recollects (quip $Quip))
+($Actor recollects $Quip)
     ($Quip is recollected by $Actors)
     ($Actor is one of $Actors)
 
@@ -385,8 +385,11 @@
 (perform [discuss $Quip with (conversation partner $)])
     (try [discuss $Quip])
 
-(perform [discuss $Quip with $Person])
-    (try [talk to $Person])  %% Maybe should be a before rule?
+(before [discuss $Quip with $NPC])
+    ~(conversation partner $NPC)
+    (try [talk to $NPC])
+
+(perform [discuss $Quip with $NPC])
     (try [discuss $Quip])
 
 %% This is the real discuss, where we knew the NPC before understanding the
@@ -503,7 +506,7 @@
  
 %% When the player does anything but discuss a quip when there's a quip hanging
 %% properly, output the nag.
-(perform [$verb | $])
+(instead of [$verb | $])
     ~($verb = @discuss)
     (current quip $Quip)
     %% You'll almost always want a nag to start with `(beat *)`.
