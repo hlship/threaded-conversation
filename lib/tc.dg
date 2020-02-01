@@ -61,6 +61,9 @@
 (off limits $) (fail)
 (dubious $) (fail)
 
+(action verb (questioning quip $)) ask
+(action verb (informative quip $)) say
+(action verb (performative quip $)) %% nothing
 
 %% (player directed $) vs. (npc-directed $)
 %% (beat opened $) vs. (speech opened $)
@@ -474,34 +477,18 @@
     (conversation partner $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
 
-(describe action [discuss (questioning quip $Quip)])
+(describe action [discuss $Quip])
     (if) (library links enabled) (then)
+        (collect words)
+            (action verb $Quip)
+        (into $Verb)
         (collect words)
             (name $Quip)
         (into $Words)
-        (link [ask | $Words]) { ask (name $Quip) }
+        (append $Verb $Word $LinkWords)
+        (link $LinkWords) { (action verb $Quip) (name $Quip) }
     (else)
-        ask (name $Quip)
-    (endif)
-
-(describe action [discuss (informative quip $Quip)])
-    (if) (library links enabled) (then)
-        (collect words)
-            (name $Quip)
-        (into $Words)
-        (link [say | $Words]) { say (name $Quip) }
-    (else)
-        say (name $Quip)
-    (endif)
-
-(describe action [discuss (performative quip $Quip)])
-    (if) (library links enabled) (then)
-        (collect words)
-            (name $Quip)
-        (into $Words)
-        (link $Words) { (name $Quip) }
-    (else)
-        (name $Quip)
+        (action verb $Quip) (name $Quip)
     (endif)
  
 %% When the player does anything but discuss a quip when there's a quip hanging

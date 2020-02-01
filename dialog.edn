@@ -1,3 +1,3 @@
 {:name "threaded-conversation-demo"
- :library-sources ["lib/threaded-conversation.dg"
+ :library-sources ["lib/*.dg"
                    "/usr/local/share/dialog-if/stdlib.dg"]}
