@@ -6,6 +6,8 @@ Added predicate `(action verb $Quip)`; the defaults are `ask`, `say`, and nothin
 For instance, sometimes the suggestion works better when the verb for an informative quip
 is `tell` instead.
 
+Added `(queue $Quip)` as a shorthand for queuing a quip for the current conversation partner.
+
 0.1 -- 28 Jan 2020
 
 A pre-release; still not ready for prime time.

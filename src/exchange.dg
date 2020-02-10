@@ -38,7 +38,7 @@
 (narrate greeting *)
     (select)
     "Malory" is all you say. We're taught to keep these exchanges brief.
-    (queue #have-you-got-it for *)
+    (queue #have-you-got-it)
     (or)
     You nod your head in his direction, and he takes half a step forward to listen.
     (stopping)

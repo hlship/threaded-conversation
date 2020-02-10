@@ -190,6 +190,13 @@
 (queue $Quip for $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
 
+%% Queue a quip for the current conversation partner, but
+%% do nothing if no partner.
+
+(queue $Quip)
+    (conversation partner $NPC)
+    (queue $Quip for $NPC)
+
 (queue $Quip for $NPC as $Precedence)
     %% I7 just queues the quips and sets a quip property to identify
     %% how it is queued. That just doesn't feel right.
