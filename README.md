@@ -11,7 +11,7 @@ This implementation borrows terminology and ideas from the original work, but is
 
 # Distribution
 
-Currently, just get a copy of `lib/threaded-conversation.dg` and add it to your workspace and
+Currently, just get a copy of `lib/tc.dg` and add it to your workspace and
 ensure it is loaded when building or debugging.
 
 # Status
@@ -78,11 +78,12 @@ You could ask where the barmaid comes from.
 ```
 
 You can see that threaded conversation starts by engaging an NPC in converation.
-During a conversation, TC suggests likely quips, which are actually a subset of available quips.
+During a conversation, TC suggests likely quips, which are a subset of available quips. 
+Likely quips are those that follow the current thread of conversation.
 
 You can see in the transcript that it's possible to `ask barmaid about rumors`, which engages the barmaid in conversation.
 The player makes the comment ("Where I come from ...") and the barmaid NPC replies ("Oh, do they? ...").
-The comment and reply is the called "discussing", and are implemented by the Dialog actions `[discuss $Quip]` and `[discuss $Quip with $NPC]`.
+The comment and reply is called "discussing", and are implemented by the Dialog actions `[discuss $Quip]` and `[discuss $Quip with $NPC]`.
 
 The style of TC is that the player's command is a bit general, but the comment and reply in the quip is more specific.
 
@@ -101,7 +102,7 @@ Quips come in four varieties, defined by traits:
 * `(demonstrative quip $)` - the player performs some bit of behavior ("curse the fates")
 * NPC-directed quips have no trait; these can be queued up and are output when the NPC has no immediate response
 
-Quips are usually limited to a particular NPC; the `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
+Quips are usually limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
 associated with a quip.  Otherwise (and this is rare), the quip is available to any NPC.
 
 The part that makes threaded conversation truly _threaded_, is that most quips aren't available at
@@ -114,7 +115,8 @@ There isn't really a concept of time, the NPC is happy to pick up the
 conversation thread as the next action, or at any time in the future.
 
 `($Quip directly follows $PrecedingQuip)` is more specific; the quip is only allowed immediately after
-the preceding quip; it's an aside that only makes sense before the conversation continues on. If some other quip is discussed, the quip will no longer be available for discussion.
+the preceding quip; it's an aside that only makes sense before the conversation continues on.
+If some other quip is discussed, the quip will no longer be available for discussion.
 
 By way of illustration, here's first couple of quips in the above exchange:
 
@@ -162,7 +164,7 @@ By way of illustration, here's first couple of quips in the above exchange:
 
 Like most Dialog objects, quips supply `(name $)` and `(dict $)`; the name is used when TC suggests quips, or during
 any kind of disambiguation.
-Quips names are always proper.
+Quip names are always proper.
 
 ## Mentioning
 
@@ -183,7 +185,7 @@ On every turn during a conversation, the player is presented with a list of quip
 This excludes unlikely quips -- by default, a quip is unlikely if it changes the thread of conversation away from
 the current quip.
 
-In addition, dubious quips (see below) and quips that the player recollects are never mentioned.
+In addition, dubious quips (see below) and quips that the player recollects are never suggested.
 
 ## Recollection
 
@@ -255,7 +257,7 @@ Dubious quips are never suggested to the player, but are still valid if the play
 
 A quip may include a nag, via the`(nag $)` predicate.
 On a turn in which the player is in a conversation but fails to discuss a quip with the NPC, then the
-nag is used to remind them to respond.
+nag is used to remind the player to respond.
 
 Generally, the nag should start with a query to `(beat $)` to break up the 
 stream of output.
