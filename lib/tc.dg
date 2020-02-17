@@ -3,28 +3,53 @@
 %% I7 refers to the baseline implementation in Inform7
 
 (extension version)
-    Threaded Conversation 0.0.1
-
+    Threaded Conversation 0.2
 
 %% There are three types of player-directed quips.
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
+(questioning quip $) (fail)
+(action verb (questioning quip $)) ask
+
+
 (quip $Quip)    *(informative quip $Quip)   %% say/tell
+(informative quip $) (fail)
+(action verb (informative quip $)) say
+
 (quip $Quip)    *(performative quip $Quip)  %% other
+(performative quip $) (fail)
+(action verb (performative quip $)) %% nothing
 
 %% NPC-directed quips (currently) are just objects.  Not even (quip $).
 %% They just have a (reply $) and other quips may follow them.
 
 %% (comment $) - PC's speech
+
+(comment $Quip)
+    ERROR: No comment was supplied for $Quip.
+    (fail)
+
 %% (reply $) -- NPC's reply
+
+(reply $Quip)
+    ERROR: No reply was supplied for $Quip.
+    (fail)
+
 %% (nag $) -- optional message, mostly used with restrictive quips
-%% (beat $) -- 
-%% (name $) -- name, e.g, "about Lily"
-%% (dict *) -- additional terms
+
+(nag $) (fail)
+
+%% A beat is used to break up quips and such. Excellent chance to provide
+%% some varied, quip-specific output.
+
+(beat $)
+    A moment passes.
+    (par)
 
 %% Quips are usually one time (per NPC) but can be repeatable instead.
 
 @(one-time $Quip)     ~(repeatable $Quip)
+(repeatable $Quip) (fail)
 
 %% Quips are usually available; a quip that is off limits is simply treated
 %% as if it does not exist. This is not the final word, as quips may be
@@ -32,6 +57,7 @@
 %% repeatablilty etc.
 
 @(available $Quip)   ~(off limits $Quip)
+(off limits $Quip) (fail)
 
 %% Most quips are unrestrictive (the player may change the subject).
 %% Restrictive quips enforce that the next player quip must directly follow
@@ -44,38 +70,28 @@
 %% all dubious quips are discarded if any plausible quips match.
 
 @(plausible $Quip)   ~(dubious $Quip)
+(dubious $Quip) (fail)
 
-%% Prevent warnings at startup:
+%% A quip may follow some other quip, and is allowed anytime after the
+%% the earlier quip has been discussed.
+($Quip follows $EarlierQuip) (fail)
 
-(repeatable $) (fail)
-($ directly follows $) (fail)
-(restrictive $) (fail)
-(questioning quip $) (fail)
-(informative quip $) (fail)
-(performative quip $) (fail)
-($ supplies $) (fail)
-($ follows $) (fail)
-(reply $) (fail)
-($ mentions $) (fail)
-(nag $) (fail)
-(off limits $) (fail)
-(dubious $) (fail)
+%% A quip that directly follows another quip is only valid when
+%% the prior quip is the current quip.
+($Quip directly follows $EarlierQuip) (fail)
 
-(action verb (questioning quip $)) ask
-(action verb (informative quip $)) say
-(action verb (performative quip $)) %% nothing
+%% Restrictive quips require a response; changes of subject are not allowed.
+%% Usually the response quips directly follow the restrictive quip.
+(restrictive $Quip) (fail)
 
-%% (player directed $) vs. (npc-directed $)
-%% (beat opened $) vs. (speech opened $)
-
-%% ($Quip follows $PriorQuip) -- valid any time after $PriorQuip
-%% ($Quip directly follows $PriorQuip) -- valid only immediately after $PriorQuip
-%% ($Quip supplies $Actor) -- only valid with $Actor as conversation partner
-%% A quip may supply multiple actors.  If it supplies none, then it is valid with any
-%% conversation partner.
-
+%% Quips may supply one (or more) NPC, or be universal (supplies anyone).
+($Quip supplies $NPC) (fail)
 @($Quip supplies anyone) ~($Quip supplies $)
-    %% I7 calls this "universally-applicable" vs. "character tailored"
+
+%% A quip may mention a topic; the topic is assumed to be known to all NPCs.
+%% The topic may be an object (which doesn't have to be in scope), or a Dialog topic
+%% (a dictionary word).
+($Quip mentions $Topic) (fail)
 
 %% Make sure the quip name is not prefixed with 'the' in disambiguation
 (proper (quip $))
@@ -87,7 +103,7 @@
 %% This are the quips available to the player, based on
 %% the conversation partner, rebuilt on every tick.
 
-(global variable (available quips $))
+(global variable (discussable quips $))
 
 %% The most recently quip for which the comment or reply has been discussed.
 
@@ -109,12 +125,6 @@
     (current quip $Current)
     (previous quip $Previous)
     ($Current follows $Previous)
-
-%% (global variable (grandparent quip $))
-
-%% quips are objects and related to other objects
-
-%% ($Quip mentions $Subject)
 
 %% Recollection of quips
 %% When the player's comment is printed, the player will recollect the quip
@@ -146,7 +156,7 @@
 
 @($Quip is dead ended)  ~($ continues from $Quip)
 
-@($Quip is mid thread)
+@($Quip is mid-thread)
     ~($Quip stands alone)
     ~($Quip is dead ended)
 
@@ -157,7 +167,7 @@
     { ($Quip directly follows $EarlierQuip) (or)
       ($Quip follows $EarlierQuip) }
 
-($Quip is valid for $NPC)
+($Quip is discussable with $NPC)
     (available $Quip)
     { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
     { ($Quip stands alone)
@@ -166,7 +176,7 @@
         (or) (current quip $CurrentQuip) %% Player *just* discussed it
              ($Quip directly follows $CurrentQuip)
     }
-    %% Watch out for on-time quips that this NPC has already performed
+    %% Watch out for one-time quips that this NPC has already performed
     { (repeatable $Quip) (or) ~($NPC recollects $Quip) }
     %% Guard against changing the subject during
     %% a restrictive quip
@@ -252,9 +262,11 @@
     (make $NPC recollect $Quip)
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
-    %% which will affect quip availability.
+    %% which will affect quip discussability.
 
-%% Here was allow NPCs to, perhaps, speak something from their queue
+%% Allow NPCs to, perhaps, speak something from their queue.
+%% TODO: Currently, this is limited to the conversation partner, but perhaps
+%% should be open to every in-scope NPC?
 (on every tick)
     (conversation partner $NPC)
     %% TODO: Perhaps alternate check for 'no current quip'?
@@ -266,38 +278,40 @@
 (change subject to $Quip)
     (now) (grandparent quip $Quip)
 
-%% Identifying available quips
+%% Identifying discussable quips
 %%
-%% As an optimization, at the start of each tick, the possible available quips
-%% (based on conversations partner, current quip, thread of converstation, etc.)
-%% is identified and stored in the (available quips $List) global.
+%% As an optimization, at the start of each tick, the possible discussable quips
+%% (based on conversation partner, current quip, thread of conversation, etc.)
+%% is identified and stored in the (discussable quips $List) global.
 %% Some of these quips may be dubious or represent a change of subject, in which case
 %% they are unlikely (but still possible), but only likely (e.g., continuations of
 %% the current thread) are ever suggested to the player.
 
-($NPC has available quips $Quips)
+($NPC has discussable quips $Quips)
+    %% Iterating over all quips may not scale well when there are hundreds;
+    %% filtering by NPC first may make sense. We'll see.
     (collect $Quip)
         *(quip $Quip)
-        ($Quip is valid for $NPC)
+        ($Quip is discussable with $NPC)
     (into $Quips)
 
 %% Identify which quips (even if dubious or unlikely) are available for the current NPC
 %% for the player to select.
 
 (on every tick)
-    (rebuild available quips)
+    (rebuild discussable quips)
 
-(rebuild available quips)
-    (now) (available quips [])
+(rebuild discussable quips)
+    (now) (discussable quips [])
     (conversation partner $NPC)
-    ($NPC has available quips $Quips)
-    (now) (available quips $Quips)
+    ($NPC has discussable quips $Quips)
+    (now) (discussable quips $Quips)
 
 %% Identify likely quips; nothing dubious and nothing unlikely (generally, switching out of the current thread).
 
 (on every tick)
-    (available quips $Quips)
-    ~(empty $Quips)
+    (discussable quips $Quips)
+    (nonempty $Quips)
     (current player $Player)
     (collect $Action)
         *($Quip is one of $Quips)
@@ -317,7 +331,7 @@
 %% "You could ..." every tick rules.
 (unlikely [discuss $Quip])
     (current quip $Current)
-    ($Current is mid thread)
+    ($Current is mid-thread)
     ~($Quip continues from $Current)
 
 %% All dubious quips are unlikely actions; this again keeps
@@ -358,34 +372,37 @@
 (rewrite [a/ask about/whether $Text] into [ask $Text])
 
 (understand [a/ask | $Text] as [discuss $Quip])
-    (conversation partner $Partner)
-    *(understand $Text as quip $Quip for $Partner)
+    (conversation partner $NPC)
+    *(understand $Text as quip $Quip for $NPC)
     (questioning quip $Quip)
 
 (understand [say/tell | $Text] as [discuss $Quip])
-    (conversation partner $Partner)
-    *(understand $Text as quip $Quip for $Partner)
+    (conversation partner $NPC)
+    *(understand $Text as quip $Quip for $NPC)
     (informative quip $Quip)
 
 %% Mostly, this is to support demonstrative quips, but it also works for the other two kinds.
 %% But if nothing matches, don't understand at all, to get to normal failure message.
 (understand $Text as [discuss $Quip])
-    (conversation partner $Partner)
-    *(understand $Text as quip $Quip for $Partner)
+    (conversation partner $NPC)
+    *(understand $Text as quip $Quip for $NPC)
 
 (understand $Text as quip $Quip for $Person)
     (filter $Text into $Filtered)
     (nonempty $Filtered)
     (if) (conversation partner $Person) (then)
-        %% If mid-conversation with someone, then the available quips were calculated
+        %% If mid-conversation with someone, then the discussable quips were calculated
         %% at the start of the tick.
-        (available quips $Quips)
+        (discussable quips $Quips)
     (else)
         %% This could get expensive to keep recalculating if several words each identify the same NPC
-        ($Person has available quips $Quips)
+        ($Person has discussable quips $Quips)
     (endif)    
     *(understand $Text as quip $Quip from $Quips)
 
+%% This disambiguates from "ask <topic>" from asking *about* the topic vs.
+%% the standard library "ask <person>" action. With out it you get disambiguation prompts
+%% like "do you want to ask wehther you may see the miniature, or ask the antique miniature something".
 (unlikely [ask/tell $Someone])
     ~(animate $Someone)
 
@@ -403,7 +420,7 @@
     (try [discuss $Quip])
 
 %% This is the real discuss, where we knew the NPC before understanding the
-%% command, so we know the quip is valid for that NPC.
+%% command, so we know the quip is discussable with that NPC.
 
 (perform [talk to $Person])
     (now) (conversation partner $Person)
@@ -465,9 +482,9 @@
     (conversation partner $)
 
 (unlikely [discuss $Quip])
-    (conversation partner $Partner)
+    (conversation partner $NPC)
     (repeatable $Quip)
-    ($Partner recollects $Quip)
+    ($NPC recollects $Quip)
 
 (prevent [discuss $Quip])
     ~(conversation partner $)
@@ -505,21 +522,13 @@
     (current quip $Quip)
     %% You'll almost always want a nag to start with `(beat *)`.
     %% An attempt to collect the output from nag and do the beat automatically
-    %% didn't work ... text came out all lower case, or each word capitalized.
+    %% didn't work ... text came out lower-case dictionary words.
+
+    %% If the nag is succesful, add paragraph break, then fail to continue normal
+    %% processing of the action.  Nags are always optional, but can add a lot of flavor.
     (nag $Quip)
     (par)
     (fail)
-
-%% A beat is used to break up quips and such. Excellent chance to provide
-%% some varied, quip-specific output.
-
-(beat $)
-    A moment passes.
-    (par)
-
-%% This is not currently used because the logic for changing "I don't understand" is hard to override.
-%% (when not a topic of conversation)
-%%     That doesn't seem to be a topic of conversation at the moment.
  
 %%
 %% Utilities
