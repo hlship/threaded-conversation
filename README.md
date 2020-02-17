@@ -177,7 +177,7 @@ Mentioning may also be used with Dialog topics.
 
 ## Conversation Partner
 
-The global variable `(conversation partner $)` stores the NPC currently conversing with.
+The global variable `(conversation partner $)` stores the NPC the player is currently conversing with.
 
 ## Suggestions
 
@@ -223,8 +223,8 @@ The `(immediately)` predicate will succeed when the quip is immediately chosen, 
 ## Controling availability
 
 The `(off limits $)` predicate can remove a quip from availability.
-This might be useful if a particular line of conversation only makes sense only if other conditions have been met:
-an object must be present, a fact must be known, and so forth.
+This might be useful if a particular line of conversation makes sense only if other conditions have been met:
+an object must be present, a fact must be known, or so forth.
 
 ```
 #what-watermelon-is-for
@@ -255,7 +255,7 @@ Dubious quips are never suggested to the player, but are still valid if the play
 
 ## Nag
 
-A quip may include a nag, via the`(nag $)` predicate.
+A quip may optionally include a nag, via the`(nag $)` predicate.
 On a turn in which the player is in a conversation but fails to discuss a quip with the NPC, then the
 nag is used to remind the player to respond.
 
@@ -315,7 +315,7 @@ from jumping out of the thread of conversation; they must respond with quip that
 
 When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
 involving quips will output links, not just text. 
-The link will perform the identified quip.
+The link will discuss the identified quip.
 
 ## Queueing quips (NPC driven)
 
