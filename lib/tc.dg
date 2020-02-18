@@ -66,18 +66,18 @@
 @(unrestrictive $Quip)   ~(restrictive $Quip)
 
 %% Quips are normally plausible, but dubious clips are allowed.
-%% You have to be specific to choose an dubious quip, normally
-%% all dubious quips are discarded if any plausible quips match.
+%% You have to be specific to choose an dubious quip, disambiguation
+%% normally ignores dubious quips if any plausible quips match the players command.
 
 @(plausible $Quip)   ~(dubious $Quip)
 (dubious $Quip) (fail)
 
-%% A quip may follow some other quip, and is allowed anytime after the
+%% A quip may follow some other quip, and is discussable anytime after the
 %% the earlier quip has been discussed.
 ($Quip follows $EarlierQuip) (fail)
 
-%% A quip that directly follows another quip is only valid when
-%% the prior quip is the current quip.
+%% A quip that directly follows an earlier quip is only discussable when
+%% the earlier quip is  still the current quip.
 ($Quip directly follows $EarlierQuip) (fail)
 
 %% Restrictive quips require a response; changes of subject are not allowed.
@@ -114,7 +114,7 @@
 
 (global variable (previous quip $))
 
-%% Set when the discussed quip represents a change in subject
+%% Grandparent quip is considered the "entry point" of a thread of conversation.
 
 (global variable (grandparent quip $))
 
@@ -152,25 +152,27 @@
 
 %% Rules for quips, threads, availablility, etc.
 
-@($Quip stands alone)   ~($Quip continues from $)
+($Quip starts new thread)
+    ~($Quip continues from $)
 
-@($Quip is dead ended)  ~($ continues from $Quip)
+($Quip is dead-ended)
+    ~($ continues from $Quip)
 
 @($Quip is mid-thread)
-    ~($Quip stands alone)
-    ~($Quip is dead ended)
+    ~($Quip starts new thread)
+    ~($Quip is dead-ended)
 
 %% I7 makes all directly follows also follows, but
 %% don't think that is necessary.
 
 ($Quip continues from $EarlierQuip)
-    { ($Quip directly follows $EarlierQuip) (or)
-      ($Quip follows $EarlierQuip) }
+    { *($Quip directly follows $EarlierQuip) (or)
+      *($Quip follows $EarlierQuip) }
 
 ($Quip is discussable with $NPC)
     (available $Quip)
     { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
-    { ($Quip stands alone)
+    { ($Quip starts new thread)
         (or) *($Quip follows $EarlierQuip)
              ($NPC recollects $EarlierQuip)
         (or) (current quip $CurrentQuip) %% Player *just* discussed it
@@ -181,13 +183,14 @@
     %% Guard against changing the subject during
     %% a restrictive quip
     (if) (current quip $CurrentQuip)
-         (restrictive $CurrentQuip)
-    (then) ($Quip directly follows $CurrentQuip)
+         (restrictive $CurrentQuip) 
+    (then) ($Quip continues from $CurrentQuip)
     (endif)
 
 %% Queuing of quips
-%% The player talks, and a response is queued for the next tick
-%% Sometimes, as a side effect of other quips (or other actions)
+%% The quip comments (the player side) is output when discussing,
+%% and the quip is queued for the next tick to output the quip's reply (the NPC's side).
+%% Sometimes, as a side effect of the quip comment, or some other actions,
 %% additional NPC-directed quips are queued as well.
 
 %% Queue a quip for the NPC at precendence
@@ -237,6 +240,10 @@
     %% just before the NCPs reply.  Have to check that we don't overdo it.
     (if) ~(current quip $Quip) 
     (then)
+        (if) (previous quip $Grandparent)
+        (then)
+            (now) (grandparent quip $Grandparent)
+        (endif)
         (if) (current quip $Previous)
         (then)
             (now) (previous quip $Previous)
@@ -271,12 +278,9 @@
     (conversation partner $NPC)
     %% TODO: Perhaps alternate check for 'no current quip'?
     (current quip $Quip)
-    ($Quip is dead ended)
+    ($Quip is dead-ended)
     %% TODO: I7's "avoid talking heads activity"
     (perform queued quip for $NPC)
-
-(change subject to $Quip)
-    (now) (grandparent quip $Quip)
 
 %% Identifying discussable quips
 %%
@@ -332,7 +336,27 @@
 (unlikely [discuss $Quip])
     (current quip $Current)
     ($Current is mid-thread)
-    ~($Quip continues from $Current)
+    ~($Quip is relevant to current thread)
+
+($Quip is relevant to current thread)
+    {
+        (current quip $Current)
+        ($Quip continues from $Current)
+    }
+    (or)
+    {
+        (previous quip $Previous)
+        ($Quip continues from $Previous)
+    }
+    (or)
+    {  
+        (grandparent quip $Grandparent)
+        ($Quip continues from $Grandparent)
+        (current quip $Current)
+        ($Current continues from $Grandparent)
+        (previous quip $Previous)
+        ($Previous continues from $Grandparent)
+    }
 
 %% All dubious quips are unlikely actions; this again keeps
 %% them from being suggested.
@@ -530,6 +554,113 @@
     (par)
     (fail)
  
+%%
+%% Debugging tools
+%%
+
+(conversation status)
+    ~(conversation partner $)
+    (log) { No conversation partner. }
+
+(conversation status)
+    (conversation partner $NPC)
+    Conversation partner: $NPC (space) -- (space) (the $NPC)
+    (if)
+        ($NPC has conversation queue $Queue)
+        (nonempty $Queue)
+    (then)
+        (line) Queue:
+        (comma separated list $Queue)
+        (line)
+    (endif)
+    (line)
+    Quips:
+    (line) (space 2) Current: { (current quip $Current) $Current (or) <unset> }
+    (line) (space 2) Previous: { (previous quip $Prev) $Prev (or) <unset> }
+    (line) (space 2) Grandparent: { (grandparent quip $Grand) $Grand (or) <unset> }
+    (par)
+    (discussable quips $Quips)
+    (nonempty $Quips)
+    (par)
+    Discussable quips:
+    (exhaust) {
+        *($Quip is one of $Quips)
+        (line)
+        (space 2) 
+        $Quip
+        (describe [
+            { (conversation partner $NPC)
+              ($NPC recollects $Quip) recollected }
+            { (repeatable $Quip) repeatable }
+            { (restrictive $Quip) restrictive }
+            { ($Quip starts new thread) starts new thread }
+            { ($Quip is dead-ended) dead-ended }
+            { (dubious $Quip) dubious }
+            { ($Quip is relevant to current thread) relevant }
+        ])
+        (collect $Earlier)
+            *($Quip continues from $Earlier)
+        (into $Continues)
+        (if) (nonempty $Continues)
+        (then)
+            (line) (space 4)
+            Continues:
+            (comma separated list $Continues )
+        (endif)
+        (collect $Later)
+            *($Later continues from $Quip)
+        (into $Followers)
+        (if) (nonempty $Followers)
+        (then)
+            (line) (space 4)
+            Followers:
+            (comma separated list $Followers)
+        (endif)
+    }
+
+
+%% Debbuging output utility.  Invokes a series of closures, which may succeed or fail, but should
+%% produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
+%% or outputs nothing at all if all closures fail.
+%% NOTE: Inefficient; invokes succesful closures a second time.
+
+(describe $Closures)
+    (describe $Closures 1)
+
+%% Impl for (describe $List)
+
+(describe [$Closure | $More] $First)
+    (collect words) (query $Closure) (into $Words)
+    (if) (empty $Words)
+    (then)
+        (describe $More $First)
+    (else)
+        (if) ($First = 1)
+        (then) \(
+        (else) ,
+        (endif)
+        (query $Closure)
+        (describe $More 0)
+    (endif)
+
+(describe [] 0)
+    \)
+
+(describe [] $)
+
+(comma separated list $List)
+    (comma separated list $List { $_ })
+
+(comma separated list $List $Closure)
+    (comma separated list $List $Closure 0)
+
+(comma separated list [] $ $)
+
+(comma separated list [$First | $More] $Closure $Comma)
+    (if) ($Comma = 1) (then) , (endif)
+    { (query $Closure $First) (or) }
+    (comma separated list $More $Closure 1)
+
 %%
 %% Utilities
 %%

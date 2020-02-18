@@ -278,7 +278,8 @@ Generally, the player is free to choose new quips at any time; however, at certa
 conversation, the player must respond.
 
 The `(restrictive $)` trait prevents the player
-from jumping out of the thread of conversation; they must respond with quip that _directly follows_ the current quip.
+from jumping out of the thread of conversation; they must respond with quip that continues
+from the current quip (directly or normally).
 
 ```
 #request-help
