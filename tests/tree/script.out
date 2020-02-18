@@ -42,10 +42,10 @@ Quips:
   Grandparent: #animal
 
 Discussable quips:
-  #animal (recollected, repeatable, starts new thread)
+  #animal (recollected, repeatable, changes the subject)
     Followers: #vertebrate, #invertebrate
-  #vegetable (repeatable, starts new thread)
-  #mineral (repeatable, starts new thread)
+  #vegetable (repeatable, changes the subject)
+  #mineral (repeatable, changes the subject)
     Followers: #metal, #stone
   #invertebrate
     Follows: #animal

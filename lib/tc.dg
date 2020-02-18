@@ -155,14 +155,14 @@
 
 %% Rules for quips, threads, availablility, etc.
 
-($Quip starts new thread)
+($Quip changes the subject)
     ~($Quip continues from $)
 
 ($Quip is dead-ended)
     ~($ continues from $Quip)
 
 @($Quip is mid-thread)
-    ~($Quip starts new thread)
+    ~($Quip changes the subject)
     ~($Quip is dead-ended)
 
 %% I7 makes all directly follows also follows, but
@@ -175,7 +175,7 @@
 ($Quip is discussable with $NPC)
     (available $Quip)
     ($NPC can discuss $Quip)
-    { ($Quip starts new thread)
+    { ($Quip changes the subject)
         (or) *($Quip follows $EarlierQuip)
              ($NPC recollects $EarlierQuip)
         (or) (current quip $CurrentQuip) %% Player *just* discussed it
@@ -619,7 +619,7 @@
               ($NPC recollects $Quip) recollected }
             { (repeatable $Quip) repeatable }
             { (restrictive $Quip) restrictive }
-            { ($Quip starts new thread) starts new thread }
+            { ($Quip changes the subject) changes the subject }
             { (dubious $Quip) dubious }
             { ($Quip is relevant to current thread) relevant }
         ])

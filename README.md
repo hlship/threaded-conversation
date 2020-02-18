@@ -11,15 +11,22 @@ This implementation borrows terminology and ideas from the original work, but is
 
 # Distribution
 
-Currently, just get a copy of `lib/tc.dg` and add it to your workspace and
-ensure it is loaded when building or debugging.
+When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your `:library-sources` key:
+
+```
+  {:github "hlship/threaded-conversation" 
+   :version "v0.2"
+   :path "lib/tc.dg"}
+```
+
+... or just copy `lib/tc.dg` from this respository into your workspace.
 
 # Status
 
-Early days yet, but showing some progress.
+Early days yet, but showing good progress.
 
-Basic conversations are working reasonably well, but queued quips are quite limited and only barely
-implemented.
+Basic conversations are working reasonably well, and we have the basics of queued quips working well, but there's
+quite a bit that could be improved, including nags, quip suggestions, and change-of-subject logic.
 
 # Using Threaded Conversation
 
@@ -320,9 +327,76 @@ The link will discuss the identified quip.
 
 ## Queueing quips (NPC driven)
 
-Not really implemented yet.  Details forthcoming.
+In order to make NPCs appear more active, it is possible to queue quips for them.
 
-> More documentation to come ...
+In fact, all quips are queued; when the player discusses a quip, the quip's `(comment $)` is printed and
+the quip is queued for the NPC.
+On the following tick, the queued quip's `(reply $)` is printed.
+In addition, if there's any further quips queued for the NPC, then the next queued quip will also have its
+reply printed.
+Queued quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
+
+Quips may be queued in one of four ways:
+
+- `#immediate-obligatory` - the reply to the player's comment
+- `#postponed-obligatory` - an important quip that will eventually be discussed, even if the player changes subjects
+- `#postponed-optional` - a casual quip (often, adding color) that will be discarded if the player changes subjects
+- `#immediate-optional` - a casual quip that will be discarded if the player discusses any quip
+
+The algorithm for determining when the player changes subjects is a bit tricky; eseentially, the last few quips are
+tracked (as global variables `(current quip $)`, `(previous quip $)` and `(grandfather quip $)`).
+When the player discusses a quip that doesn't follow the grandfather quip, that is a change of subject; optional queued quips
+are discarded, and the quip becomes the new grandfather quip.
+
+> This approach is based as closely as possible on the Inform7 library, and is probably not quite right!
+
+There are a number of predicates for queuing quips:
+
+`(queue $Quip for $NPC)` queues the quip as #immediate-obligatory.
+
+`(queue $Quip)` queues the quip, for the current conversation partner, as `#immediate-obligatory`.
+
+`(casually queue $Quip)` queues the qup for the current conversation partner, as `#postponed-optional`, if the following holds:
+- The current quip is not restrictive
+- The conversation partner can discuss the quip (the quip supplies the NPC, or is universally applicable)
+- The conversation partner does not recollect the quip
+
+`(queue $Quip for $NPC as $Precedence)` is the predicate for actually queueing a quip.
+
+## (conversation status)
+
+From the debugger, querying `(conversation status)` provides a detailed view of the data TC uses to make decisions:
+
+```
+You could ask about primates or ask about fish.
+
+> (conversation status)
+Conversation partner: #tree -- the tree of knowledge
+Quips:
+  Current: #mammal
+  Previous: #vertebrate
+  Grandparent: #animal
+
+Discussable quips:
+  #animal (recollected, repeatable, changes the subject)
+    Followers: #vertebrate, #invertebrate
+  #vegetable (repeatable, changes the subject)
+  #mineral (repeatable, changes the subject)
+    Followers: #metal, #stone
+  #invertebrate
+    Follows: #animal
+  #primate (relevant)
+    Follows: #mammal
+  #fish (relevant)
+    Follows: #vertebrate
+Query succeeded: (conversation status)
+```
+
+Quips annotated as `changes the subject` are those that are considered a change in subject, and will affect queued quips for the conversation partner.
+Quips annotated as `relevant` are considered part of the current thread (and are the quips generally suggested
+to the player).
+
+When the conversation partner has queued quips, those are also identified.
 
 # License
 
