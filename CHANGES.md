@@ -1,3 +1,11 @@
+0.3 -- UNRELEASED
+
+Added`(reset conversation partner)` predicate to clean up the current conversation.
+
+Dubious quips are now very unlikely, not simply unlikely.
+
+Added `(prevent talking heads for $Quip)`.
+
 0.2 -- 17 Feb 2020
 
 Renamed the file to `tc.dg`.

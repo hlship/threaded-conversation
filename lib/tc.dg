@@ -286,7 +286,8 @@
     (perform queued quip for $NPC)
     (current quip $Quip)
     %% If the current quip (either the NPC reply, or a queued NPC quip) is dead ended and
-    %% the NPC has another quip ready to go, then output its reply now. A beat will be inserted.
+    %% the NPC has another quip ready to go, then output its reply now.
+    %% TODO: Is dead ended enough?  What if there are valid, but dubious quips?
     ($Quip is dead-ended)
     (perform queued quip for $NPC)
 
@@ -295,7 +296,7 @@
     (par)
     %% If found (and removed from queue) print the reply now
     (if) ($NPC has spoken this tick)
-    (then) (beat $Quip)
+    (then) (avoid talking heads for $Quip)
     (endif)
     (record current quip $Quip)
     (reply $Quip)
@@ -307,15 +308,21 @@
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip discussability.
 
+%% The default for breaking apart two quip replies from the NPC's queue.
+(avoid talking heads for $Quip)
+    (beat $Quip)
+
 %% Identifying discussable quips
 %%
 %% As an optimization, at the start of each tick, the possible discussable quips
 %% (based on conversation partner, current quip, thread of conversation, etc.)
 %% is identified and stored in the (discussable quips $List) global.
 %% Some of these quips may be dubious or represent a change of subject, in which case
-%% they are unlikely (but still possible), but only likely (e.g., continuations of
-%% the current thread) are ever suggested to the player.
+%% they are unlikely (but still possible), but only likely quips, continuations of
+%% the current thread, are ever suggested to the player.
 
+%% Identify which quips (even if dubious or unlikely) are available for the current NPC
+%% for the player to select.
 ($NPC has discussable quips $Quips)
     %% Iterating over all quips may not scale well when there are hundreds;
     %% filtering by NPC first may make sense. We'll see.
@@ -323,9 +330,6 @@
         *(quip $Quip)
         ($Quip is discussable with $NPC)
     (into $Quips)
-
-%% Identify which quips (even if dubious or unlikely) are available for the current NPC
-%% for the player to select.
 
 (on every tick)
     (rebuild discussable quips)
@@ -344,11 +348,13 @@
     (current player $Player)
     (collect $Action)
         *($Quip is one of $Quips)
+        (plausible $Quip)
         %% Never suggest to the player a quip they've already discussed (even with another NPC).
         ~($Player recollects $Quip)
         ($Action = [discuss $Quip])
-        %% Only interested in likely actions -- this excludes quips that are dubious, or change the current thread (if any).
+        %% Only interested in likely actions -- this excludes quips change the current thread (if any)/
         ~(unlikely $Action)
+        ~(very unlikely $Action)
     (into $Actions)
     (nonempty $Actions)
     (par)
@@ -383,10 +389,10 @@
         ($Previous continues from $Grandparent)
     }
 
-%% All dubious quips are unlikely actions; this again keeps
+%% All dubious quips are very unlikely actions; this again keeps
 %% them from being suggested.
 
-(unlikely [discuss $Quip])
+(very unlikely [discuss $Quip])
     (dubious $Quip)
  
 %% Repeatable quips can be returned to, but are unlikely, so they are never
@@ -537,14 +543,13 @@
 
 (prevent [discuss $Quip])
     ~(conversation partner $)
-    We're not talking to anyone right now.
+    You're not talking to anyone right now.
 
 (perform [discuss $Quip])
     %% Record the quip as the current quip now, which ensures that the
     %% (immediately) predicate operates correctly.
     (record current quip $Quip)
     (comment $Quip)
-    %% TODO: Maybe a predicate to allow reactions to the player's side of the quip
     (current player $Player)
     (make $Player recollect $Quip)
     (conversation partner $NPC)
@@ -580,6 +585,14 @@
     (par)
     (fail)
  
+%% CLears the conversation partner and deletes most queued content
+(reset conversation partner)
+    (if) (conversation partner $NPC)
+    (then)
+        (purge optional conversation for $NPC)
+        (now) ~(conversation partner $)
+    (endif)
+
 %%
 %% Debugging tools
 %%

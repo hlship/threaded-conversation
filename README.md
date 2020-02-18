@@ -110,10 +110,13 @@ Quips come in four varieties, defined by traits:
 * NPC-directed quips have no trait; these can be queued up and are output when the NPC has no immediate response
 
 Quips are usually limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
-associated with a quip.  Otherwise (and this is rare), the quip is available to any NPC.
+associated with a quip.  Otherwise, the quip is available to any NPC.
 
 The part that makes threaded conversation truly _threaded_, is that most quips aren't available at
 the start of the conversation; they are structured to follow after some prior quip.
+
+Frequently, you only need to mark quips that represent a change in subject as supplying an NPC; since only
+that NPC can access the initial quip, only that NPC will have access to any subsequent quips in the thread.
 
 ## Quip Ordering
 
@@ -152,7 +155,7 @@ By way of illustration, here's first couple of quips in the above exchange:
     and ten."
 
 #garrick
-(animate *)
+(male *)
 (name *) old Garrick
 (dict *) codger
 
@@ -237,7 +240,7 @@ an object must be present, a fact must be known, or so forth.
 #what-watermelon-is-for
 (questioning quip *)
 (name *) what the watermelon is for
-(* mentions #watermellon)
+(* mentions #watermelon)
 (comment *)
     "Hey," you ask, "what's that watermelon for?"
 (reply *)
@@ -258,9 +261,33 @@ A quip may be dubious; such quips are not suggested normally.
     ~(player can see #gnawed-shin-bone)
 ```
 
-Dubious quips are never suggested to the player, but are still valid if the player stumbles upon them.  Here, we can accuse Hannigan of cannibalism at any time, but it won't be suggested to the player until some evidence is at hand.
+Dubious quips are never suggested to the player, but are still valid if the player stumbles upon them.
+Whereas quips that are not relevant to the conversation thread are unlikely, dubious quips are very unlikely.
 
-## Nag
+
+Here, we can accuse Hannigan of cannibalism at any time, but it won't be suggested to the player until some evidence is at hand.
+
+## The Beat
+
+When an NPC has queued quips, a beat, `(beat $Quip)`. is used to break up the reply to the player's comment, from the 
+comment of the queued quip.
+By default, a beat simply outputs `A moment passes.` and a paragraph break.
+
+```
+(beat $)
+    (conversation partner #doctor-who)
+    The Doctor pulls his sonic screwdriver from a pocket of his jacket, and waves it about for a moment.
+    He seems
+    (select)
+        satisified (or) confused (or) alarmed (or) irritated
+    (at random)
+    with its readings, then replaces it in his jacket.
+    (par)
+```
+
+Providing a beat is a good chance to inject some character into the conversation.
+
+## The Nag
 
 A quip may optionally include a nag, via the`(nag $)` predicate.
 On a turn in which the player is in a conversation but fails to discuss a quip with the NPC, then the
@@ -268,16 +295,6 @@ nag is used to remind the player to respond.
 
 Generally, the nag should start with a query to `(beat $)` to break up the 
 stream of output.
-
-> This feature is likely insufficiently implemented.
-
-## The Beat
-
-When an NPC has queued quips, a beat is used to break up the reply to the player's comment, from the 
-comment of the queued quip.
-By default, a beat simply outputs `A moment passes.` and a paragraph break.
-
-Providing a beat is a good chance to inject some character into the conversation.
 
 # Restrictive Quips
 
@@ -318,23 +335,38 @@ from the current quip (directly or normally).
     "Thou must!"
 ```
 
-
-## Library Links
-
-When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
-involving quips will output links, not just text. 
-The link will discuss the identified quip.
-
 ## Queueing quips (NPC driven)
 
 In order to make NPCs appear more active, it is possible to queue quips for them.
+This is an opportunity to give the NPCs more agency, and the conversation more flavor.
+
+For example, 
+
+```
+#about-weather
+(questionion quip *)
+(* supplies #hook)
+(name *) about the weather
+(comment *)
+    "Are those dark clouds on the horizon headed this way?" you ask the pirate.
+(reply *)
+	"The weather is fine," says Captain Hook.
+    (queue #picnic-proposal)
+```
+
 
 In fact, all quips are queued; when the player discusses a quip, the quip's `(comment $)` is printed and
 the quip is queued for the NPC.
 On the following tick, the queued quip's `(reply $)` is printed.
-In addition, if there's any further quips queued for the NPC, then the next queued quip will also have its
-reply printed.
 Queued quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
+
+On each tick, the first quip queued for the NPC will output its reply.
+This quip then becomes the current quip (if it wasn't already).  In most cases, the current quip is the quip
+the player just discussed in the previous tick, and this is the chance for the NPCs reply to be output.
+
+If the current quip is dead ended (no further quips follow it directly or indirectly) and there's any additional
+queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply it output (and the
+quip becomes the current quip).
 
 Quips may be queued in one of four ways:
 
@@ -362,6 +394,50 @@ There are a number of predicates for queuing quips:
 - The conversation partner does not recollect the quip
 
 `(queue $Quip for $NPC as $Precedence)` is the predicate for actually queueing a quip.
+
+## Avoiding Talking Heads
+
+Reading a series of plain alternating quotations can quickly become dull. An effective way to break up such monotony is to insert a short description, to describe a minor action, or even to convey important non-verbal information, either between two parts of an exchange or in the middle of one character's monologue. 
+
+When TC prints the reply for a second quip in the same tick, it queries the predicate `(avoid talking heads for $Quip)`
+with the second quip, before outputting the quip's reply.
+This is used to create a bridge between the two quips so they don't run together.
+
+The default implementation is just `(beat $Quip)`.
+
+A quip can override this, to provide a custom bridge; often this is some randomly generated output related to the NPC discussing the quip.
+
+For example:
+
+```
+(avoid talking heads for $)
+    (conversation partner #barmaid)
+    The bar maid pauses for a moment, 
+    (select)
+        scrubbing at a particularly stubborn stain on the table
+    (or)
+        sweeping a few crumbs into the hem of her skirt
+    (or)
+        leaning wearily on the table to take a deep breath
+    (at random)
+    , before continuing.
+```
+
+## (reset conversation partner)
+
+Conversations have some physical dynamics that TC doesn't attempt to address: primarily, what happens if
+either the player or the NPC wanders away?
+
+TC will allow the conversation to continue regardless, which effectively
+ breaks the simulation.
+You are expected to allow for this with rules that prevent the player from leaving during a conversation, or alternately,
+to query `(reset conversation partner)` to abruptly end the conversation because one or the other party is no longer present.
+Different approaches may be appropriate at different times in your story.
+
+`(reset conversation partner)` succeeds, but does nothing, if there is no conversation partner.
+
+Query the global variable `(conversation partner $NPC)` to identify who the player is conversing with; the query will fail
+if there is no current conversation partner.
 
 ## (conversation status)
 
@@ -397,6 +473,22 @@ Quips annotated as `relevant` are considered part of the current thread (and are
 to the player).
 
 When the conversation partner has queued quips, those are also identified.
+
+## Library Links
+
+When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
+involving quips will output links, not just text. 
+The link will discuss the identified quip.
+
+# TODO
+
+- A `change the subject` command that identifies non-relevant quips (or even just quips that change the subject).
+- Find a way to handle "expressing ignorance" (when you ask an NPC about an unknown word or phrase)
+- Startups checks similar to Inform7 (prevent unexpected loops, etc.)
+- Optimizations (that may only be needed in full size games)
+- Tune the logic for in-thread vs. out-of-thread
+- Multi-way conversation (e.g., other present NPCs may have queued quips)
+- `(queue $Quip last for $NPC as $Precedence)`
 
 # License
 
