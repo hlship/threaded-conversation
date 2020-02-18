@@ -1,0 +1,87 @@
+
+
+Altar of the Tree of Knowledge
+You have reached the altar of the Tree of Knowlege. The tree's branches rise up,
+out of the deep ravine, towards the light; its roots have worked their way into
+the living rock, and entagle the great stone altar.
+
+> talk to tree
+The voice of the tree eminates from all around. "You may ask about things
+animal, vegetable, or mineral."
+
+You could ask about animals, ask about plants, or ask about minerals.
+
+>  animal
+You ask about animals.
+
+Are you interested in vertebrates or invertebrates?
+
+You could ask about plants, ask about minerals, ask about vertebrates, or ask
+about invertebrates.
+
+> vertebrates
+What are vertebrates?
+
+Animals with backbones are vertebrates, such as mammals, fish, and lizards.
+
+You could ask about invertebrates, ask about mammals, or ask about fish.
+
+> mammals
+What are mammals?
+
+Mammals are warm blooded, bear their young alive, and produce milk. Primates
+like you are mammals.
+
+You could ask about primates or ask about fish.
+
+> (conversation status)
+Conversation partner: #tree -- the tree of knowledge
+Quips:
+  Current: #mammal
+  Previous: #vertebrate
+  Grandparent: #animal
+
+Discussable quips:
+  #animal (recollected, repeatable, starts new thread)
+    Followers: #vertebrate, #invertebrate
+  #vegetable (repeatable, starts new thread, dead-ended)
+  #mineral (repeatable, starts new thread)
+    Followers: #metal, #stone
+  #invertebrate (dead-ended)
+    Continues: #animal
+  #primate (dead-ended, relevant)
+    Continues: #mammal
+  #fish (dead-ended, relevant)
+    Continues: #vertebrate
+Query succeeded: (conversation status)
+> primates
+What's a primate?
+
+Larger brains, opposable thumbs. An interesting experiment you could say.
+
+A moment passes.
+
+You are a primate. Rather less well adapted than a chimp or a great ape, I
+believe.
+
+You could ask about plants, ask about minerals, ask about invertebrates, or ask
+about fish.
+
+> minerals
+What are minerals?
+
+Minerals are non-living elements, many of which are building blocks of life.
+Metals, stone, and crystals are types of minerals.
+
+You could ask about plants, ask about invertebrates, ask about fish, ask about
+metals, or ask about stone.
+
+> animals
+You ask about animals.
+
+Are you interested in vertebrates or invertebrates?
+
+You could ask about plants, ask about invertebrates, ask about fish, ask about
+metals, or ask about stone.
+
+> 

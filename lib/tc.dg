@@ -88,6 +88,9 @@
 ($Quip supplies $NPC) (fail)
 @($Quip supplies anyone) ~($Quip supplies $)
 
+($NPC can discuss $Quip)
+    ($Quip supplies anyone) (or) ($Quip supplies $NPC)
+
 %% A quip may mention a topic; the topic is assumed to be known to all NPCs.
 %% The topic may be an object (which doesn't have to be in scope), or a Dialog topic
 %% (a dictionary word).
@@ -171,7 +174,7 @@
 
 ($Quip is discussable with $NPC)
     (available $Quip)
-    { ($Quip supplies anyone) (or) ($Quip supplies $NPC) }
+    ($NPC can discuss $Quip)
     { ($Quip starts new thread)
         (or) *($Quip follows $EarlierQuip)
              ($NPC recollects $EarlierQuip)
@@ -205,10 +208,20 @@
 
 %% Queue a quip for the current conversation partner, but
 %% do nothing if no partner.
-
 (queue $Quip)
     (conversation partner $NPC)
     (queue $Quip for $NPC)
+
+%% Queues a quip for the current NPC as #postponed-optional, but
+%% only if the NPC doesn't already recollect the quip, the quip applies to the NPC, and also only
+%% if the current quip is not restrictive.
+(casually queue $Quip)
+    (current quip $Current)
+    (unrestrictive $Current)
+    (conversation partner $NPC)
+    ($NPC can discuss $Quip)
+    ~($NPC recollects $Quip)
+    (queue $Quip for $NPC as #postponed-optional)
 
 (queue $Quip for $NPC as $Precedence)
     %% I7 just queues the quips and sets a quip property to identify
@@ -224,25 +237,37 @@
     (remove $Tuple from $Queue as $NewQueue)
     (now) ($NPC has conversation queue $NewQueue)
 
-(purge conversation queue for $NPC)
-    (now) ~($NPC has conversation queue)
+(purge $Precedence from conversation queue for $NPC)
+    (if)
+        ($NPC has conversation queue $OldQueue)
+        (nonempty $OldQueue)
+    (then)
+        (collect $Tuple)
+            *($Tuple is one of $OldQueue)
+            ~($Tuple = [$Precedence $])
+        (into $NewQueue)
+        (now) ($NPC has conversation queue $NewQueue)
+    (endif)
 
-(purge $Precendence from conversation queue for $NPC)
-    ($NPC has conversation queue $OldQueue)
-    (collect $Tuple)
-        ($Tuple is one of $OldQueue)
-        ~($Tuple = [$Precedence $])
-    (into $NewQueue)
-    (now) ($NPC has conversation queue $NewQueue)
+(purge optional conversation for $NPC)
+    (purge #postponed-optional from conversation queue for $NPC)
+    (purge #immediate-optional from conversation queue for $NPC)
 
 (record current quip $Quip)
     %% This gets called just before the player's comment, then again
     %% just before the NCPs reply.  Have to check that we don't overdo it.
     (if) ~(current quip $Quip) 
     (then)
-        (if) (previous quip $Grandparent)
+        (if) ~($Quip is relevant to current thread)
         (then)
-            (now) (grandparent quip $Grandparent)
+            (conversation partner $NPC)
+            (purge optional conversation for $NPC)
+            (now) (grandparent quip $Quip)
+        (else)
+            (if) (previous quip $Grandparent)
+            (then)
+                (now) (grandparent quip $Grandparent)
+            (endif)
         (endif)
         (if) (current quip $Previous)
         (then)
@@ -255,32 +280,32 @@
 (on every tick)
     %% TODO: Could be multiple NPCs ready to chat!
     (conversation partner $NPC)
+    (now) ~($NPC has spoken this tick)
+    %% After a player comment, the first queued quip will be the NPC reply.
+    %% If the player didn't comment but there was a queued quip, its reply occurs now.
+    (perform queued quip for $NPC)
+    (current quip $Quip)
+    %% If the current quip (either the NPC reply, or a queued NPC quip) is dead ended and
+    %% the NPC has another quip ready to go, then output its reply now. A beat will be inserted.
+    ($Quip is dead-ended)
     (perform queued quip for $NPC)
 
 (perform queued quip for $NPC)
     (extract next quip for $NPC as $Quip)
-    %% If found (and removed from queue) print the reply now
-    %% TODO: Lots of logic from I7 about paragraph breaks, no talking heads, etc.
     (par)
+    %% If found (and removed from queue) print the reply now
+    (if) ($NPC has spoken this tick)
+    (then) (beat $Quip)
+    (endif)
     (record current quip $Quip)
     (reply $Quip)
+    (now) ($NPC has spoken this tick)
     %% The player recollects it on the prior tick; the NPC
     %% recollects after the reply is produced.
     (make $NPC recollect $Quip)
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip discussability.
-
-%% Allow NPCs to, perhaps, speak something from their queue.
-%% TODO: Currently, this is limited to the conversation partner, but perhaps
-%% should be open to every in-scope NPC?
-(on every tick)
-    (conversation partner $NPC)
-    %% TODO: Perhaps alternate check for 'no current quip'?
-    (current quip $Quip)
-    ($Quip is dead-ended)
-    %% TODO: I7's "avoid talking heads activity"
-    (perform queued quip for $NPC)
 
 %% Identifying discussable quips
 %%
@@ -319,7 +344,7 @@
     (current player $Player)
     (collect $Action)
         *($Quip is one of $Quips)
-        %% Never suggest to the player a quip they've already performed.
+        %% Never suggest to the player a quip they've already discussed (even with another NPC).
         ~($Player recollects $Quip)
         ($Action = [discuss $Quip])
         %% Only interested in likely actions -- this excludes quips that are dubious, or change the current thread (if any).
@@ -523,6 +548,7 @@
     (current player $Player)
     (make $Player recollect $Quip)
     (conversation partner $NPC)
+    (purge #immediate-optional from conversation queue for $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
 
 (describe action [discuss $Quip])
@@ -588,7 +614,7 @@
         (line)
         (space 2) 
         $Quip
-        (describe [
+        (annotate [
             { (conversation partner $NPC)
               ($NPC recollects $Quip) recollected }
             { (repeatable $Quip) repeatable }
@@ -624,29 +650,29 @@
 %% or outputs nothing at all if all closures fail.
 %% NOTE: Inefficient; invokes succesful closures a second time.
 
-(describe $Closures)
-    (describe $Closures 1)
+(annotate $Closures)
+    (annotate $Closures 1)
 
-%% Impl for (describe $List)
+%% Impl for (annotate $List)
 
-(describe [$Closure | $More] $First)
+(annotate [$Closure | $More] $First)
     (collect words) (query $Closure) (into $Words)
     (if) (empty $Words)
     (then)
-        (describe $More $First)
+        (annotate $More $First)
     (else)
         (if) ($First = 1)
         (then) \(
         (else) ,
         (endif)
         (query $Closure)
-        (describe $More 0)
+        (annotate $More 0)
     (endif)
 
-(describe [] 0)
+(annotate [] 0)
     \)
 
-(describe [] $)
+(annotate [] $)
 
 (comma separated list $List)
     (comma separated list $List { $_ })

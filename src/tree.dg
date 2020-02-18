@@ -1,0 +1,113 @@
+(story title) Tree of Knowledge
+
+(intro)
+    (try [look])
+
+#player
+(current player *)
+
+#altar
+(room *)
+(name *) Altar of the Tree of Knowledge
+(look *)
+    You have reached the altar of the Tree of Knowlege.
+    The tree's branches rise up, out of the deep ravine, towards
+    the light; its roots have worked their way into the living rock,
+    and entagle the great stone altar.
+(#player/#tree is #in *)
+
+#tree
+(name *) tree of knowledge
+(animate *)
+(narrate greeting *)
+    The voice of the tree eminates from all around.
+    "You may ask about things animal, vegetable, or mineral."
+
+#animal
+(questioning quip *)
+(repeatable *)
+(name *) about animals
+(dict *) animal
+(comment *) You ask about animals.
+(reply *) Are you interested in vertebrates or invertebrates?
+
+#vegetable
+(questioning quip *)
+(repeatable *)
+(name *) about plants
+(dict *) veg vegetable plant vegetables
+(comment *) Plants and vegetables?
+(reply *)
+    Mosses, land plants, and aquatic plants.
+
+#mineral
+(questioning quip *)
+(repeatable *)
+(name *) about minerals
+(dict *) mineral
+(comment *) What are minerals?
+(reply *)
+    Minerals are non-living elements, many of which are building blocks of life.
+    Metals, stone, and crystals are types of minerals.
+
+#vertebrate
+(questioning quip *)
+(name *) about vertebrates
+(dict *) vertebrate
+(comment *) What are vertebrates?
+(reply *) Animals with backbones are vertebrates, such as mammals,
+  fish, and lizards.
+(* follows #animal)
+
+#invertebrate
+(questioning quip *)
+(name *) about invertebrates
+(dict *) invertebrate
+(* follows #animal)
+(comment *) What are invertebrates?
+(reply *) Animals without a backbone are invertebrates.  This includes
+  worms and insects.
+
+#mammal
+(questioning quip *)
+(name *) about mammals
+(* follows #vertebrate)
+(comment *) What are mammals?
+(reply *)
+    Mammals are warm blooded, bear their young alive, and produce milk.  Primates like you are mammals.
+
+#primate
+(questioning quip *)
+(name *) about primates
+(* follows #mammal)
+(comment *) What's a primate?
+(reply *)
+    Larger brains, opposable thumbs. An interesting experiment you could say.
+    (casually queue #youre-a-primate)
+
+#youre-a-primate
+(reply *)
+    You are a primate.  Rather less well adapted than a chimp or a great ape, I believe.
+    
+#fish
+(questioning quip *)
+(name *) about fish
+(* follows #vertebrate)
+%% (* directly follows #mineral/#plant)
+(comment *) What are fish?
+(reply *) They swim in water; salt water oceans, or fresh water lakes and rivers.
+
+#metal
+(questioning quip *)
+(name *) about metals
+(dict *) metal
+(* follows #mineral)
+(comment *) Metals?
+(reply *) Shiny stuff found undergound.
+
+#stone
+(questioning quip *)
+(name *) about stone
+(* follows #mineral)
+(comment *) Stone?
+(reply *) Rock and dirt.
