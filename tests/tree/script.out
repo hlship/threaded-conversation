@@ -44,15 +44,15 @@ Quips:
 Discussable quips:
   #animal (recollected, repeatable, starts new thread)
     Followers: #vertebrate, #invertebrate
-  #vegetable (repeatable, starts new thread, dead-ended)
+  #vegetable (repeatable, starts new thread)
   #mineral (repeatable, starts new thread)
     Followers: #metal, #stone
-  #invertebrate (dead-ended)
-    Continues: #animal
-  #primate (dead-ended, relevant)
-    Continues: #mammal
-  #fish (dead-ended, relevant)
-    Continues: #vertebrate
+  #invertebrate
+    Follows: #animal
+  #primate (relevant)
+    Follows: #mammal
+  #fish (relevant)
+    Follows: #vertebrate
 Query succeeded: (conversation status)
 > primates
 What's a primate?

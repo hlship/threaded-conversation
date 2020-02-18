@@ -620,7 +620,6 @@
             { (repeatable $Quip) repeatable }
             { (restrictive $Quip) restrictive }
             { ($Quip starts new thread) starts new thread }
-            { ($Quip is dead-ended) dead-ended }
             { (dubious $Quip) dubious }
             { ($Quip is relevant to current thread) relevant }
         ])
@@ -630,7 +629,7 @@
         (if) (nonempty $Continues)
         (then)
             (line) (space 4)
-            Continues:
+            Follows:
             (comma separated list $Continues )
         (endif)
         (collect $Later)
