@@ -42,10 +42,8 @@ Quips:
   Grandparent: #animal
 
 Discussable quips:
-  #animal (recollected, repeatable, changes the subject)
-    Followers: #vertebrate, #invertebrate
-  #vegetable (repeatable, changes the subject)
-  #mineral (repeatable, changes the subject)
+  #vegetable (changes the subject)
+  #mineral (changes the subject)
     Followers: #metal, #stone
   #invertebrate
     Follows: #animal
@@ -54,6 +52,10 @@ Discussable quips:
   #fish (relevant)
     Follows: #vertebrate
 Query succeeded: (conversation status)
+> change subject
+
+You could ask about plants or ask about minerals.
+
 > primates
 What's a primate?
 
@@ -76,12 +78,32 @@ Metals, stone, and crystals are types of minerals.
 You could ask about plants, ask about invertebrates, ask about fish, ask about
 metals, or ask about stone.
 
-> animals
-You ask about animals.
+> plants
+Plants and vegetables?
 
-Are you interested in vertebrates or invertebrates?
+Mosses, land plants, and aquatic plants.
 
-You could ask about plants, ask about invertebrates, ask about fish, ask about
-metals, or ask about stone.
+You could ask about invertebrates, ask about fish, ask about metals, or ask
+about stone.
+
+> (conversation status)
+Conversation partner: #tree -- the tree of knowledge
+Quips:
+  Current: #vegetable
+  Previous: #mineral
+  Grandparent: #vegetable
+
+Discussable quips:
+  #invertebrate
+    Follows: #animal
+  #fish
+    Follows: #vertebrate
+  #metal (relevant)
+    Follows: #mineral
+  #stone (relevant)
+    Follows: #mineral
+Query succeeded: (conversation status)
+> change the subject
+You can think of no changes of subject now.
 
 > 

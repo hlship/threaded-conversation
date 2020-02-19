@@ -197,6 +197,14 @@ the current quip.
 
 In addition, dubious quips (see below) and quips that the player recollects are never suggested.
 
+## Changing the Subject
+
+The player command `change the subject` (also `topics` or `change subject`) is used to switch to some other
+discussable thread of conversation; it is similar to the suggestions that are normally produced, but
+after discarding dubious and recollected quips, it keeps only those that indicate a change of subject.
+
+In some cases, there is no proper change of subject.
+
 ## Recollection
 
 When a quip executes, the player and the NPC are updated to recollect the quip.

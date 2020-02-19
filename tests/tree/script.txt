@@ -3,6 +3,11 @@ talk to tree
 vertebrates
 mammals
 (conversation status)
+change subject
 primates
 minerals
-animals
+plants
+(conversation status)
+%% Because all the top-level quips (animal, plants, minerals)
+%% have been exhausted, there's no new thread to switch to.
+change the subject

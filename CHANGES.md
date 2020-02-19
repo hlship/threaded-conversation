@@ -6,6 +6,8 @@ Dubious quips are now very unlikely, not simply unlikely.
 
 Added `(prevent talking heads for $Quip)`.
 
+Added the `change subject` command.
+
 0.2 -- 17 Feb 2020
 
 Renamed the file to `tc.dg`.

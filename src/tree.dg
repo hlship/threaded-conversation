@@ -25,7 +25,6 @@
 
 #animal
 (questioning quip *)
-(repeatable *)
 (name *) about animals
 (dict *) animal
 (comment *) You ask about animals.
@@ -33,7 +32,6 @@
 
 #vegetable
 (questioning quip *)
-(repeatable *)
 (name *) about plants
 (dict *) veg vegetable plant vegetables
 (comment *) Plants and vegetables?
@@ -42,7 +40,6 @@
 
 #mineral
 (questioning quip *)
-(repeatable *)
 (name *) about minerals
 (dict *) mineral
 (comment *) What are minerals?

@@ -541,9 +541,12 @@
     (repeatable $Quip)
     ($NPC recollects $Quip)
 
-(prevent [discuss $Quip])
+(when not talking to anyone)
     ~(conversation partner $)
     You're not talking to anyone right now.
+
+(prevent [discuss $Quip])
+    (when not talking to anyone)
 
 (perform [discuss $Quip])
     %% Record the quip as the current quip now, which ensures that the
@@ -592,6 +595,42 @@
         (purge optional conversation for $NPC)
         (now) ~(conversation partner $)
     (endif)
+
+(understand command [change subject])
+(describe action [change subject])
+    change the subject
+
+(understand [topics] as [change subject])
+(understand [change the subject] as [change subject])
+
+(prevent [change subject])
+    (when not talking to anyone)
+
+(perform [change subject])
+    (discussable quips $Quips)
+    (nonempty $Quips)
+    (current player $Player)
+    (collect $Action)
+        *($Quip is one of $Quips)
+        (plausible $Quip)
+        %% Never suggest to the player a quip they've already discussed (even with another NPC).
+        ~($Player recollects $Quip)
+        ($Quip changes the subject)
+        ($Action = [discuss $Quip])
+    (into $Actions)
+    (if) (empty $Actions)
+    (then)
+        (narrate no changes of subject)
+    (else)
+        (par)
+        You could 
+        (listing $Actions { (describe action $_) } @or 0)
+        .
+    (endif)
+
+(narrate no changes of subject)
+        You can think of no changes of subject now.
+
 
 %%
 %% Debugging tools
