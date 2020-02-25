@@ -8,6 +8,8 @@ Added `(prevent talking heads for $Quip)`.
 
 Added the `change subject` command.
 
+Updated for Dialog 0j/01, including `interface` declarations.
+
 0.2 -- 17 Feb 2020
 
 Renamed the file to `tc.dg`.
