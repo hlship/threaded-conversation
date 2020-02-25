@@ -36,6 +36,7 @@
 %% (reply $) -- NPC's reply
 
 (interface (reply $<Quip))
+
 (reply $Quip)
     ERROR: No reply was supplied for $Quip.
     (fail)

@@ -21,6 +21,11 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 ... or just copy `lib/tc.dg` from this respository into your workspace.
 
+# Dialog Version
+
+TC has been tracking along with each new releaes of Dialog; it currently works with Dialog `0j/01`
+(which introduces the `interface` declaration).
+
 # Status
 
 Early days yet, but showing good progress.
