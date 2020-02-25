@@ -20,10 +20,14 @@
 (performative quip $) (fail)
 (action verb (performative quip $)) %% nothing
 
+(interface (action verb $<Quip))
+
 %% NPC-directed quips (currently) are just objects.  Not even (quip $).
 %% They just have a (reply $) and other quips may follow them.
 
 %% (comment $) - PC's speech
+
+(interface (comment $<Quip))
 
 (comment $Quip)
     ERROR: No comment was supplied for $Quip.
@@ -31,16 +35,21 @@
 
 %% (reply $) -- NPC's reply
 
+(interface (reply $<Quip))
 (reply $Quip)
     ERROR: No reply was supplied for $Quip.
     (fail)
 
 %% (nag $) -- optional message, mostly used with restrictive quips
 
+(interface (nag $<Quip))
+
 (nag $) (fail)
 
 %% A beat is used to break up quips and such. Excellent chance to provide
 %% some varied, quip-specific output.
+
+(interface (beat $<Quip))
 
 (beat $)
     A moment passes.
@@ -139,6 +148,8 @@
 %% a dynamic property ($Quip is recollected by $ActorList) and a rule
 %% ($Actor recollects $Quip).
 
+(interface (make $<Actor recollect $<Quip))
+
 (make $Actor recollect $Quip)
     { ($Quip is recollected by $Actors) (or) ($Actors = []) }
     ~($Actor is one of $Actors)
@@ -148,6 +159,8 @@
 %% actor tracks the recollected quips, then the #player will end up with
 %% a potentially giant list. Ultimately, we may end up marking certain quips
 %% as notable and worthy of recollection, to optimize all this.
+
+(interface ($<Actor recollects $<Quip))
 
 ($Actor recollects $Quip)
     ($Quip is recollected by $Actors)
@@ -167,6 +180,8 @@
 
 %% I7 makes all directly follows also follows, but
 %% don't think that is necessary.
+
+(interface ($Quip continues from $EarlierQuip))
 
 ($Quip continues from $EarlierQuip)
     { *($Quip directly follows $EarlierQuip) (or)
@@ -203,11 +218,16 @@
 %% #postponed-optional - casual, cleared on change of subject
 %% #immediate-optional - casual, cleared on any player comment
 
+(interface (queue $<Quip for $<NPC))
+
 (queue $Quip for $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
 
 %% Queue a quip for the current conversation partner, but
 %% do nothing if no partner.
+
+(interface (queue $<Quip))
+
 (queue $Quip)
     (conversation partner $NPC)
     (queue $Quip for $NPC)
@@ -215,6 +235,9 @@
 %% Queues a quip for the current NPC as #postponed-optional, but
 %% only if the NPC doesn't already recollect the quip, the quip applies to the NPC, and also only
 %% if the current quip is not restrictive.
+
+(interface (casually queue $<Quip))
+
 (casually queue $Quip)
     (current quip $Current)
     (unrestrictive $Current)
@@ -223,6 +246,8 @@
     ~($NPC recollects $Quip)
     (queue $Quip for $NPC as #postponed-optional)
 
+(interface (queue $<Quip for $<NPC as $<Precedence))
+
 (queue $Quip for $NPC as $Precedence)
     %% I7 just queues the quips and sets a quip property to identify
     %% how it is queued. That just doesn't feel right.
@@ -230,12 +255,16 @@
     %% TODO: May need to ensure quip or tuple not already queued?
     (now) ($NPC has conversation queue [[$Precedence $Quip] | $Queue])
     
+(interface (extract next quip for $<NPC as $>Quip))
+
 (extract next quip for $NPC as $Quip)
     ($NPC has conversation queue $Queue)
     *($Tuple is one of $Queue)
     ($Tuple = [$ $Quip])
     (remove $Tuple from $Queue as $NewQueue)
     (now) ($NPC has conversation queue $NewQueue)
+
+(interface (purge $<Precedence from conversation queue for $<NPC))
 
 (purge $Precedence from conversation queue for $NPC)
     (if)
@@ -245,13 +274,18 @@
         (collect $Tuple)
             *($Tuple is one of $OldQueue)
             ~($Tuple = [$Precedence $])
+
         (into $NewQueue)
         (now) ($NPC has conversation queue $NewQueue)
     (endif)
 
+(interface (purge optional conversation for $<NPC))
+
 (purge optional conversation for $NPC)
     (purge #postponed-optional from conversation queue for $NPC)
     (purge #immediate-optional from conversation queue for $NPC)
+
+(interface (record current quip $<Quip))
 
 (record current quip $Quip)
     %% This gets called just before the player's comment, then again
@@ -291,6 +325,8 @@
     ($Quip is dead-ended)
     (perform queued quip for $NPC)
 
+(interface (perform queued quip for $<NPC))
+
 (perform queued quip for $NPC)
     (extract next quip for $NPC as $Quip)
     (par)
@@ -309,6 +345,9 @@
     %% which will affect quip discussability.
 
 %% The default for breaking apart two quip replies from the NPC's queue.
+
+(interface (avoid talking heads for $<Quip))
+
 (avoid talking heads for $Quip)
     (beat $Quip)
 
@@ -323,6 +362,9 @@
 
 %% Identify which quips (even if dubious or unlikely) are available for the current NPC
 %% for the player to select.
+
+(interface ($<NPC has discussable quips $>Quips))
+
 ($NPC has discussable quips $Quips)
     %% Iterating over all quips may not scale well when there are hundreds;
     %% filtering by NPC first may make sense. We'll see.
@@ -368,6 +410,8 @@
     (current quip $Current)
     ($Current is mid-thread)
     ~($Quip is relevant to current thread)
+
+(interface ($<Quip is relevant to current thread))
 
 ($Quip is relevant to current thread)
     {
@@ -477,16 +521,20 @@
 %% This is the real discuss, where we knew the NPC before understanding the
 %% command, so we know the quip is discussable with that NPC.
 
-(perform [talk to $Person])
-    (now) (conversation partner $Person)
-    (narrate greeting $Person)  %% Doesn't look like I7 version quite does this?
-    (notice $Person)
+(perform [talk to $NPC])
+    (now) (conversation partner $NPC)
+    (narrate greeting $NPC)  %% Doesn't look like I7 version quite does this?
+    (notice $NPC)
 
-(narrate greeting $Person)
-    You say hello to (the $Person).
+(interface (narrate greeting $<NPC))
+
+(narrate greeting $NPC)
+    You say hello to (the $NPC).
     (par)
     
 %% Take 1: The words identify the quip by dict name
+
+(interface (understand $<Words as quip $>Quip from $<Quips))
 
 (understand $Words as quip $Quip from $Quips)
     (determine object $Quip)
@@ -701,6 +749,8 @@
 %% or outputs nothing at all if all closures fail.
 %% NOTE: Inefficient; invokes succesful closures a second time.
 
+(interface (annotate $<ClosureList))
+
 (annotate $Closures)
     (annotate $Closures 1)
 
@@ -725,6 +775,9 @@
 
 (annotate [] $)
 
+(interface (comma separated list $<List))
+(interface (comma separated list $<List $<Closure))
+
 (comma separated list $List)
     (comma separated list $List { $_ })
 
@@ -742,7 +795,7 @@
 %% Utilities
 %%
 
-%% Some of these are not used and may go away
+(interface (remove $<Value from $<List as $>NewList))
 
 (remove $Value from $List as $NewList)
     (collect $Term)
