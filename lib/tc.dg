@@ -383,6 +383,25 @@
     ($NPC has discussable quips $Quips)
     (now) (discussable quips $Quips)
 
+%% When the player does anything but discuss a quip when there's a quip hanging
+%% properly, output the nag.
+(on every tick)
+    (current quip $Quip)
+    (last command was $Command)
+    ~($Command is conversationally active)
+    %% You'll almost always want a nag to start with `(beat *)`.
+    %% An attempt to collect the output from nag and do the beat automatically
+    %% didn't work ... text came out lower-case dictionary words.
+
+    %% If the nag is succesful, add paragraph break, then fail to continue normal
+    %% processing of the action.  Nags are always optional, but can add a lot of flavor.
+    %% Because we can't tell if there's a nag without invoking it, the nag is responsible for
+    %% the paragraph break.
+    (nag $Quip)
+
+([discuss | $] is conversationally active)
+([talk to $] is conversationally active)
+
 %% Identify likely quips; nothing dubious and nothing unlikely (generally, switching out of the current thread).
 
 (on every tick)
@@ -622,22 +641,7 @@
         (action verb $Quip) (name $Quip)
     (endif)
  
-%% When the player does anything but discuss a quip when there's a quip hanging
-%% properly, output the nag.
-(instead of [$verb | $])
-    ~($verb = @discuss)
-    (current quip $Quip)
-    %% You'll almost always want a nag to start with `(beat *)`.
-    %% An attempt to collect the output from nag and do the beat automatically
-    %% didn't work ... text came out lower-case dictionary words.
-
-    %% If the nag is succesful, add paragraph break, then fail to continue normal
-    %% processing of the action.  Nags are always optional, but can add a lot of flavor.
-    (nag $Quip)
-    (par)
-    (fail)
- 
-%% CLears the conversation partner and deletes most queued content
+%% Clears the conversation partner and deletes most queued content
 (reset conversation partner)
     (if) (conversation partner $NPC)
     (then)

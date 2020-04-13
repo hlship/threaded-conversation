@@ -10,6 +10,9 @@ Added the `change subject` command.
 
 Updated for Dialog 0j/02, including `interface` declarations.
 
+Moved around the logic for nags so that they follow the description of the non-conversational
+action, and precede the "You could ..." text; this is a more natural flow.
+
 0.2 -- 17 Feb 2020
 
 Renamed the file to `tc.dg`.

@@ -309,6 +309,8 @@ nag is used to remind the player to respond.
 Generally, the nag should start with a query to `(beat $)` to break up the 
 stream of output.
 
+The nag should generally introduce a paragraph break.
+
 # Restrictive Quips
 
 Generally, the player is free to choose new quips at any time; however, at certain points in a 
