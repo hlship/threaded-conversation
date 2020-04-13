@@ -1,6 +1,6 @@
-0.3 -- UNRELEASED
+0.3 -- 13 Apr 2020
 
-Added`(reset conversation partner)` predicate to clean up the current conversation.
+Added `(reset conversation partner)` predicate to clean up the current conversation.
 
 Dubious quips are now very unlikely, not simply unlikely.
 
