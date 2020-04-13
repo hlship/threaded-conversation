@@ -102,7 +102,7 @@ The style of TC is that the player's command is a bit general, but the comment a
 In any case, it is possible to skip the `ask` or `tell` and just identify key words of the quip.
 
 The transcript also shows how the conversation evolves, with each quip introducing new lines of discussion.
-The goal with TC is encourage the player to explore the conversation tree, while giving the NPCs an air of agency
+The goal with TC is to encourage the player to explore the conversation tree, while giving the NPCs an air of agency
 in how they respond.
 
 ## Quip Varieties
@@ -282,8 +282,7 @@ Here, we can accuse Hannigan of cannibalism at any time, but it won't be suggest
 
 ## The Beat
 
-When an NPC has queued quips, a beat, `(beat $Quip)`. is used to break up the reply to the player's comment, from the 
-comment of the queued quip.
+When an NPC has queued quips, a beat, `(beat $Quip)` is used to break up the NPC's reply to the player's comment from the comment of the queued quip.
 By default, a beat simply outputs `A moment passes.` and a paragraph break.
 
 ```
@@ -355,7 +354,7 @@ from the current quip (directly or normally).
 In order to make NPCs appear more active, it is possible to queue quips for them.
 This is an opportunity to give the NPCs more agency, and the conversation more flavor.
 
-For example, 
+For example:
 
 ```
 #about-weather
@@ -373,14 +372,14 @@ For example,
 In fact, all quips are queued; when the player discusses a quip, the quip's `(comment $)` is printed and
 the quip is queued for the NPC.
 On the following tick, the queued quip's `(reply $)` is printed.
-Queued quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
+NPC-directed quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
 
 On each tick, the first quip queued for the NPC will output its reply.
 This quip then becomes the current quip (if it wasn't already).  In most cases, the current quip is the quip
 the player just discussed in the previous tick, and this is the chance for the NPCs reply to be output.
 
 If the current quip is dead ended (no further quips follow it directly or indirectly) and there's any additional
-queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply it output (and the
+queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply is output (and the
 quip becomes the current quip).
 
 Quips may be queued in one of four ways:
@@ -497,9 +496,8 @@ The link will discuss the identified quip.
 
 # TODO
 
-- A `change the subject` command that identifies non-relevant quips (or even just quips that change the subject).
 - Find a way to handle "expressing ignorance" (when you ask an NPC about an unknown word or phrase)
-- Startups checks similar to Inform7 (prevent unexpected loops, etc.)
+- Startup checks similar to Inform7 (prevent unexpected loops, etc.)
 - Optimizations (that may only be needed in full size games)
 - Tune the logic for in-thread vs. out-of-thread
 - Multi-way conversation (e.g., other present NPCs may have queued quips)
