@@ -3,7 +3,7 @@
 %% I7 refers to the baseline implementation in Inform7
 
 (extension version)
-    Threaded Conversation 0.2
+    Threaded Conversation 0.3
 
 %% There are three types of player-directed quips.
 
