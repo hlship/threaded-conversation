@@ -1,4 +1,8 @@
-0.3 -- 13 Apr 2020
+# 0.3.1 -- 20 Apr 2020
+
+Correct the reported `(extension version)`.
+
+# 0.3 -- 13 Apr 2020
 
 - Added `(reset conversation partner)` predicate to clean up the current conversation
 
@@ -13,7 +17,7 @@
 - Moved around the logic for nags so that they follow the description of the non-conversational
 action, and precede the "You could ..." text; this is a more natural flow
 
-0.2 -- 17 Feb 2020
+# 0.2 -- 17 Feb 2020
 
 - Renamed the file to `tc.dg`
 
@@ -27,7 +31,7 @@ is `tell` instead
 
 - A bunch of improvements to quip queueing, tracking of changes of subject, and so forth
 
-0.1 -- 28 Jan 2020
+# 0.1 -- 28 Jan 2020
 
 - A pre-release; still not ready for prime time.
 
