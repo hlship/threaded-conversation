@@ -1,3 +1,7 @@
+# 0.3.2 -- 24 Jul 2020
+
+Updated to work with Dialog 0k05.
+
 # 0.3.1 -- 20 Apr 2020
 
 Correct the reported `(extension version)`.

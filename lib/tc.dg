@@ -3,7 +3,7 @@
 %% I7 refers to the baseline implementation in Inform7
 
 (extension version)
-    Threaded Conversation 0.3.1
+    Threaded Conversation 0.3.2
 
 %% There are three types of player-directed quips.
 
@@ -421,7 +421,7 @@
     (nonempty $Actions)
     (par)
     You could 
-    (listing $Actions { (describe action $_) } @or 0)
+    (listing $Actions { (describe action $_) } @or [] 0)
     .
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
@@ -677,7 +677,7 @@
     (else)
         (par)
         You could 
-        (listing $Actions { (describe action $_) } @or 0)
+        (listing $Actions { (describe action $_) } @or [] 0)
         .
     (endif)
 

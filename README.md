@@ -15,7 +15,7 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 ```
   {:github "hlship/threaded-conversation" 
-   :version "v0.3.1"
+   :version "v0.3.2"
    :path "lib/tc.dg"}
 ```
 
@@ -23,8 +23,7 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 # Dialog Version
 
-TC has been tracking along with each new releaes of Dialog; it currently works with Dialog `0j/01`
-(which introduces the `interface` declaration).
+TC has been tracking along with each new releaes of Dialog; it currently works with Dialog `0k/05`.
 
 # Status
 
