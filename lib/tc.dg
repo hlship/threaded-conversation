@@ -421,7 +421,7 @@
     (nonempty $Actions)
     (par)
     You could 
-    (listing $Actions { (describe action $_) } @or [] 0)
+    (list actions $Actions)
     .
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
@@ -670,20 +670,39 @@
         ~($Player recollects $Quip)
         ($Quip changes the subject)
         ($Action = [discuss $Quip])
-    (into $Actions)
-    (if) (empty $Actions)
+        (into $Actions)
+        (if) (empty $Actions)
     (then)
         (narrate no changes of subject)
     (else)
         (par)
-        You could 
-        (listing $Actions { (describe action $_) } @or [] 0)
+        You could
+        (list actions $Actions)
         .
+    (endif)
+
+(interface (list actions $<Actions))
+
+(list actions $Actions)
+    (list actions $Actions 0)
+     
+(list actions [$First | $More] $NPrinted)
+    (if) (empty $More)
+    (then)
+        (if) ($NPrinted > 1) (then) , (endif)
+        (if) ($NPrinted > 0) (then) or (endif)
+    (else)
+        (if) ($NPrinted > 0) (then) , (endif)
+    (endif)
+    (describe action $First)
+    (if) (nonempty $More)
+    (then)
+        ($NPrinted plus 1 into $NPp1)
+        (list actions $More $NPp1)
     (endif)
 
 (narrate no changes of subject)
         You can think of no changes of subject now.
-
 
 %%
 %% Debugging tools
@@ -752,7 +771,7 @@
 %% Debbuging output utility.  Invokes a series of closures, which may succeed or fail, but should
 %% produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
 %% or outputs nothing at all if all closures fail.
-%% NOTE: Inefficient; invokes succesful closures a second time.
+%% NOTE: Inefficient; invokes successful closures a second time.
 
 (interface (annotate $<ClosureList))
 
