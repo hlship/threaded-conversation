@@ -97,6 +97,12 @@ The transcript also shows how the conversation evolves, with each quip introduci
 The goal with TC is to encourage the player to explore the conversation tree, while giving the NPCs an air of agency
 in how they respond.
 
+## NPCs
+
+Anything with the trait `(animate $)` is a potential NPC.
+
+If an animate should not be an NPC, then a `(prevent [talk to $NPC])` rule should be supplied.
+
 ## Quip Varieties
 
 Quips come in four varieties, defined by traits:
@@ -106,7 +112,7 @@ Quips come in four varieties, defined by traits:
 * `(demonstrative quip $)` - the player performs some bit of behavior ("curse the fates")
 * NPC-directed quips have no trait; these can be queued up and are output when the NPC has no immediate response
 
-Quips are usually limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
+Quips are often limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
 associated with a quip.  Otherwise, the quip is available to any NPC.
 
 The part that makes threaded conversation truly _threaded_, is that most quips aren't available at
