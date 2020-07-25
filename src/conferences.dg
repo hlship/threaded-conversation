@@ -1,0 +1,62 @@
+(story title) Conferences
+
+#conference-chamber
+(room *)
+(name *) Conference Chamber
+(look *)
+    A low ceilinged chamber with a scattering of heavy wooden tables, perfect for
+    the exchange of information that can shape the course of history.
+    Lavine is already seated at the nearest table, and Thurg hovers nearby.
+
+#thurg
+(name *) Thurg
+(male *)
+(proper *)
+(after $ has replied with $Quip)
+    ($Quip reveals alliance)
+    %% In a full game, might have to check that Thurg is present
+    (par)
+    Thurg roars in fury and begins to choke the life out of you,
+    shouting "NO ELF-HUMAN ALLIANCE" again and again.
+    (game over { You have died. })
+
+#meeting
+(topic *)
+(dict *) meeting
+
+#lavine
+(name *) Lavine
+(female *)
+(proper *)
+
+#why-she-has-come
+(questioning quip *)
+(* supplies #lavine)
+(name *) why she has come
+(* mentions #lavine/#meeting)
+(comment *)
+    "Why have you come?" you demand of Lavine urgently.
+    You keep your voice as low as you are able, but Thurg
+    nonetheless watches you with obvious comprehension.
+(reply *)
+    "Why, to see what it was you were saying to the trolls, of course,"
+    she answers in a clear, bell-like tone.
+    "Our alliance is still young, eh?"
+(* reveals alliance)
+
+#happy-aliance
+(informative quip *)
+(name *) this alliance will be a happy one
+(* supplies #lavine)
+(comment *)
+    "I am so glad to see you," you tell Lavine, "I am sure the alliance of our
+    two peoples will be a long and happy one."
+(reply *)
+    "That is my hope as well," she says musically.
+(* reveals alliance)
+
+(current player #player)
+
+(#player/#thurg/#lavine is #in #conference-chamber)
+
+

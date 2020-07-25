@@ -1,0 +1,35 @@
+
+
+Conferences
+An interactive fiction by Anonymous.
+Release 1. Serial number DEBUG.
+Dialog Interactive Debugger (dgdebug) version 0k/05. Library version 0.42.
+Debugging extension 1.1. Threaded Conversation 0.3.2
+
+Conference Chamber
+A low ceilinged chamber with a scattering of heavy wooden tables, perfect for
+the exchange of information that can shape the course of history. Lavine is
+already seated at the nearest table, and Thurg hovers nearby.
+
+> talk lavine
+You say hello to Lavine.
+
+You could ask why she has come or say this alliance will be a happy one.
+
+> happy
+"I am so glad to see you," you tell Lavine, "I am sure the alliance of our two
+peoples will be a long and happy one."
+
+"That is my hope as well," she says musically.
+
+Thurg roars in fury and begins to choke the life out of you, shouting "NO ELF-
+HUMAN ALLIANCE" again and again.
+
+     *** You have died. ***
+
+Would you like to:
+     UNDO the last move,
+     RESTORE a saved position,
+     QUIT the program,
+     or RESTART from the beginning?
+> 

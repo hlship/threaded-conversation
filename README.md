@@ -23,14 +23,7 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 # Dialog Version
 
-TC has been tracking along with each new releaes of Dialog; it currently works with Dialog `0k/05`.
-
-# Status
-
-Early days yet, but showing good progress.
-
-Basic conversations are working reasonably well, and we have the basics of queued quips working well, but there's
-quite a bit that could be improved, including nags, quip suggestions, and change-of-subject logic.
+TC has been tracking along with each new release of Dialog; it currently works with Dialog `0k/05`.
 
 # Using Threaded Conversation
 
@@ -215,6 +208,30 @@ When a quip executes, the player and the NPC are updated to recollect the quip.
 
 The `($NPC recollects $Quip)` predicate succeeds if the specific NPC was the conversation partner when the quip
 was discussed.
+
+In a situation where other NPCs are present, they will _not_ recollect the quip; only the conversation partner recollects
+the quip.
+
+## Reacting To Quips
+
+After TC outputs the reply and marks the quip as recollected, it triggers a notification: `(after $NPC has replied with $Quip)`.
+This gives other NPCs or game logic a chance to react to the quip, for example:
+
+```
+#thurg
+(name *) Thurg
+(male *)
+(proper *)
+(after $ has replied with $Quip)
+    ($Quip reveals alliance)
+    (par)
+    Thurg roars in fury and begins to choke the life out of you,
+    shouting "NO ELF-HUMAN ALLIANCE" again and again.
+    (game over { You have died. })
+```
+
+The above is an example from one of the tests; a full implementation in a complete game might use `(player can see *)` to ensure that Thurg is present
+when the beans are spilled.
 
 ## Immediate
 

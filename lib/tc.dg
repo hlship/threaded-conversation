@@ -84,17 +84,21 @@
 
 %% A quip may follow some other quip, and is discussable anytime after the
 %% the earlier quip has been discussed.
+
 ($ follows $) (fail)
 
 %% A quip that directly follows an earlier quip is only discussable when
-%% the earlier quip is  still the current quip.
+%% the earlier quip is still the current quip.
+
 ($ directly follows $) (fail)
 
 %% Restrictive quips require a response; changes of subject are not allowed.
 %% Usually the response quips directly follow the restrictive quip.
+
 (restrictive $) (fail)
 
 %% Quips may supply one (or more) NPC, or be universal (supplies anyone).
+
 ($ supplies $) (fail)
 @($Quip supplies anyone) ~($Quip supplies $)
 
@@ -104,21 +108,23 @@
 %% A quip may mention a topic; the topic is assumed to be known to all NPCs.
 %% The topic may be an object (which doesn't have to be in scope), or a Dialog topic
 %% (a dictionary word).
+
 ($ mentions $) (fail)
 
-%% Make sure the quip name is not prefixed with 'the' in disambiguation
+%% Make sure the quip name is not prefixed with 'the' in disambiguation.
+
 (proper (quip $))
 
 %% This is "current interlocutor" in I7:
 
 (global variable (conversation partner $))
 
-%% This are the quips discussable by the player, based on
+%% THese are the quips discussable by the player, based on
 %% the conversation partner, rebuilt on every tick.
 
 (global variable (discussable quips $))
 
-%% The most recentl quip for which the comment or reply has been discussed.
+%% The most recent quip for which the comment or reply has been discussed.
 
 (global variable (current quip $))
 
@@ -344,6 +350,17 @@
     %% TODO: A queued quip may not be recollected by the player!
     %% This may have been a queued quip, it is now the current quip
     %% which will affect quip discussability.
+    (exhaust) { *(after $NPC has replied with $Quip) }
+
+%% A notification, allowing other present NPCs to react to a particular
+%% NPC replying with a quip. 
+
+(interface (after $<NPC has replied with $<Quip))
+
+%% The default for this notification is to do nothing.
+
+(after $ has replied with $)
+    (fail)
 
 %% The default for breaking apart two quip replies from the NPC's queue.
 
@@ -520,7 +537,7 @@
     *(understand $Text as quip $Quip from $Quips)
 
 %% This disambiguates from "ask <topic>" from asking *about* the topic vs.
-%% the standard library "ask <person>" action. With out it you get disambiguation prompts
+%% the standard library "ask <person>" action. Without it you get disambiguation prompts
 %% like "do you want to ask wehther you may see the miniature, or ask the antique miniature something".
 (unlikely [ask/tell $Someone])
     ~(animate $Someone)
@@ -641,7 +658,8 @@
         (action verb $Quip) (name $Quip)
     (endif)
  
-%% Clears the conversation partner and deletes most queued content
+%% Clears the conversation partner and deletes most queued content.
+
 (reset conversation partner)
     (if) (conversation partner $NPC)
     (then)
@@ -702,7 +720,7 @@
     (endif)
 
 (narrate no changes of subject)
-        You can think of no changes of subject now.
+    You can think of no changes of subject now.
 
 %%
 %% Debugging tools
@@ -766,7 +784,6 @@
             (comma separated list $Followers)
         (endif)
     }
-
 
 %% Debbuging output utility.  Invokes a series of closures, which may succeed or fail, but should
 %% produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
