@@ -180,6 +180,8 @@ Such objects are presumed known to any NPC.
 So the second interaction could have been `ask codger` (or even just `codger` or `old`) and TC would have identified
 object #garrick, and from there, the #where-garrick-lives quip, by the mentioning relationship.
 
+The mentioned object does *not* have to be in scope; it just has to be identifiable by dictionary words.
+
 Mentioning may also be used with Dialog topics.
 
 ## Conversation Partner
@@ -418,7 +420,7 @@ There are a number of predicates for queuing quips:
 
 `(queue $Quip)` queues the quip, for the current conversation partner, as `#immediate-obligatory`.
 
-`(casually queue $Quip)` queues the qup for the current conversation partner, as `#postponed-optional`, if the following holds:
+`(casually queue $Quip)` queues the quip for the current conversation partner, as `#postponed-optional`, if the following holds:
 - The current quip is not restrictive
 - The conversation partner can discuss the quip (the quip supplies the NPC, or is universally applicable)
 - The conversation partner does not recollect the quip
