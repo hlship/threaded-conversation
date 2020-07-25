@@ -1,5 +1,7 @@
 (story title) Conferences
-
+(intro)
+    (try [look])
+    
 #conference-chamber
 (room *)
 (name *) Conference Chamber
