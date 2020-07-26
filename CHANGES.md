@@ -1,6 +1,6 @@
 # 0.4.0 - 25 Jul 2020
 
-- Added `(after $NPC has replied with $NPC)` notification
+- Added `(after $NPC has replied with $Quip)` notification
 
 # 0.3.2 -- 24 Jul 2020
 
