@@ -382,7 +382,7 @@ For example:
 
 ```
 #about-weather
-(questionion quip *)
+(questioning quip *)
 (* supplies #hook)
 (name *) about the weather
 (comment *)
@@ -398,7 +398,7 @@ the quip is queued for the NPC.
 On the following tick, the queued quip's `(reply $)` is printed.
 NPC-directed quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
 
-On each tick, the first quip queued for the NPC will output its reply.
+On each tick, the first quip queued for the NPC will have its reply output.
 This quip then becomes the current quip (if it wasn't already).  In most cases, the current quip is the quip
 the player just discussed in the previous tick, and this is the chance for the NPCs reply to be output.
 
@@ -413,7 +413,7 @@ Quips may be queued in one of four ways:
 - `#postponed-optional` - a casual quip (often, adding color) that will be discarded if the player changes subjects
 - `#immediate-optional` - a casual quip that will be discarded if the player discusses any quip
 
-The algorithm for determining when the player changes subjects is a bit tricky; eseentially, the last few quips are
+The algorithm for determining when the player changes subjects is a bit tricky; essentially, the last few quips are
 tracked (as global variables `(current quip $)`, `(previous quip $)` and `(grandfather quip $)`).
 When the player discusses a quip that doesn't follow the grandfather quip, that is a change of subject; optional queued quips
 are discarded, and the quip becomes the new grandfather quip.
@@ -466,8 +466,7 @@ For example:
 Conversations have some physical dynamics that TC doesn't attempt to address: primarily, what happens if
 either the player or the NPC wanders away?
 
-TC will allow the conversation to continue regardless, which effectively
- breaks the simulation.
+TC will allow the conversation to continue regardless, which effectively breaks the simulation.
 You are expected to allow for this with rules that prevent the player from leaving during a conversation, or alternately,
 to query `(reset conversation partner)` to abruptly end the conversation because one or the other party is no longer present.
 Different approaches may be appropriate at different times in your story.
