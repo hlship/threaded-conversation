@@ -23,7 +23,7 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 # Dialog Version
 
-TC has been tracking along with each new release of Dialog; it currently works with Dialog `0k/05`.
+TC has been tracking along with each new release of Dialog; it currently works with Dialog `0k/05` through `0m/01`.
 
 # Using Threaded Conversation
 
