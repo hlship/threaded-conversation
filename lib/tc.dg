@@ -23,10 +23,6 @@
 %% All player-initiated quips are topics for ask/tell, with overrides
 %% for scope and availability.
 
-%% (topic (quip $))
-
-%% (interface (action verb $<Quip))
-
 %% NPC-directed quips (currently) are just objects.  Not even (quip $).
 %% They just have a (reply $) and other quips may follow them.
 
@@ -426,7 +422,7 @@
     (nag $Quip)
 
 %% TODO: discuss -> perform quip
-([discuss $] is conversationally active)
+([perform quip $] is conversationally active)
 ([ask/tell $ about $] is conversationally active)
 ([talk to $ about $] is conversationally active)
 ([talk to $] is conversationally active)
@@ -450,7 +446,7 @@
 
 (interface (action from quip $<Quip is $>Action))
 
-(action from quip (performative quip $Quip) is [discuss $Quip])
+(action from quip (performative quip $Quip) is [perform quip $Quip])
 
 (action from quip (questioning quip $Quip) is [ask $NPC about $Quip])
     (conversation partner $NPC)
@@ -480,7 +476,7 @@
 (unlikely [ask/tell $ about (quip $Quip)])
     ($Quip is not relevant to current thread)
 
-(unlikely [discuss $Quip])
+(unlikely [perform quip $Quip])
     ($Quip is not relevant to current thread)
 
 ($Quip is not relevant to current thread)
@@ -516,13 +512,13 @@
 (very unlikely [ask/tell $ about (quip $Quip)])
     (dubious $Quip)
 
-(very unlikely [discuss $Quip])
+(very unlikely [perform quip $Quip])
     (dubious $Quip)
  
 %% Repeatable quips can be returned to, but are unlikely, so they are never
 %% suggested.
 
-(unlikely [discuss $Quip])
+(unlikely [perform quip $Quip])
     ($Quip is repeatable and recollected)
 
 (unlikely [ask/tell $ about (quip $Quip)])
@@ -589,7 +585,7 @@
     *(understand $Words as single object $NPC)
     (animate $NPC)
 
-%% (understand [say | $Text] as [discuss $Quip with $Person])
+%% (understand [say | $Text] as [perform quip $Quip with $Person])
 %%     *(understand $Text as $Quip with $Person)
 %%     (informative quip $Quip)
 
@@ -602,12 +598,12 @@
 
 %% (rewrite [a/ask about/whether $Text] into [ask $Text])
 
-%% (understand [a/ask | $Text] as [discuss $Quip])
+%% (understand [a/ask | $Text] as [perform quip $Quip])
 %%     (conversation partner $NPC)
 %%     *(understand $Text as quip $Quip for $NPC)
 %%     (questioning quip $Quip)
 
-%% (understand [say/tell | $Text] as [discuss $Quip])
+%% (understand [say/tell | $Text] as [perform quip $Quip])
 %%     (conversation partner $NPC)
 %%     *(understand $Text as quip $Quip for $NPC)
 %%     (informative quip $Quip)
@@ -639,8 +635,8 @@
 (very unlikely [ask/tell $Someone])
     ~(animate $Someone)
 
-%% (perform [discuss $Quip with $])
-%%     (try [discuss $Quip])
+%% (perform [perform quip $Quip with $])
+%%     (try [perform quip $Quip])
 
 (prevent [talk to $NPC about ?])
     (narrate $NPC expressing ignorance)
@@ -692,7 +688,7 @@
 %% in an action list are in scope; quips are like topics, abstract,
 %% so these two negated predicates disable that check when discussing.
 
-~(refuse [discuss $])
+~(refuse [perform quip $])
 
 (instead of [greet $NPC])
     (try [talk to $NPC])
@@ -707,27 +703,27 @@
 %% Though we could clean that all up and hopefully avoid
 %% that ambiguity by some other means.
 
-%% (very unlikely [discuss $ with $])
+%% (very unlikely [perform quip $ with $])
 %%     %% May need to be adjusted to only when the CP matches
 %%     %% the actor.
 %%     (conversation partner $)
 
-%% (unlikely [discuss $Quip])
+%% (unlikely [perform quip $Quip])
 %%     (conversation partner $NPC)
 %%     (repeatable $Quip)
 %%     ($NPC recollects $Quip)
 
-%% (very unlikely [discuss (unknown placeholder $)])
-%% (very unlikely [discuss (unknown placeholder $) with $])
+%% (very unlikely [perform quip (unknown placeholder $)])
+%% (very unlikely [perform quip (unknown placeholder $) with $])
 
 (when not talking to anyone)
     ~(conversation partner $)
     You're not talking to anyone right now.
 
-(prevent [discuss $])
+(prevent [perform quip $])
     (when not talking to anyone)
 
-(perform [discuss $Quip])
+(perform [perform quip $Quip])
     (perform player quip $Quip)
 
 (before [talk to $NPC about $])
@@ -755,11 +751,11 @@
     %% (log) { perform: talk to $NPC about $What}
     (narrate $NPC expressing ignorance)
 
-%% (perform [discuss #unknown-ask-quip]) 
+%% (perform [perform quip #unknown-ask-quip]) 
 %%     (conversation partner $NPC)
 %%     (narrate $NPC expressing ignorance)
 
-%% (perform [discuss #unknown-tell-quip]) 
+%% (perform [perform quip #unknown-tell-quip]) 
 %%     (narrate nothing to say)
          
 (interface (narrate $<NPC expressing ignorance))
@@ -770,7 +766,7 @@
 (narrate nothing to say)
     You can't think of anything appropriate to say.
 
-(perform [discuss $Quip])
+(perform [perform quip $Quip])
     (perform player quip $Quip)
 
 %% Perform a normal (not NPC) quip, starting with the quip's comment immediately,
@@ -788,14 +784,14 @@
     (queue $Quip for $NPC as #immediate-obligatory)
 
 (describe action $Action)
-    ($Action = [discuss $Quip])
+    ($Action = [perform quip $Quip])
     (if) (library links enabled) (then)
         (link $Action) { (name $Quip) }
     (else)
        (name $Quip)
     (endif)
 
-%% (describe action [discuss $Quip with $NPC])
+%% (describe action [perform quip $Quip with $NPC])
 %%     (if) (library links enabled) (then)
 %%         (collect words)
 %%             (action verb $Quip)
