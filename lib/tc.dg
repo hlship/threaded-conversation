@@ -421,13 +421,12 @@
     %% the paragraph break.
     (nag $Quip)
 
-%% TODO: discuss -> perform quip
 ([perform quip $] is conversationally active)
 ([ask/tell $ about $] is conversationally active)
 ([talk to $ about $] is conversationally active)
 ([talk to $] is conversationally active)
 
-%% Identify likely quips; nothing dubious and nothing unlikely (generally, switching out of the current thread).
+%% During a conversation, identify any plausible, novel quips that don't jump to a new thread.
 
 (on every tick)
     (discussable quips $Quips)
@@ -465,7 +464,6 @@
     ask (name $Quip)
 
 (describe quip (informative quip $Quip))
-    %% TODO: say is not always the right verb, sometimes tell might be better
     say (name $Quip)
 
 (describe quip (performative quip $Quip))
@@ -542,24 +540,18 @@
     *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
 
-(understand [talk to | $Words] as [talk to $NPC about $Quip])
-    *(split $Words by [about] into $Who and $What)
-    *(understand $Who as NPC $NPC)
-    *(understand $What as quip $Quip for $NPC)
-
-%% This triggers if the above doesn't match a discussable quip:
-(understand [a/ask about | $] as [ask $NPC about []])
-    (conversation partner $NPC) (or) ($NPC = [1])
-
-%% [] is a placeholder meaning "something"
-(very unlikely [ask/tell $ about []])
-(very unlikely [ask/tell [1] about []])
-(very unlikely [talk to [1] about $])
-
 (understand [a/ask | $What] as [ask $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
+
+%% Ultimately, ask/tell diverts to [talk to ...] so might as well make that work too.
+
+(understand [talk to | $Words] as [talk to $NPC about $Quip])
+    *(split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    %% Don't care what kind of quip with talk to
 
 (understand [tell | $Words] as [tell $NPC about $Quip])
     (split $Words by [about] into $Who and $What)
@@ -577,66 +569,33 @@
     *(understand $What as quip $Quip for $NPC)
     (informative quip $Quip)
 
-%% Disable stdlib understanding of ask command:
+%% Disable stdlib understanding of ask and tell command:
 
 ~(understand [ask/tell | $] as $)
  
 (understand $Words as NPC $NPC)
-    *(understand $Words as single object $NPC)
-    (animate $NPC)
+    *(understand $Words as single object $NPC preferably animate)
 
-%% (understand [say | $Text] as [perform quip $Quip with $Person])
-%%     *(understand $Text as $Quip with $Person)
-%%     (informative quip $Quip)
-
-%% (understand $Text as $Quip with $Person)
-%%     *(split $Text anywhere into $Someone and $QuipWords)
-%%     *(understand $Someone as single object $Person)
-%%     %% Using `preferably animate` above caused some odd disambiguation errors
-%%     (animate $Person)
-%%     *(understand $QuipWords as quip $Quip for $Person)
-
-%% (rewrite [a/ask about/whether $Text] into [ask $Text])
-
-%% (understand [a/ask | $Text] as [perform quip $Quip])
-%%     (conversation partner $NPC)
-%%     *(understand $Text as quip $Quip for $NPC)
-%%     (questioning quip $Quip)
-
-%% (understand [say/tell | $Text] as [perform quip $Quip])
-%%     (conversation partner $NPC)
-%%     *(understand $Text as quip $Quip for $NPC)
-%%     (informative quip $Quip)
-
-%% This is to support demonstrative quips.
+%% This supports demonstrative quips but also the other two types
 (understand $Text as $Action)
     (conversation partner $NPC)
     *(understand $Text as quip $Quip for $NPC)
-    %% TODO: Expand to questioning and informative as well
-    %% (performative quip $Quip)
     (action from quip $Quip is $Action)
 
-(understand $Text as quip $Quip for $Person)
+(understand $Text as quip $Quip for $NPC)
     (filter $Text into $Filtered)
     (nonempty $Filtered)
-    (if) (conversation partner $Person) (then)
+    (if) (conversation partner $NPC) (then)
         %% If mid-conversation with someone, then the discussable quips were calculated
         %% at the start of the tick.
         (discussable quips $Quips)
     (else)
         %% This could get expensive to keep recalculating if several words each identify the same NPC
-        ($Person has discussable quips $Quips)
+        ($NPC has discussable quips $Quips)
     (endif)    
     *(understand $Text as quip $Quip from $Quips)
 
-%% This disambiguates from "ask <topic>" from asking *about* the topic vs.
-%% the standard library "ask <person>" action. Without it you get disambiguation prompts
-%% like "do you want to ask whether you may see the miniature, or ask the antique miniature something".
-(very unlikely [ask/tell $Someone])
-    ~(animate $Someone)
-
-%% (perform [perform quip $Quip with $])
-%%     (try [perform quip $Quip])
+%% TODO: This is still a work in progress
 
 (prevent [talk to $NPC about ?])
     (narrate $NPC expressing ignorance)
@@ -653,10 +612,13 @@
 (narrate greeting $NPC)
     You say hello to (the $NPC).
     (par)
-    
-%% Take 1: The words identify the quip by dict name
+
+%% Have to understand words as a possible quip via the works themselves,
+%% or the object or topic mentioned by the quip.
 
 (interface (understand $<Words as quip $>Quip from $<Quips))
+
+%% Take 1: The words identify the quip by dict name
 
 (understand $Words as quip $Quip from $Quips)
     (determine object $Quip)
@@ -693,29 +655,6 @@
 (instead of [greet $NPC])
     (try [talk to $NPC])
 
-%% This rule prevents this odd exchange:
-%% > ask maid where
-%% Did you want to:
-%% 1. discuss the where does Garrick live with the Bar Maid,
-%% 2. discuss the where the Bar Maid comes from with the Bar Maid, or
-%% 3. asking where the Bar Maid comes from?
-%%
-%% Though we could clean that all up and hopefully avoid
-%% that ambiguity by some other means.
-
-%% (very unlikely [perform quip $ with $])
-%%     %% May need to be adjusted to only when the CP matches
-%%     %% the actor.
-%%     (conversation partner $)
-
-%% (unlikely [perform quip $Quip])
-%%     (conversation partner $NPC)
-%%     (repeatable $Quip)
-%%     ($NPC recollects $Quip)
-
-%% (very unlikely [perform quip (unknown placeholder $)])
-%% (very unlikely [perform quip (unknown placeholder $) with $])
-
 (when not talking to anyone)
     ~(conversation partner $)
     You're not talking to anyone right now.
@@ -728,16 +667,7 @@
 
 (before [talk to $NPC about $])
     ~(conversation partner $NPC)
-    (try [silent greet $NPC])
-
-(perform [silent greet $NPC])
-    %% (log) { before talk to $NPC about $Quip }
-    %% Normally, we'd do this with a (first try ...),
-    %% but that triggers a (tick) that results in a "You could ..."
-    %% reminder text; instead we merge the greeting into the current
-    %% action.
-    (now) (conversation partner $NPC)
-    (narrate greeting $NPC)
+    (try [talk to $NPC])
 
 %% Under TC, the person to ask/tell is always the CP.
 %% ask and tell both end up here.
@@ -745,18 +675,11 @@
 (perform [talk to $ about (quip $Quip)])
     (perform player quip $Quip)
 
-%% Catch all for discussing topics (from stdlib ask/tell) or unknowns
+%% Catch all for discussing topics (from stdlib ask/tell) or unknowns.
+%% TODO: Still a work in progress
 
 (perform [talk to $NPC about $])
-    %% (log) { perform: talk to $NPC about $What}
     (narrate $NPC expressing ignorance)
-
-%% (perform [perform quip #unknown-ask-quip]) 
-%%     (conversation partner $NPC)
-%%     (narrate $NPC expressing ignorance)
-
-%% (perform [perform quip #unknown-tell-quip]) 
-%%     (narrate nothing to say)
          
 (interface (narrate $<NPC expressing ignorance))
 
@@ -790,20 +713,6 @@
     (else)
        (name $Quip)
     (endif)
-
-%% (describe action [perform quip $Quip with $NPC])
-%%     (if) (library links enabled) (then)
-%%         (collect words)
-%%             (action verb $Quip)
-%%         (into $Verb)
-%%         (collect words)
-%%             (name $Quip)
-%%         (into $Words)
-%%         (append $Verb $Words $LinkWords)
-%%         (link $LinkWords) { (action verb $Quip) (the $NPC) (name $Quip) }
-%%     (else)
-%%         (action verb $Quip) (the $NPC) (name $Quip)
-%%     (endif)
 
 %% Clears the conversation partner and deletes most queued content.
 
@@ -843,28 +752,20 @@
         (list quips $SuggestedQuips).
     (endif)
 
-(interface (list actions $<Actions))
-
-(list actions $Actions)
-    (list actions $Actions 0)
-     
-(list actions [$First | $More] $NPrinted)
-    (if) (empty $More)
-    (then)
-        (if) ($NPrinted > 1) (then) , (endif)
-        (if) ($NPrinted > 0) (then) or (endif)
-    (else)
-        (if) ($NPrinted > 0) (then) , (endif)
-    (endif)
-    (describe action $First)
-    (if) (nonempty $More)
-    (then)
-        ($NPrinted plus 1 into $NPp1)
-        (list actions $More $NPp1)
-    (endif)
-
 (narrate no changes of subject)
     You can think of no changes of subject now.
+
+%%
+%% Utilities
+%%
+
+(interface (remove $<Value from $<List as $>NewList))
+
+(remove $Value from $List as $NewList)
+    (collect $Term)
+        *($Term is one of $List)
+        ~($Term = $Value)
+    (into $NewList)
 
 %%
 %% Debugging tools
@@ -975,15 +876,3 @@
     (if) ($Comma = 1) (then) , (endif)
     { (query $Closure $First) (or) }
     (comma separated list $More $Closure 1)
-
-%%
-%% Utilities
-%%
-
-(interface (remove $<Value from $<List as $>NewList))
-
-(remove $Value from $List as $NewList)
-    (collect $Term)
-        *($Term is one of $List)
-        ~($Term = $Value)
-    (into $NewList)
