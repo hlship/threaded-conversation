@@ -13,18 +13,11 @@ Empire, and on the adjacent wall is the crimson and silver banner of Richard the
 Rose. The barmaid works her way from table to table, clearing away dishes and
 mugs.
 
-> ask barmaid about rumors
+> talk to bar maid about immortality
 You say hello to the Bar Maid.
 
-"Where I come from, over the black hills there, they say that men this side of
-the mountain live as old as Methuselah," you remark. "They say the secret of
-eternal life is here."
+"I don't know," says the Bar Maid.
 
-"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
-hand. "The oldest codger around these parts is old Garrick, and I would't put
-him beyond his four-score and ten."
-
-You could ask where Garrick lives, ask where she comes from, or ask whether
-she's heard the stories.
+You could ask whether the rumors tell truly or ask where she comes from.
 
 > 

@@ -66,14 +66,14 @@
 (dict *) girl
 (* follows #about-beard)
 (comment *)
-    (if) (immediately)
+    (if) (immediately following)
     (then)
         You have a sudden insight: "You dog, you found yourself a girlfriend, didn't you?"
     (else)
     "All kidding aside, do you have a girlfriend now?" you ask.
     (endif)
 (reply *)
-    (if) (immediately)
+    (if) (immediately following)
     (then)
         "Uh, yes" he replies. "Why do you ask?"
     (else)

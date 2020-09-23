@@ -87,7 +87,7 @@
 
 #where-barmaid-comes-from
 (questioning quip *)
-(name *) where the barmaid comes from
+(name *) where she comes from
 (* mentions #barmaid)
 (* supplies #barmaid)
 (comment *)
@@ -121,6 +121,13 @@
 #outside
 (room *)
 (name *) Outside the Inn
-(look *) It's quiet here, outside the Inn.  But cold.  You should go back in.
+(look *)
+    It's quiet here, outside the Inn.  But cold.  You should go back in.
+    Besides, the mysterious stranger makes you nervous.
 (from #inn go #out to *)
 (from * go #in to #inn)
+
+#stranger
+(name *) Mysterious stranger
+(male *)
+(* is #in #outside)

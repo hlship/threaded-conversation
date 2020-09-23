@@ -24,8 +24,8 @@ eternal life is here."
 hand. "The oldest codger around these parts is old Garrick, and I would't put
 him beyond his four-score and ten."
 
-You could ask where Garrick lives, ask where the barmaid comes from, or ask
-whether she's heard the stories.
+You could ask where Garrick lives, ask where she comes from, or ask whether
+she's heard the stories.
 
 > ask barmaid about eternal life
 "Have you heard any stories of long-living men?" you press her.
@@ -34,7 +34,7 @@ She purses her lips and scrubs at a circle-shaped stain on the table before her.
 "If you're a fool come looking for a spring of life or a vein of immortal gold
 buried in the black hills, you'd do better to go back home where you come from."
 
-You could ask where Garrick lives or ask where the barmaid comes from.
+You could ask where Garrick lives or ask where she comes from.
 
 > undo
 Undoing the last turn (ask barmaid about eternal life).
@@ -47,7 +47,7 @@ She purses her lips and scrubs at a circle-shaped stain on the table before her.
 "If you're a fool come looking for a spring of life or a vein of immortal gold
 buried in the black hills, you'd do better to go back home where you come from."
 
-You could ask where Garrick lives or ask where the barmaid comes from.
+You could ask where Garrick lives or ask where she comes from.
 
 > undo
 Undoing the last turn (ask barmaid about immortality).
@@ -60,7 +60,7 @@ She purses her lips and scrubs at a circle-shaped stain on the table before her.
 "If you're a fool come looking for a spring of life or a vein of immortal gold
 buried in the black hills, you'd do better to go back home where you come from."
 
-You could ask where Garrick lives or ask where the barmaid comes from.
+You could ask where Garrick lives or ask where she comes from.
 
 > codger
 "Where does this old Garrick live?" you ask, trying not to seem too eager.
@@ -68,6 +68,6 @@ You could ask where Garrick lives or ask where the barmaid comes from.
 "Down at the pig farm," she says. "The turn off is just before you come to the
 river, on the main road west. You can find it by the smell."
 
-You could ask where the barmaid comes from.
+You could ask where she comes from.
 
 > 

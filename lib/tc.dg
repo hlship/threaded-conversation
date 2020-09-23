@@ -3,24 +3,29 @@
 %% I7 refers to the baseline implementation in Inform7
 
 (extension version)
-    Threaded Conversation 0.4.0
+    (line)
+    Threaded Conversation 0.5 by Howard Lewis Ship
 
 %% There are three types of player-directed quips.
 
 (quip $Quip)    *(questioning quip $Quip)   %% ask
 (questioning quip $) (fail)
-(action verb (questioning quip $)) ask
-
+%% (action verb (questioning quip $)) ask
 
 (quip $Quip)    *(informative quip $Quip)   %% say/tell
 (informative quip $) (fail)
-(action verb (informative quip $)) say
+%% (action verb (informative quip $)) say
 
 (quip $Quip)    *(performative quip $Quip)  %% other
 (performative quip $) (fail)
-(action verb (performative quip $)) %% nothing
+%% (action verb (performative quip $)) %% nothing
 
-(interface (action verb $<Quip))
+%% All player-initiated quips are topics for ask/tell, with overrides
+%% for scope and availability.
+
+%% (topic (quip $))
+
+%% (interface (action verb $<Quip))
 
 %% NPC-directed quips (currently) are just objects.  Not even (quip $).
 %% They just have a (reply $) and other quips may follow them.
@@ -30,7 +35,7 @@
 (interface (comment $<Quip))
 
 (comment $Quip)
-    ERROR: No comment was supplied for $Quip.
+    (line) ERROR: No comment was supplied for $Quip.
     (fail)
 
 %% (reply $) -- NPC's reply
@@ -38,7 +43,7 @@
 (interface (reply $<Quip))
 
 (reply $Quip)
-    ERROR: No reply was supplied for $Quip.
+    (line) ERROR: No reply was supplied for $Quip.
     (fail)
 
 %% (nag $) -- optional message, mostly used with restrictive quips
@@ -63,7 +68,7 @@
 
 %% Quips are usually available; a quip that is off limits is simply treated
 %% as if it does not exist. This is not the final word, as quips may be
-%% filtered down based on other factors, such as following prior quips,
+%% further filtered down based on other factors, such as following prior quips,
 %% repeatablilty etc.
 
 @(available $Quip)   ~(off limits $Quip)
@@ -76,7 +81,7 @@
 @(unrestrictive $Quip)   ~(restrictive $Quip)
 
 %% Quips are normally plausible, but dubious clips are allowed.
-%% You have to be specific to choose an dubious quip, disambiguation
+%% You have to be specific to choose a dubious quip, disambiguation
 %% normally ignores dubious quips if any plausible quips match the players command.
 
 @(plausible $Quip)   ~(dubious $Quip)
@@ -102,10 +107,11 @@
 ($ supplies $) (fail)
 @($Quip supplies anyone) ~($Quip supplies $)
 
+%% We use 'discuss' here as a shorthand for any kind of ask/tell/demonstrate interation
 ($NPC can discuss $Quip)
     ($Quip supplies anyone) (or) ($Quip supplies $NPC)
 
-%% A quip may mention a topic; the topic is assumed to be known to all NPCs.
+%% A quip may mention a Dialog topic; the topic is assumed to be known to all NPCs.
 %% The topic may be an object (which doesn't have to be in scope), or a Dialog topic
 %% (a dictionary word).
 
@@ -124,7 +130,7 @@
 
 (global variable (discussable quips $))
 
-%% The most recent quip for which the comment or reply has been discussed.
+%% The most recent quip for which the comment or reply has been output.
 
 (global variable (current quip $))
 
@@ -139,8 +145,8 @@
 
 %% Used to vary the text when a quip immediately follows its prior quip.
 %% If the player goes off on a tangent before returning to this quip,
-%% then (immediately) will fail.
-(immediately)
+%% then (immediately following) will fail.
+(immediately following)
     (current quip $Current)
     (previous quip $Previous)
     ($Current follows $Previous)
@@ -154,6 +160,7 @@
 %% Dialog doesn't handle multi-valued properties.  So we have
 %% a dynamic property ($Quip is recollected by $ActorList) and a rule
 %% ($Actor recollects $Quip).
+%% The term Actor here means "player or NPC" (and, by NPC, we really mean, animate).
 
 (interface (make $<Actor recollect $<Quip))
 
@@ -164,8 +171,7 @@
 
 %% We have the quip track who recollects it, which seems odd, but if the
 %% actor tracks the recollected quips, then the #player will end up with
-%% a potentially giant list. Ultimately, we may end up marking certain quips
-%% as notable and worthy of recollection, to optimize all this.
+%% a potentially giant list.
 
 (interface ($<Actor recollects $<Quip))
 
@@ -191,8 +197,9 @@
 (interface ($Quip continues from $EarlierQuip))
 
 ($Quip continues from $EarlierQuip)
-    { *($Quip directly follows $EarlierQuip) (or)
-      *($Quip follows $EarlierQuip) }
+    *($Quip directly follows $EarlierQuip) 
+    (or)
+    *($Quip follows $EarlierQuip)
 
 ($Quip is discussable with $NPC)
     (available $Quip)
@@ -319,9 +326,10 @@
 
 %% Handle the reply to the PC's comment
 (on every tick)
-    %% TODO: Could be multiple NPCs ready to chat!
-    (conversation partner $NPC)
+    %% TODO: unless we allow multiple NPCs to talk in a single tick, this could be
+    %% a global flag rather than an object flag.
     (now) ~($ has spoken this tick)
+    (conversation partner $NPC)
     %% After a player comment, the first queued quip will be the NPC reply.
     %% If the player didn't comment but there was a queued quip, its reply is printed now.
     (perform queued quip for $NPC)
@@ -352,7 +360,7 @@
     %% which will affect quip discussability.
     (exhaust) { *(after $NPC has replied with $Quip) }
 
-%% A notification, allowing other present NPCs to react to a particular
+%% A notification, allowing other (presumably, present) NPCs to react to a particular
 %% NPC replying with a quip. 
 
 (interface (after $<NPC has replied with $<Quip))
@@ -362,7 +370,8 @@
 (after $ has replied with $)
     (fail)
 
-%% The default for breaking apart two quip replies from the NPC's queue.
+%% The rule for breaking apart two quip replies from the NPC's queue, the default is
+%% just `(beat $Quip)`.
 
 (interface (avoid talking heads for $<Quip))
 
@@ -410,13 +419,16 @@
     %% An attempt to collect the output from nag and do the beat automatically
     %% didn't work ... text came out lower-case dictionary words.
 
-    %% If the nag is succesful, add paragraph break, then fail to continue normal
+    %% If the nag is successful, add paragraph break, then fail to continue normal
     %% processing of the action.  Nags are always optional, but can add a lot of flavor.
     %% Because we can't tell if there's a nag without invoking it, the nag is responsible for
     %% the paragraph break.
     (nag $Quip)
 
-([discuss | $] is conversationally active)
+%% TODO: discuss -> perform quip
+([discuss $] is conversationally active)
+([ask/tell $ about $] is conversationally active)
+([talk to $ about $] is conversationally active)
 ([talk to $] is conversationally active)
 
 %% Identify likely quips; nothing dubious and nothing unlikely (generally, switching out of the current thread).
@@ -425,25 +437,53 @@
     (discussable quips $Quips)
     (nonempty $Quips)
     (current player $Player)
-    (collect $Action)
+    (collect $Quip)
         *($Quip is one of $Quips)
         (plausible $Quip)
         %% Never suggest to the player a quip they've already discussed (even with another NPC).
         ~($Player recollects $Quip)
-        ($Action = [discuss $Quip])
-        %% Only interested in likely actions -- this excludes quips change the current thread (if any)/
-        ~(unlikely $Action)
-        ~(very unlikely $Action)
-    (into $Actions)
-    (nonempty $Actions)
+        ~($Quip is not relevant to current thread)
+    (into $SuggestedQuips)
+    (nonempty $SuggestedQuips)
     (par)
-    You could 
-    (list actions $Actions)
-    .
+    You could (list quips $SuggestedQuips).
+
+(interface (action from quip $<Quip is $>Action))
+
+(action from quip (performative quip $Quip) is [discuss $Quip])
+
+(action from quip (questioning quip $Quip) is [ask $NPC about $Quip])
+    (conversation partner $NPC)
+
+(action from quip (informative quip $Quip) is [tell $NPC about $Quip])
+    (conversation partner $NPC)
+
+(list quips $Quips)
+    (listing $Quips { (describe quip $_) } @or [] 0)
+
+%% (describe quip $) is only used in the context of an active conversation partner,
+%% so it's preferable to converting the quip to an action and describing the action, as
+%% it doesn't repeatedly mention the CP.
+
+(describe quip (questioning quip $Quip))
+    ask (name $Quip)
+
+(describe quip (informative quip $Quip))
+    %% TODO: say is not always the right verb, sometimes tell might be better
+    say (name $Quip)
+
+(describe quip (performative quip $Quip))
+    (name $Quip)
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
 %% "You could ..." every tick rules.
+(unlikely [ask/tell $ about (quip $Quip)])
+    ($Quip is not relevant to current thread)
+
 (unlikely [discuss $Quip])
+    ($Quip is not relevant to current thread)
+
+($Quip is not relevant to current thread)
     (current quip $Current)
     ($Current is mid-thread)
     ~($Quip is relevant to current thread)
@@ -473,6 +513,9 @@
 %% All dubious quips are very unlikely actions; this again keeps
 %% them from being suggested.
 
+(very unlikely [ask/tell $ about (quip $Quip)])
+    (dubious $Quip)
+
 (very unlikely [discuss $Quip])
     (dubious $Quip)
  
@@ -480,48 +523,102 @@
 %% suggested.
 
 (unlikely [discuss $Quip])
+    ($Quip is repeatable and recollected)
+
+(unlikely [ask/tell $ about (quip $Quip)])
+    ($Quip is repeatable and recollected)
+
+($Quip is repeatable and recollected)
     (repeatable $Quip)
     (current player $Player)
     ($Player recollects $Quip)
 
-(rewrite [a/ask | $Words] into [ask | $TailWords])
-    (split $Words by [about] into $Person and $MoreWords)
-    (nonempty $Person)
-    (nonempty $MoreWords)
-    (append $Person $MoreWords $TailWords)
+%% Override and extend stdlib grammar for ask/tell
 
-(understand [a/ask | $Text] as [discuss $Quip with $Person])
-    *(understand $Text as $Quip with $Person)
+(understand [a/ask | $Words] as [ask $NPC about $Quip])
+    (split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
 
-(understand [say | $Text] as [discuss $Quip with $Person])
-    *(understand $Text as $Quip with $Person)
-    (informative quip $Quip)
-
-(understand $Text as $Quip with $Person)
-    *(split $Text anywhere into $Someone and $QuipWords)
-    *(understand $Someone as single object $Person)
-    %% Using `preferably animate` above caused some odd disambiguation errors
-    (animate $Person)
-    *(understand $QuipWords as quip $Quip for $Person)
-
-(rewrite [a/ask about/whether $Text] into [ask $Text])
-
-(understand [a/ask | $Text] as [discuss $Quip])
+(understand [a/ask about | $What] as [ask $NPC about $Quip])
     (conversation partner $NPC)
-    *(understand $Text as quip $Quip for $NPC)
+    *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
 
-(understand [say/tell | $Text] as [discuss $Quip])
+(understand [talk to | $Words] as [talk to $NPC about $Quip])
+    *(split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
+
+%% This triggers if the above doesn't match a discussable quip:
+(understand [a/ask about | $] as [ask $NPC about []])
+    (conversation partner $NPC) (or) ($NPC = [1])
+
+%% [] is a placeholder meaning "something"
+(very unlikely [ask/tell $ about []])
+(very unlikely [ask/tell [1] about []])
+(very unlikely [talk to [1] about $])
+
+(understand [a/ask | $What] as [ask $NPC about $Quip])
     (conversation partner $NPC)
-    *(understand $Text as quip $Quip for $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (questioning quip $Quip)
+
+(understand [tell | $Words] as [tell $NPC about $Quip])
+    (split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
     (informative quip $Quip)
 
-%% Mostly, this is to support demonstrative quips, but it also works for the other two kinds.
-%% But if nothing matches, don't understand at all, to get to normal failure message.
-(understand $Text as [discuss $Quip])
+(understand [tell about | $What] as [tell $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (informative quip $Quip)
+
+(understand [tell | $What] as [tell $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (informative quip $Quip)
+
+%% Disable stdlib understanding of ask command:
+
+~(understand [ask/tell | $] as $)
+ 
+(understand $Words as NPC $NPC)
+    *(understand $Words as single object $NPC)
+    (animate $NPC)
+
+%% (understand [say | $Text] as [discuss $Quip with $Person])
+%%     *(understand $Text as $Quip with $Person)
+%%     (informative quip $Quip)
+
+%% (understand $Text as $Quip with $Person)
+%%     *(split $Text anywhere into $Someone and $QuipWords)
+%%     *(understand $Someone as single object $Person)
+%%     %% Using `preferably animate` above caused some odd disambiguation errors
+%%     (animate $Person)
+%%     *(understand $QuipWords as quip $Quip for $Person)
+
+%% (rewrite [a/ask about/whether $Text] into [ask $Text])
+
+%% (understand [a/ask | $Text] as [discuss $Quip])
+%%     (conversation partner $NPC)
+%%     *(understand $Text as quip $Quip for $NPC)
+%%     (questioning quip $Quip)
+
+%% (understand [say/tell | $Text] as [discuss $Quip])
+%%     (conversation partner $NPC)
+%%     *(understand $Text as quip $Quip for $NPC)
+%%     (informative quip $Quip)
+
+%% This is to support demonstrative quips.
+(understand $Text as $Action)
     (conversation partner $NPC)
     *(understand $Text as quip $Quip for $NPC)
+    %% TODO: Expand to questioning and informative as well
+    %% (performative quip $Quip)
+    (action from quip $Quip is $Action)
 
 (understand $Text as quip $Quip for $Person)
     (filter $Text into $Filtered)
@@ -538,25 +635,17 @@
 
 %% This disambiguates from "ask <topic>" from asking *about* the topic vs.
 %% the standard library "ask <person>" action. Without it you get disambiguation prompts
-%% like "do you want to ask wehther you may see the miniature, or ask the antique miniature something".
-(unlikely [ask/tell $Someone])
+%% like "do you want to ask whether you may see the miniature, or ask the antique miniature something".
+(very unlikely [ask/tell $Someone])
     ~(animate $Someone)
 
-%% Essentially, this is to change the current
-%% conversation partner.
+%% (perform [discuss $Quip with $])
+%%     (try [discuss $Quip])
 
-(perform [discuss $Quip with (conversation partner $)])
-    (try [discuss $Quip])
+(prevent [talk to $NPC about ?])
+    (narrate $NPC expressing ignorance)
 
-(before [discuss $ with $NPC])
-    ~(conversation partner $NPC)
-    (try [talk to $NPC])
-
-(perform [discuss $Quip with $])
-    (try [discuss $Quip])
-
-%% This is the real discuss, where we knew the NPC before understanding the
-%% command, so we know the quip is discussable with that NPC.
+%% This overrides the stub from stdlib:
 
 (perform [talk to $NPC])
     (now) (conversation partner $NPC)
@@ -603,8 +692,10 @@
 %% in an action list are in scope; quips are like topics, abstract,
 %% so these two negated predicates disable that check when discussing.
 
-~(refuse [discuss $ with $])
 ~(refuse [discuss $])
+
+(instead of [greet $NPC])
+    (try [talk to $NPC])
 
 %% This rule prevents this odd exchange:
 %% > ask maid where
@@ -616,15 +707,18 @@
 %% Though we could clean that all up and hopefully avoid
 %% that ambiguity by some other means.
 
-(unlikely [discuss $ with $])
-    %% May need to be adjusted to only when the CP matches
-    %% the actor.
-    (conversation partner $)
+%% (very unlikely [discuss $ with $])
+%%     %% May need to be adjusted to only when the CP matches
+%%     %% the actor.
+%%     (conversation partner $)
 
-(unlikely [discuss $Quip])
-    (conversation partner $NPC)
-    (repeatable $Quip)
-    ($NPC recollects $Quip)
+%% (unlikely [discuss $Quip])
+%%     (conversation partner $NPC)
+%%     (repeatable $Quip)
+%%     ($NPC recollects $Quip)
+
+%% (very unlikely [discuss (unknown placeholder $)])
+%% (very unlikely [discuss (unknown placeholder $) with $])
 
 (when not talking to anyone)
     ~(conversation partner $)
@@ -634,8 +728,57 @@
     (when not talking to anyone)
 
 (perform [discuss $Quip])
+    (perform player quip $Quip)
+
+(before [talk to $NPC about $])
+    ~(conversation partner $NPC)
+    (try [silent greet $NPC])
+
+(perform [silent greet $NPC])
+    %% (log) { before talk to $NPC about $Quip }
+    %% Normally, we'd do this with a (first try ...),
+    %% but that triggers a (tick) that results in a "You could ..."
+    %% reminder text; instead we merge the greeting into the current
+    %% action.
+    (now) (conversation partner $NPC)
+    (narrate greeting $NPC)
+
+%% Under TC, the person to ask/tell is always the CP.
+%% ask and tell both end up here.
+
+(perform [talk to $ about (quip $Quip)])
+    (perform player quip $Quip)
+
+%% Catch all for discussing topics (from stdlib ask/tell) or unknowns
+
+(perform [talk to $NPC about $])
+    %% (log) { perform: talk to $NPC about $What}
+    (narrate $NPC expressing ignorance)
+
+%% (perform [discuss #unknown-ask-quip]) 
+%%     (conversation partner $NPC)
+%%     (narrate $NPC expressing ignorance)
+
+%% (perform [discuss #unknown-tell-quip]) 
+%%     (narrate nothing to say)
+         
+(interface (narrate $<NPC expressing ignorance))
+
+(narrate $NPC expressing ignorance)
+    "I don't know," says (the $NPC).
+
+(narrate nothing to say)
+    You can't think of anything appropriate to say.
+
+(perform [discuss $Quip])
+    (perform player quip $Quip)
+
+%% Perform a normal (not NPC) quip, starting with the quip's comment immediately,
+%% and quering the quip for the NPC's reply.
+
+(perform player quip $Quip)
     %% Record the quip as the current quip now, which ensures that the
-    %% (immediately) predicate operates correctly.
+    %% (immediately following) predicate operates correctly.
     (record current quip $Quip)
     (comment $Quip)
     (current player $Player)
@@ -644,20 +787,28 @@
     (purge #immediate-optional from conversation queue for $NPC)
     (queue $Quip for $NPC as #immediate-obligatory)
 
-(describe action [discuss $Quip])
+(describe action $Action)
+    ($Action = [discuss $Quip])
     (if) (library links enabled) (then)
-        (collect words)
-            (action verb $Quip)
-        (into $Verb)
-        (collect words)
-            (name $Quip)
-        (into $Words)
-        (append $Verb $Words $LinkWords)
-        (link $LinkWords) { (action verb $Quip) (name $Quip) }
+        (link $Action) { (name $Quip) }
     (else)
-        (action verb $Quip) (name $Quip)
+       (name $Quip)
     (endif)
- 
+
+%% (describe action [discuss $Quip with $NPC])
+%%     (if) (library links enabled) (then)
+%%         (collect words)
+%%             (action verb $Quip)
+%%         (into $Verb)
+%%         (collect words)
+%%             (name $Quip)
+%%         (into $Words)
+%%         (append $Verb $Words $LinkWords)
+%%         (link $LinkWords) { (action verb $Quip) (the $NPC) (name $Quip) }
+%%     (else)
+%%         (action verb $Quip) (the $NPC) (name $Quip)
+%%     (endif)
+
 %% Clears the conversation partner and deletes most queued content.
 
 (reset conversation partner)
@@ -681,22 +832,19 @@
     (discussable quips $Quips)
     (nonempty $Quips)
     (current player $Player)
-    (collect $Action)
+    (collect $Quip)
         *($Quip is one of $Quips)
         (plausible $Quip)
         %% Never suggest to the player a quip they've already discussed (even with another NPC).
         ~($Player recollects $Quip)
         ($Quip changes the subject)
-        ($Action = [discuss $Quip])
-        (into $Actions)
-        (if) (empty $Actions)
+    (into $SuggestedQuips)
+    (if) (empty $SuggestedQuips)
     (then)
         (narrate no changes of subject)
     (else)
-        (par)
         You could
-        (list actions $Actions)
-        .
+        (list quips $SuggestedQuips).
     (endif)
 
 (interface (list actions $<Actions))
@@ -785,8 +933,8 @@
         (endif)
     }
 
-%% Debbuging output utility.  Invokes a series of closures, which may succeed or fail, but should
-%% produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
+%% Debugging output utility.  Invokes a series of closures, which may succeed or fail, but should
+%% only produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
 %% or outputs nothing at all if all closures fail.
 %% NOTE: Inefficient; invokes successful closures a second time.
 

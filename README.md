@@ -245,7 +245,7 @@ when the beans are spilled.
 
 In some cases, the phrasing of a comment or reply might vary based on whether the quip is executed immediately
 after its predecessor, or after returning to that line of conversation from some detour.
-The `(immediately)` predicate will succeed when the quip is immediately chosen, rather than later.
+The `(immediately following)` predicate will succeed when the quip is immediately chosen, rather than later.
 
 ```
 #where-she-came-from
@@ -261,7 +261,7 @@ The `(immediately)` predicate will succeed when the quip is immediately chosen, 
 (name *) how to find the castle
 (* follows #where-she-came-from)
 (comment *)
-    (immediately)
+    (immediately following)
     How can I find it?
 (comment *)
     And how might I locate your castle?
