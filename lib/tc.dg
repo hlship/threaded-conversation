@@ -8,17 +8,20 @@
 
 %% There are three types of player-directed quips.
 
-(quip $Quip)    *(questioning quip $Quip)   %% ask
-(questioning quip $) (fail)
-%% (action verb (questioning quip $)) ask
+(quip $Quip)    *(asking quip $Quip)   %% ask
+(asking quip $) (fail)
+%% (action verb (asking quip $)) ask
 
-(quip $Quip)    *(informative quip $Quip)   %% say/tell
-(informative quip $) (fail)
-%% (action verb (informative quip $)) say
+(quip $Quip)    *(telling quip $Quip)   %% say/tell
+(telling quip $) (fail)
+%% (action verb (telling quip $)) say
 
-(quip $Quip)    *(performative quip $Quip)  %% other
-(performative quip $) (fail)
-%% (action verb (performative quip $)) %% nothing
+(quip $Quip)    *(performing quip $Quip)  %% other
+(performing quip $) (fail)
+
+%% An asking quip with the about trait adds `about` between the `ask` verb
+%% and the name of the quip.  For a tellilng quip it is either `say` or `tell about`.
+(about $) (fail)
 
 %% All player-initiated quips are topics for ask/tell, with overrides
 %% for scope and availability.
@@ -450,12 +453,12 @@
 
 (interface (action from quip $<Quip is $>Action))
 
-(action from quip (performative quip $Quip) is [perform quip $Quip])
+(action from quip (performing quip $Quip) is [perform quip $Quip])
 
-(action from quip (questioning quip $Quip) is [ask $NPC about $Quip])
+(action from quip (asking quip $Quip) is [ask $NPC about $Quip])
     (conversation partner $NPC)
 
-(action from quip (informative quip $Quip) is [tell $NPC about $Quip])
+(action from quip (telling quip $Quip) is [tell $NPC about $Quip])
     (conversation partner $NPC)
 
 (list quips $Quips)
@@ -465,24 +468,20 @@
 %% so it's preferable to converting the quip to an action and describing the action, as
 %% it doesn't repeatedly mention the CP.
 
-(describe quip (questioning quip $Quip))
+(describe quip (asking quip $Quip))
     ask 
     (if) (about $Quip) (then) about (endif)
     (name $Quip)
 
-(describe quip (informative quip $Quip))
+(describe quip (telling quip $Quip))
     (if) (about $Quip)
     (then) tell about 
     (else) say    
     (endif)
     (name $Quip)
 
-(describe quip (performative quip $Quip))
+(describe quip (performing quip $Quip))
     (name $Quip)
-
-%% A questioning quip with the about trait adds `about` between the `ask` verb
-%% and the name of the quip.  For a informative quip it is either `say` or `tell about`.
-(about $) (fail)
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
 %% "You could ..." every tick rules.
@@ -576,33 +575,33 @@
     (split $Words by [about] into $Who and $What)
     *(understand $Who as NPC $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (questioning quip $Quip)
+    (asking quip $Quip)
 
 (understand [a/ask about | $What] as [ask $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (questioning quip $Quip)
+    (asking quip $Quip)
 
 (understand [a/ask | $What] as [ask $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (questioning quip $Quip)
+    (asking quip $Quip)
 
 (understand [tell | $Words] as [tell $NPC about $Quip])
     (split $Words by [about] into $Who and $What)
     *(understand $Who as NPC $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (informative quip $Quip)
+    (telling quip $Quip)
 
 (understand [tell about | $What] as [tell $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (informative quip $Quip)
+    (telling quip $Quip)
 
 (understand [say/tell | $What] as [tell $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
-    (informative quip $Quip)
+    (telling quip $Quip)
 
 %% Disable stdlib understanding of ask and tell command:
     

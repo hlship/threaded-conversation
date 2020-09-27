@@ -30,7 +30,7 @@
 (#player/#ted is #in *) 
 
 #about-beard
-(questioning quip *)
+(asking quip *)
 (name *) about the beard
 (comment *)
     "I've never seen you with a beard before" you say, "what's up with that?"
@@ -38,7 +38,7 @@
     "Just needed a change, I guess" Ted replies.
 
 #ask-to-borrow-razor
-(questioning quip *)
+(asking quip *)
 (name *)    to borrow Ted's razor
 (* follows #about-beard)
 (comment *)
@@ -48,7 +48,7 @@
     "If I had a razor," he replies, "do you really think I would look like this?"
 
 #sing-lumberjack-song
-(performative quip *)
+(performing quip *)
 (name *)    sing the lumberjack song
 (* follows #about-beard)
 (comment *)
@@ -61,7 +61,7 @@
     You both chuckle a little, while the others waiting for the bus studiously avoid eye contact.
 
 #girlfriend
-(questioning quip *)
+(asking quip *)
 (name *) if he has found a girlfriend
 (dict *) girl
 (* follows #about-beard)

@@ -54,7 +54,7 @@
     The hermit runs up to you, blocking your path forward.
 
 #why-block
-(questioning quip *)
+(asking quip *)
 (name *) why he is blocking the way
 (* supplies #hermit)
 (comment *)
@@ -75,7 +75,7 @@
     "Though must!" insists the hermit.
 
 #quest-yes
-(informative quip *)
+(telling quip *)
 (name *) yes 
 (* directly follows #request-help/#quest-no)
 (comment *)
@@ -84,7 +84,7 @@
     "Truly, thou art brave!".
 
 #quest-no
-(informative quip *)
+(telling quip *)
 (name *) no
 (* directly follows */#request-help)
 (comment *)

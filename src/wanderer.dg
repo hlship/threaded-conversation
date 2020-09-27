@@ -41,7 +41,7 @@
 (name *) antique miniature
 
 #whether-rumors-tell-truly
-(questioning quip *)
+(asking quip *)
 %% Universal -- doesn't supply any single person
 (name *) whether the rumors tell truly
 (dict *) rumor
@@ -72,7 +72,7 @@
     garick %% common typo
 
 #where-garrick-lives
-(questioning quip *)
+(asking quip *)
 (name *) where Garrick lives
 (* mentions #garrick)
 (comment *)
@@ -84,7 +84,7 @@
 (* follows #whether-rumors-tell-truly)
 
 #heard-the-stories
-(questioning quip *)
+(asking quip *)
 (* supplies #barmaid)
 (* mentions @immortality)
 (* mentions @rumors)
@@ -98,7 +98,7 @@
 (* follows #whether-rumors-tell-truly)
 
 #where-barmaid-comes-from
-(questioning quip *)
+(asking quip *)
 (name *) where the barmaid comes from
 (* mentions #barmaid) %% TODO: Does nothing yet
 (* supplies #barmaid)
@@ -110,7 +110,7 @@
     the ford. But I came over here to work."
 
 #what-the-wanderer-knows
-(questioning quip *)
+(asking quip *)
 (name *) what the wanderer knows
 (* supplies #wanderer)
 %% TODO: It mentions rumors, wanderer
@@ -140,7 +140,7 @@
     (stopping)
 
 #see-miniature
-(questioning quip *)
+(asking quip *)
 (name *) whether you may see the miniature
 (* supplies #wanderer)
 (* follows #what-the-wanderer-knows)

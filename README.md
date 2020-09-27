@@ -82,7 +82,6 @@ You could ask where the barmaid comes from.
 >
 ```
 
-You can see that threaded conversation starts by engaging an NPC in converation.
 During a conversation, TC suggests likely quips, which are a subset of available quips. 
 Likely quips are those that follow the current thread of conversation.
 
@@ -107,20 +106,20 @@ If an animate should not be an NPC, then a `(prevent [talk to $NPC])` rule shoul
 
 Quips come in four varieties, defined by traits:
 
-* `(questioning quip $)` - the player asks the NPC a question  ("does Lily look well?")
-* `(informative quip $)` - the player tells the NPC something ("I suspect the butler did it")
-* `(demonstrative quip $)` - the player performs some bit of behavior ("curse the fates")
-* NPC-directed quips have no trait; these can be queued up and are output when the NPC has no immediate response
+* `(asking quip $)` - the player asks the NPC a question  ("ask does Lily look well?" or "ask about the gnawed shin bone")
+* `(telling quip $)` - the player tells the NPC something ("say hello" or "tell about the missing cheese")
+* `(performing quip $)` - the player performs some bit of behavior ("curse the fates")
+* NPC-directed quips have no identifying trait; these can be queued up and are output when the NPC has no immediate response
 
 The actions `[ask $NPC about $Quip]`, `[tell $NPC about $Quip]` and `[perform quip $Quip]` correspond to the three player-initiated quips. 
-However, the first two delegate to the `[talk to $NPC about $Quip]`, and that delegates to
+However, the first two delegate to the `[talk to $NPC about $Quip]`, and that in turn delegates to
 `[perform quip $Quip]`.
 
 Essentially, any quip that doesn't fit neatly into `ask <someone> about <something>` or `tell <someone> about <something>` should be
-a demonstrative quip.
-For example, a detective game might include a demonstrative quip whose name is `accuse Hannigan of murder` which reads well as
+a performing quip.
+For example, a detective game might include a performing quip whose name is `accuse Hannigan of murder` which reads well as
 a command by the player, or a suggestion by TC; whereas `tell inspector about accuse hannigan of murder`, `tell about accuse Hannigan of murder`, or any
-other variation that TC understands or suggests for an informative quip will appear awkward.
+other variation that TC understands or suggests for a telling quip will appear awkward.
 
 The optional `(about $Quip)` trait changes how quips are suggested to
 the player; `ask <quip name>` becomes `ask about <quip name>`
@@ -155,7 +154,7 @@ By way of illustration, here's first couple of quips in the above exchange:
 (dict *) woman barmaid
 
 #whether-rumors-tell-truly
-(questioning quip *)
+(asking quip *)
 (* supplies #barmaid)
 (name *) whether the rumors tell truly
 (dict *) rumor
@@ -177,7 +176,7 @@ By way of illustration, here's first couple of quips in the above exchange:
 (dict *) codger
 
 #where-garrick-lives
-(questioning quip *)
+(asking quip *)
 (name *) where Garrick lives
 (* mentions #garrick)
 (comment *)
@@ -285,7 +284,7 @@ The `(immediately following)` predicate will succeed when the quip is immediatel
 
 ```
 #where-she-came-from
-(questioning quip *)
+(asking quip *)
 (name *) where she came from
 (comment *)
     "And where did you come from?" you ask.
@@ -293,7 +292,7 @@ The `(immediately following)` predicate will succeed when the quip is immediatel
     "From the grey castle beyond those mountains" she replies.
 
 #how-to-find-castle
-(questioning quip *
+(asking quip *
 (name *) how to find the castle
 (* follows #where-she-came-from)
 (comment *)
@@ -311,7 +310,7 @@ an object must be present, a fact must be known, or so forth.
 
 ```
 #what-watermelon-is-for
-(questioning quip *)
+(asking quip *)
 (name *) what the watermelon is for
 (* mentions #watermelon)
 (comment *)
@@ -328,7 +327,7 @@ A quip may be dubious; such quips are not suggested normally.
 
 ```
 #hannigan-eats-people
-(questioning quip *)
+(asking quip *)
 (name *) whether Mr. Hannigan eats people
 (dubious *)
     ~(player can see #gnawed-shin-bone)
@@ -397,7 +396,7 @@ from the current quip (directly or normally).
     The hermit runs up to you, blocking your path forward.
 
 #why-block
-(questioning quip *)
+(asking quip *)
 (name *) why he is blocking the way
 (* supplies #hermit)
 (comment *)
@@ -418,7 +417,7 @@ from the current quip (directly or normally).
     "Though must!" insists the hermit.
 
 #quest-yes
-(informative quip *)
+(telling quip *)
 (name *) yes 
 (* directly follows #request-help/#quest-no)
 (comment *)
@@ -427,7 +426,7 @@ from the current quip (directly or normally).
     "Truly, thou art brave!".
 
 #quest-no
-(informative quip *)
+(telling quip *)
 (name *) no
 (* directly follows */#request-help)
 (comment *)
@@ -494,7 +493,7 @@ For example:
 
 ```
 #about-weather
-(questioning quip *)
+(asking quip *)
 (* supplies #hook)
 (name *) the weather
 (comment *)

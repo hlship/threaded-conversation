@@ -67,7 +67,7 @@
     Excessive curiosity is not an admirable trait in an agent.
 
 #have-you-got-it
-(informative quip *)
+(telling quip *)
 (restrictive *)
 (reply *)
     "Well," asks Malory, "do you have the package?"
@@ -94,7 +94,7 @@
     (stopping)
 
 #all-in-good-time
-(informative quip *)
+(telling quip *)
 (* directly follows #have-you-got-it)
 (name *) all in good time
 (comment *)
@@ -103,7 +103,7 @@
     "Home Office was very clear," he responds, "there's a timetable to keep."
 
 #damnable-weather
-(performative quip *)
+(performing quip *)
 (name *) comment on the weather
 (comment *)
     "Damnable weather, isn't it?" You watch carefully to see how he reacts.
@@ -114,7 +114,7 @@
     pleasantries." A solid response, but care must be taken.
 
 #pleasantries
-(questioning quip *)
+(asking quip *)
 (name *) what's wrong with pleasantries
 (* directly follows #damnable-weather)
 (comment *)
@@ -125,7 +125,7 @@
     You've been sizing him up, and he now seems to be doing the same.
 
 #precautions
-(questioning quip *)
+(asking quip *)
 (name *)
     if all precautions have been made
 (* follows #all-in-good-time)
@@ -136,7 +136,7 @@
     "Damn it, man. This is important -- what are you playing at?"
 
 #safe-house
-(questioning quip *)
+(asking quip *)
 (name *) whether the safe house is ready
 (* follows #precautions)
 (comment *)
@@ -159,7 +159,7 @@
     a post-mortem back at the den." That sounds ominous.    
 
 #pass-phrase
-(questioning quip *)
+(asking quip *)
 (name *) for the pass phrase
 (* follows #precautions)
 (comment *)
@@ -175,7 +175,7 @@
     .
 
 #selling-package
-(questioning quip *)
+(asking quip *)
 (dubious *)
 (name *) if he intends to sell the package
 (comment *)

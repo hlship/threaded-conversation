@@ -24,7 +24,7 @@
     "You may ask about things animal, vegetable, or mineral."
 
 #animal
-(questioning quip *)
+(asking quip *)
 (name *) animals
 (dict *) animal
 (about *)
@@ -32,7 +32,7 @@
 (reply *) Are you interested in vertebrates or invertebrates?
 
 #vegetable
-(questioning quip *)
+(asking quip *)
 (name *) plants
 (dict *) veg vegetable plant vegetables
 (about *)
@@ -41,7 +41,7 @@
     Mosses, land plants, and aquatic plants.
 
 #mineral
-(questioning quip *)
+(asking quip *)
 (name *) minerals
 (dict *) mineral
 (about *)
@@ -51,7 +51,7 @@
     Metals, stone, and crystals are types of minerals.
 
 #vertebrate
-(questioning quip *)
+(asking quip *)
 (name *) vertebrates
 (dict *) vertebrate
 (about *)
@@ -61,7 +61,7 @@
 (* follows #animal)
 
 #invertebrate
-(questioning quip *)
+(asking quip *)
 (name *) invertebrates
 (dict *) invertebrate
 (about *)
@@ -71,7 +71,7 @@
   worms and insects.
 
 #mammal
-(questioning quip *)
+(asking quip *)
 (name *) mammals
 (about *)
 (* follows #vertebrate)
@@ -80,7 +80,7 @@
     Mammals are warm blooded, bear their young alive, and produce milk.  Primates like you are mammals.
 
 #primate
-(questioning quip *)
+(asking quip *)
 (name *) primates
 (about *)
 (* follows #mammal)
@@ -94,7 +94,7 @@
     You are a primate.  Rather less well adapted than a chimp or a great ape, I believe.
     
 #fish
-(questioning quip *)
+(asking quip *)
 (name *) fish
 (about *)
 (* follows #vertebrate)
@@ -103,7 +103,7 @@
 (reply *) They swim in water; salt water oceans, or fresh water lakes and rivers.
 
 #metal
-(questioning quip *)
+(asking quip *)
 (name *) metals
 (dict *) metal
 (about *)
@@ -112,7 +112,7 @@
 (reply *) Shiny stuff found undergound.
 
 #stone
-(questioning quip *)
+(asking quip *)
 (name *) stone
 (about *)
 (* follows #mineral)

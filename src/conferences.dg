@@ -32,7 +32,7 @@
 (proper *)
 
 #why-she-has-come
-(questioning quip *)
+(asking quip *)
 (* supplies #lavine)
 (name *) why she has come
 (* mentions #lavine/#meeting)
@@ -47,7 +47,7 @@
 (* reveals alliance)
 
 #happy-aliance
-(informative quip *)
+(telling quip *)
 (name *) this alliance will be a happy one
 (* supplies #lavine)
 (comment *)
