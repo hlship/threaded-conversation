@@ -589,15 +589,11 @@
     (informative quip $Quip)
 
 %% Disable stdlib understanding of ask and tell command:
-
-%% ~(understand [ask/tell | $] as $)
-
-%% Need to keep stdlib from matching `talk to <who> about <topic>`
-%% ~(understand [talk to | $Words] as $)
-%%     (split $Words by @about into $ and $)
     
 (understand $Words as NPC $NPC)
-    *(understand $Words as single object $NPC preferably animate)
+    *(understand $Words as single object $NPC)
+    %% Tend to get some wacky disambiguations unless we insist the NPC is animate; preferably isn't enough
+    (animate $NPC)
 
 %% This supports demonstrative quips but also the other two types
 (understand $Text as $Action)
@@ -691,9 +687,7 @@
 (before [talk to $NPC about $])
     ~(conversation partner $NPC)
     (now) (inhibit conversation suggestions)
-    %% (log) { implicit talk to $NPC }
     (try [talk to $NPC]) (tick) (par)
-    %% (log) { after implicit talk to $NPC }
 
 %% Under TC, the person to ask/tell is always the CP.
 %% ask and tell both end up here.
@@ -702,7 +696,6 @@
     (try [perform quip $Quip])
 
 (instead of [talk to $NPC about $])
-    %% (log) { talk to $NPC about $Something }
     (narrate $NPC expressing ignorance)
 
 %% Catch all for discussing topics (from stdlib ask/tell) or unknowns.
