@@ -1,9 +1,15 @@
-# 0.5.0 - UNRELEAESED
+# 0.5.0 - 27 Sep 2020
 
 TC now extends and overrides the standard library ask/tell mechanics.
 
 `(reset conversation partner)` now also clears out the variables tracking
 the current conversation thread.
+
+The traits used to identify quips have changed to `(asking quip $)`,
+`(telling quip $)` and `(performing quip $)`.
+
+Added the `(about $)` trait that modifies how actions for asking and telling
+quips are formatted.
 
 # 0.4.0 - 25 Jul 2020
 
