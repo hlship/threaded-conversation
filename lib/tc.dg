@@ -409,8 +409,7 @@
 %% properly, output the nag.
 (on every tick)
     (current quip $Quip)
-    (last command was $Command)
-    ~($Command is conversationally active)
+    ~(last action was conversationally active)
     %% You'll almost always want a nag to start with `(beat *)`.
     %% An attempt to collect the output from nag and do the beat automatically
     %% didn't work ... text came out lower-case dictionary words.
@@ -421,10 +420,8 @@
     %% the paragraph break.
     (nag $Quip)
 
-([perform quip $] is conversationally active)
-([ask/tell $ about $] is conversationally active)
-([talk to $ about $] is conversationally active)
-([talk to $] is conversationally active)
+(on every tick)
+    (now) ~(last action was conversationally active)
 
 %% During a conversation, identify any plausible, novel quips that don't jump to a new thread.
 
@@ -540,6 +537,34 @@
 (unlikely [ask/tell $ about (quip $Quip)])
     ($Quip is repeatable and recollected)
 
+%% If the standard library matches against a topic, make that very unlikely; if 
+%% that ends up being the best match that can be found, then it will ultimately
+%% trigger the "narrate ignorance".
+%% Likewise, ensure that the who is animate, preventing further disambiguation
+%% problems.
+
+(very unlikely [ask/tell $Who about $Something])
+    ~{
+        (animate $Who)
+        (quip $Something)
+    }
+
+(very unlikely [talk to $Who about $Something])
+    ~{
+        (animate $Who)
+        (quip $Something)
+    }
+
+%% These are stub verbs that exist for the stdlib to ask for more information
+
+(very unlikely [ask/tell $Who])
+    ~(animate $Who)
+
+%% Another place where you can get unwanted disambiguation
+
+(unlikely [talk to $Who about $])
+    ~(animate $Who)
+
 ($Quip is repeatable and recollected)
     (repeatable $Quip)
     (current player $Player)
@@ -562,15 +587,6 @@
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
-
-%% If the standard library matches against a topic, make that very unlikely; if 
-%% that ends up being the best match that can be found, then it will ultimately
-%% trigger the "narrate ignorance".
-(very unlikely [talk to $ about $Something])
-    ~(quip $Something)
-
-(very unlikely [ask/tell $ about $Something])
-    ~(quip $Something)
 
 (understand [tell | $Words] as [tell $NPC about $Quip])
     (split $Words by [about] into $Who and $What)
@@ -623,6 +639,7 @@
 
 (perform [talk to $NPC])
     (now) (conversation partner $NPC)
+    (now) (last action was conversationally active)
     (narrate greeting $NPC)  %% Doesn't look like I7 version quite does this?
     (notice $NPC)
 
@@ -720,6 +737,7 @@
 %% and quering the quip for the NPC's reply.
 
 (perform player quip $Quip)
+    (now) (last action was conversationally active)
     %% Record the quip as the current quip now, which ensures that the
     %% (immediately following) predicate operates correctly.
     (record current quip $Quip)

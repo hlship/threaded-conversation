@@ -1,0 +1,95 @@
+(intro)
+    Long have you searched for a quest worthy for you to submit yourself
+    before the kind. Perhaps this is the day?
+    (par)
+    (try [look])
+
+
+#player
+(current player *)
+
+#sword
+(name *) trusty longword
+(your *)
+(* is #heldby #player)
+
+#armour
+(name *) shining armor
+(* is #wornby #player)
+
+#valley
+(name *) Verdant Valley
+(room *)
+(look *)
+    A verdant valley; northwards lies a menacing pass through the mountains.
+(from * go #north to #pass)
+(from #pass go #south to *)
+(#player is #in *)
+
+#pass
+(name *) Menacing Pass
+(room *)
+(look *)
+    A narrow pass through the jagged mountains leading from the
+    valley \(to the south\) northwards to unknown territory.
+    (par)
+    A wizened old hermit blocks your path, muttering something about
+    quests and dragons under his breath.
+
+#hermit 
+(name *) wizened old hermit
+(male *)
+(descr *)
+    A wizened old hermit dressed in tatters; filthy, beard unkept, eyes
+    wilds and darting.
+(* is #in #pass)
+(prevent [leave $ $])
+    (conversation partner *)
+    The hermit twists around, blocking your path.
+
+(early on every tick)
+    ~(conversation partner $)
+    (player can see *)
+    (now) (conversation partner *)
+    The hermit runs up to you, blocking your path forward.
+
+#why-block
+(questioning quip *)
+(name *) why he is blocking the way
+(* supplies #hermit)
+(comment *)
+    "Why dost thou block my way, hermit?" you ask.
+(reply *)
+    "A dragon has awoke north of here and some brave soul must undertake
+    the task to defeat it before it lays waste to the valley yonder" he
+    replies.
+    (queue #request-help)
+
+#request-help
+(restrictive *)
+(* follows #why-block)
+(reply *)
+    "Wilt thou accept this quest, hero?"
+(nag *)
+    (par)
+    "Though must!" insists the hermit.
+
+#quest-yes
+(informative quip *)
+(name *) yes 
+(* directly follows #request-help/#quest-no)
+(comment *)
+    "Yes."
+(reply *)
+    "Truly, thou art brave!".
+
+#quest-no
+(informative quip *)
+(name *) no
+(* directly follows */#request-help)
+(comment *)
+    "No."
+(reply *)
+    "But thou must!"
+(nag *)
+    "Thou must!"

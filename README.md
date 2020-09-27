@@ -379,17 +379,47 @@ from jumping out of the thread of conversation; they must respond with quip that
 from the current quip (directly or normally).
 
 ```
+#hermit 
+(name *) wizened old hermit
+(male *)
+(descr *)
+    A wizened old hermit dressed in tatters; filthy, beard unkept, eyes
+    wilds and darting.
+(* is #in #pass)
+(prevent [leave $ $])
+    (conversation partner *)
+    The hermit twists around, blocking your path.
+
+(early on every tick)
+    ~(conversation partner $)
+    (player can see *)
+    (now) (conversation partner *)
+    The hermit runs up to you, blocking your path forward.
+
+#why-block
+(questioning quip *)
+(name *) why he is blocking the way
+(* supplies #hermit)
+(comment *)
+    "Why dost thou block my way, hermit?" you ask.
+(reply *)
+    "A dragon has awoke north of here and some brave soul must undertake
+    the task to defeat it before it lays waste to the valley yonder" he
+    replies.
+    (queue #request-help)
+
 #request-help
-%% NPC directed quips need no trait or even a name
 (restrictive *)
+(* follows #why-block)
 (reply *)
     "Wilt thou accept this quest, hero?"
 (nag *)
-    "Though must!"
+    (par)
+    "Though must!" insists the hermit.
 
 #quest-yes
 (informative quip *)
-(name *) yes to the quest
+(name *) yes 
 (* directly follows #request-help/#quest-no)
 (comment *)
     "Yes."
@@ -398,7 +428,7 @@ from the current quip (directly or normally).
 
 #quest-no
 (informative quip *)
-(name *) no to the quest
+(name *) no
 (* directly follows */#request-help)
 (comment *)
     "No."
@@ -406,6 +436,53 @@ from the current quip (directly or normally).
     "But thou must!"
 (nag *)
     "Thou must!"
+```
+
+The above can cause the following transcript:
+
+```
+> n
+You walk north.
+
+Menacing Pass
+A narrow pass through the jagged mountains leading from the valley (to the
+south) northwards to unknown territory.
+
+A wizened old hermit blocks your path, muttering something about quests and
+dragons under his breath.
+
+The hermit runs up to you, blocking your path forward.
+
+You could ask why he is blocking the way.
+
+> ask why
+"Why dost thou block my way, hermit?" you ask.
+
+"A dragon has awoke north of here and some brave soul must undertake the task to
+defeat it before it lays waste to the valley yonder" he replies.
+
+> z
+A moment slips away.
+
+"Wilt thou accept this quest, hero?"
+
+"Though must!" insists the hermit.
+
+You could say yes or say no.
+
+> no
+"No."
+
+"But thou must!"
+
+You could say yes.
+
+> yes
+"Yes."
+
+"Truly, thou art brave!".
+
+> 
 ```
 
 ## Queueing quips (NPC driven)
