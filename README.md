@@ -30,7 +30,8 @@ TC has been tracking along with each new release of Dialog; it currently works w
 Threaded conversation (TC) consists of a string of interactions between the player and non-player characters (NPC);
 The player makes a comment, the NPC provides a reply.
 
-In TC, each such unit of conversation is called a _quip_.
+TC builds on (and effectively replaces) the standard library `ask/tell/talk to` commands; instead of discussing topics, 
+the unit of conversation is called a _quip_.
 
 Here's an example of TC in action:
 
@@ -87,7 +88,6 @@ Likely quips are those that follow the current thread of conversation.
 
 You can see in the transcript that it's possible to `ask barmaid about rumors`, which engages the barmaid in conversation.
 The player makes the comment ("Where I come from ...") and the barmaid NPC replies ("Oh, do they? ...").
-The comment and reply is called "discussing", and are implemented by the Dialog actions `[discuss $Quip]` and `[discuss $Quip with $NPC]`.
 
 The style of TC is that the player's command is a bit general, but the comment and reply in the quip is more specific.
 
@@ -111,6 +111,20 @@ Quips come in four varieties, defined by traits:
 * `(informative quip $)` - the player tells the NPC something ("I suspect the butler did it")
 * `(demonstrative quip $)` - the player performs some bit of behavior ("curse the fates")
 * NPC-directed quips have no trait; these can be queued up and are output when the NPC has no immediate response
+
+The actions `[ask $NPC about $Quip]`, `[tell $NPC about $Quip]` and `[perform quip $Quip]` correspond to the three player-initiated quips. 
+However, the first two delegate to the `[talk to $NPC about $Quip]`, and that delegates to
+`[perform quip $Quip]`.
+
+Essentially, any quip that doesn't fit neatly into `ask <someone> about <something>` or `tell <someone> about <something>` should be
+a demonstrative quip.
+For example, a detective game might include a demonstrative quip whose name is `accuse Hannigan of murder` which reads well as
+a command by the player, or a suggestion by TC; whereas `tell inspector about accuse hannigan of murder`, `tell about accuse Hannigan of murder`, or any
+other variation that TC understands or suggests for an informative quip will appear awkward.
+
+The optional `(about $Quip)` trait changes how quips are suggested to
+the player; `ask <quip name>` becomes `ask about <quip name>`
+and `say <quip name>` becomes `tell about <quip name>`.
 
 Quips are often limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
 associated with a quip.  Otherwise, the quip is available to any NPC.
@@ -190,6 +204,22 @@ The mentioned object does *not* have to be in scope; it just has to be identifia
 
 Mentioning may also be used with Dialog topics.
 
+## Expressing Ignorance
+
+When you ask or tell an NPC about text that doesn't match a quip, the NPC will respond using
+the `(narrate $NPC expressing ignorance)`:
+
+```
+> ask barmaid about frobozz
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+```
+
+Because of how parsing and dictionary words operate, there isn't a good way to 
+get the exact text provided by the player; instead the response is fairly generic, but
+can certainly be customized based on the NPC and even the current quip.
+
 ## Conversation Partner
 
 The global variable `(conversation partner $)` stores the NPC the player is currently conversing with.
@@ -210,20 +240,25 @@ after discarding dubious and recollected quips, it keeps only those that indicat
 
 In some cases, there is no proper change of subject.
 
+The action for this is `[change subject]`.
+
 ## Recollection
 
-When a quip executes, the player and the NPC are updated to recollect the quip.
+When a quip is discussed, the player and the NPC are updated to recollect the quip.
 
 The `($NPC recollects $Quip)` predicate succeeds if the specific NPC was the conversation partner when the quip
 was discussed.
 
-In a situation where other NPCs are present, they will _not_ recollect the quip; only the conversation partner recollects
-the quip.
+In a situation where other NPCs are present, they will _not_ recollect the quip; only the
+player and the conversation partner recollects the quip.
 
 ## Reacting To Quips
 
 After TC outputs the reply and marks the quip as recollected, it triggers a notification: `(after $NPC has replied with $Quip)`.
-This gives other NPCs or game logic a chance to react to the quip, for example:
+
+This notification is more useful than an `after` rule, because three different actions can perform a quip.
+
+This notification gives other NPCs or game logic a chance to react to the quip, for example:
 
 ```
 #thurg
@@ -238,7 +273,8 @@ This gives other NPCs or game logic a chance to react to the quip, for example:
     (game over { You have died. })
 ```
 
-The above is an example from one of the tests; a full implementation in a complete game might use `(player can see *)` to ensure that Thurg is present
+The above is an example from one of the tests; a full implementation in a complete game might use 
+`(player can see *)` to ensure that Thurg is present
 when the beans are spilled.
 
 ## Immediate
@@ -300,7 +336,6 @@ A quip may be dubious; such quips are not suggested normally.
 
 Dubious quips are never suggested to the player, but are still valid if the player stumbles upon them.
 Whereas quips that are not relevant to the conversation thread are unlikely, dubious quips are very unlikely.
-
 
 Here, we can accuse Hannigan of cannibalism at any time, but it won't be suggested to the player until some evidence is at hand.
 
@@ -384,7 +419,7 @@ For example:
 #about-weather
 (questioning quip *)
 (* supplies #hook)
-(name *) about the weather
+(name *) the weather
 (comment *)
     "Are those dark clouds on the horizon headed this way?" you ask the pirate.
 (reply *)
@@ -414,9 +449,9 @@ Quips may be queued in one of four ways:
 - `#immediate-optional` - a casual quip that will be discarded if the player discusses any quip
 
 The algorithm for determining when the player changes subjects is a bit tricky; essentially, the last few quips are
-tracked (as global variables `(current quip $)`, `(previous quip $)` and `(grandfather quip $)`).
-When the player discusses a quip that doesn't follow the grandfather quip, that is a change of subject; optional queued quips
-are discarded, and the quip becomes the new grandfather quip.
+tracked (as global variables `(current quip $)`, `(previous quip $)` and `(grandparent quip $)`).
+When the player discusses a quip that doesn't follow the grandparent quip, that is a change of subject; optional queued quips
+are discarded, and the quip becomes the new grandparent quip.
 
 > This approach is based as closely as possible on the Inform7 library, and is probably not quite right!
 
@@ -519,7 +554,6 @@ The link will discuss the identified quip.
 
 # TODO
 
-- Find a way to handle "expressing ignorance" (when you ask an NPC about an unknown word or phrase)
 - Startup checks similar to Inform7 (prevent unexpected loops, etc.)
 - Optimizations (that may only be needed in full size games)
 - Tune the logic for in-thread vs. out-of-thread

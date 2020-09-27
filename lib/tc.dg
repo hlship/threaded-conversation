@@ -429,19 +429,27 @@
 %% During a conversation, identify any plausible, novel quips that don't jump to a new thread.
 
 (on every tick)
-    (discussable quips $Quips)
-    (nonempty $Quips)
-    (current player $Player)
-    (collect $Quip)
-        *($Quip is one of $Quips)
-        (plausible $Quip)
-        %% Never suggest to the player a quip they've already discussed (even with another NPC).
-        ~($Player recollects $Quip)
-        ~($Quip is not relevant to current thread)
-    (into $SuggestedQuips)
-    (nonempty $SuggestedQuips)
-    (par)
-    You could (list quips $SuggestedQuips).
+    %% The before rule that automatically engages in conversation also inhibits this logic
+    %% for one tick.
+    (if) (inhibit conversation suggestions)
+    (then)
+        (now) ~(inhibit conversation suggestions)
+    (else)
+        (discussable quips $Quips)
+        (nonempty $Quips)
+        (current player $Player)
+        (collect $Quip)
+            *($Quip is one of $Quips)
+            (plausible $Quip)
+            %% Never suggest to the player a quip they've already discussed (even with another NPC).
+            ~($Player recollects $Quip)
+            ~($Quip is not relevant to current thread)
+        (into $SuggestedQuips)
+        (nonempty $SuggestedQuips)
+        (par)
+        You could (list quips $SuggestedQuips).
+    (endif)
+    
 
 (interface (action from quip $<Quip is $>Action))
 
@@ -461,13 +469,23 @@
 %% it doesn't repeatedly mention the CP.
 
 (describe quip (questioning quip $Quip))
-    ask (name $Quip)
+    ask 
+    (if) (about $Quip) (then) about (endif)
+    (name $Quip)
 
 (describe quip (informative quip $Quip))
-    say (name $Quip)
+    (if) (about $Quip)
+    (then) tell about 
+    (else) say    
+    (endif)
+    (name $Quip)
 
 (describe quip (performative quip $Quip))
     (name $Quip)
+
+%% A questioning quip with the about trait adds `about` between the `ask` verb
+%% and the name of the quip.  For a informative quip it is either `say` or `tell about`.
+(about $) (fail)
 
 %% Unlikely helps weed out non-relevant quips, and is tied into the
 %% "You could ..." every tick rules.
@@ -545,13 +563,14 @@
     *(understand $What as quip $Quip for $NPC)
     (questioning quip $Quip)
 
-%% Ultimately, ask/tell diverts to [talk to ...] so might as well make that work too.
+%% If the standard library matches against a topic, make that very unlikely; if 
+%% that ends up being the best match that can be found, then it will ultimately
+%% trigger the "narrate ignorance".
+(very unlikely [talk to $ about $Something])
+    ~(quip $Something)
 
-(understand [talk to | $Words] as [talk to $NPC about $Quip])
-    *(split $Words by [about] into $Who and $What)
-    *(understand $Who as NPC $NPC)
-    *(understand $What as quip $Quip for $NPC)
-    %% Don't care what kind of quip with talk to
+(very unlikely [ask/tell $ about $Something])
+    ~(quip $Something)
 
 (understand [tell | $Words] as [tell $NPC about $Quip])
     (split $Words by [about] into $Who and $What)
@@ -564,15 +583,19 @@
     *(understand $What as quip $Quip for $NPC)
     (informative quip $Quip)
 
-(understand [tell | $What] as [tell $NPC about $Quip])
+(understand [say/tell | $What] as [tell $NPC about $Quip])
     (conversation partner $NPC)
     *(understand $What as quip $Quip for $NPC)
     (informative quip $Quip)
 
 %% Disable stdlib understanding of ask and tell command:
 
-~(understand [ask/tell | $] as $)
- 
+%% ~(understand [ask/tell | $] as $)
+
+%% Need to keep stdlib from matching `talk to <who> about <topic>`
+%% ~(understand [talk to | $Words] as $)
+%%     (split $Words by @about into $ and $)
+    
 (understand $Words as NPC $NPC)
     *(understand $Words as single object $NPC preferably animate)
 
@@ -582,7 +605,7 @@
     *(understand $Text as quip $Quip for $NPC)
     (action from quip $Quip is $Action)
 
-(understand $Text as quip $Quip for $NPC)
+(understand $Text as quip $Quip for $NPC)   
     (filter $Text into $Filtered)
     (nonempty $Filtered)
     (if) (conversation partner $NPC) (then)
@@ -597,7 +620,7 @@
 
 %% TODO: This is still a work in progress
 
-(prevent [talk to $NPC about ?])
+(prevent [talk to $NPC about []])
     (narrate $NPC expressing ignorance)
 
 %% This overrides the stub from stdlib:
@@ -667,24 +690,32 @@
 
 (before [talk to $NPC about $])
     ~(conversation partner $NPC)
-    (try [talk to $NPC])
+    (now) (inhibit conversation suggestions)
+    %% (log) { implicit talk to $NPC }
+    (try [talk to $NPC]) (tick) (par)
+    %% (log) { after implicit talk to $NPC }
 
 %% Under TC, the person to ask/tell is always the CP.
 %% ask and tell both end up here.
 
-(perform [talk to $ about (quip $Quip)])
-    (perform player quip $Quip)
+(instead of [talk to $ about (quip $Quip)])
+    (try [perform quip $Quip])
+
+(instead of [talk to $NPC about $])
+    %% (log) { talk to $NPC about $Something }
+    (narrate $NPC expressing ignorance)
 
 %% Catch all for discussing topics (from stdlib ask/tell) or unknowns.
 %% TODO: Still a work in progress
 
-(perform [talk to $NPC about $])
+(perform [perform quip $])
+    (conversation partner $NPC)
     (narrate $NPC expressing ignorance)
          
 (interface (narrate $<NPC expressing ignorance))
 
 (narrate $NPC expressing ignorance)
-    "I don't know," says (the $NPC).
+    "I don't know anything about that," says (the $NPC).
 
 (narrate nothing to say)
     You can't think of anything appropriate to say.
@@ -721,6 +752,10 @@
     (then)
         (purge optional conversation for $NPC)
         (now) ~(conversation partner $)
+        (now) ~(discussable quips $)
+        (now) ~(current quip $)
+        (now) ~(previous quip $)
+        (now) ~(grandparent quip $)
     (endif)
 
 (understand command [change subject])

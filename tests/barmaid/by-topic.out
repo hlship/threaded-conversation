@@ -70,4 +70,19 @@ river, on the main road west. You can find it by the smell."
 
 You could ask where she comes from.
 
+> ask barmaid about frobozz
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+
+> tell barmaid about plugh
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+
+> talk to barmaid about snert
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+
 > 

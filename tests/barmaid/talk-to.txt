@@ -1,1 +1,3 @@
+%% Exercise implicit greeting and expressing ignorance (the immortality topic is
+%% linked to a later quip.)
 talk to bar maid about immortality

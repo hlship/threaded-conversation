@@ -25,23 +25,26 @@
 
 #animal
 (questioning quip *)
-(name *) about animals
+(name *) animals
 (dict *) animal
+(about *)
 (comment *) You ask about animals.
 (reply *) Are you interested in vertebrates or invertebrates?
 
 #vegetable
 (questioning quip *)
-(name *) about plants
+(name *) plants
 (dict *) veg vegetable plant vegetables
+(about *)
 (comment *) Plants and vegetables?
 (reply *)
     Mosses, land plants, and aquatic plants.
 
 #mineral
 (questioning quip *)
-(name *) about minerals
+(name *) minerals
 (dict *) mineral
+(about *)
 (comment *) What are minerals?
 (reply *)
     Minerals are non-living elements, many of which are building blocks of life.
@@ -49,8 +52,9 @@
 
 #vertebrate
 (questioning quip *)
-(name *) about vertebrates
+(name *) vertebrates
 (dict *) vertebrate
+(about *)
 (comment *) What are vertebrates?
 (reply *) Animals with backbones are vertebrates, such as mammals,
   fish, and lizards.
@@ -58,8 +62,9 @@
 
 #invertebrate
 (questioning quip *)
-(name *) about invertebrates
+(name *) invertebrates
 (dict *) invertebrate
+(about *)
 (* follows #animal)
 (comment *) What are invertebrates?
 (reply *) Animals without a backbone are invertebrates.  This includes
@@ -67,7 +72,8 @@
 
 #mammal
 (questioning quip *)
-(name *) about mammals
+(name *) mammals
+(about *)
 (* follows #vertebrate)
 (comment *) What are mammals?
 (reply *)
@@ -75,7 +81,8 @@
 
 #primate
 (questioning quip *)
-(name *) about primates
+(name *) primates
+(about *)
 (* follows #mammal)
 (comment *) What's a primate?
 (reply *)
@@ -88,7 +95,8 @@
     
 #fish
 (questioning quip *)
-(name *) about fish
+(name *) fish
+(about *)
 (* follows #vertebrate)
 %% (* directly follows #mineral/#plant)
 (comment *) What are fish?
@@ -96,15 +104,17 @@
 
 #metal
 (questioning quip *)
-(name *) about metals
+(name *) metals
 (dict *) metal
+(about *)
 (* follows #mineral)
 (comment *) Metals?
 (reply *) Shiny stuff found undergound.
 
 #stone
 (questioning quip *)
-(name *) about stone
+(name *) stone
+(about *)
 (* follows #mineral)
 (comment *) Stone?
 (reply *) Rock and dirt.

@@ -1,3 +1,10 @@
+# 0.5.0 - UNRELEAESED
+
+TC now extends and overrides the standard library ask/tell mechanics.
+
+`(reset conversation partner)` now also clears out the variables tracking
+the current conversation thread.
+
 # 0.4.0 - 25 Jul 2020
 
 - Added `(after $NPC has replied with $Quip)` notification

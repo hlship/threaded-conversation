@@ -5,3 +5,7 @@ ask barmaid about immortality
 undo
 ask barmaid about immortal
 codger
+ask barmaid about frobozz
+tell barmaid about plugh
+talk to barmaid about snert
+
