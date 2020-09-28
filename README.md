@@ -125,11 +125,15 @@ The optional `(about $Quip)` trait changes how quips are suggested to
 the player; `ask <quip name>` becomes `ask about <quip name>`
 and `say <quip name>` becomes `tell about <quip name>`.
 
+## Quip Availability
+
 Quips are often limited to a particular NPC; `($Quip supplies $NPC)` establishes which NPC, or NPCs, are
 associated with a quip.  Otherwise, the quip is available to any NPC.
 
 The part that makes threaded conversation truly _threaded_, is that most quips aren't available at
 the start of the conversation; they are structured to follow after some prior quip.
+
+Unless marked with the `(repeatable $)` trait, a quip may only be discussed once *by any single NPC*.
 
 Frequently, you only need to mark quips that represent a change in subject as supplying an NPC; since only
 that NPC can access the initial quip, only that NPC will have access to any subsequent quips in the thread.
