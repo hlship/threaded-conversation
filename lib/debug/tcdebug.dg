@@ -1,0 +1,110 @@
+
+%%
+%% Debugging tools for Threaded Conversation
+%%
+
+(conversation status)
+    ~(conversation partner $)
+    (log) { No conversation partner. }
+
+(conversation status)
+    (conversation partner $NPC)
+    Conversation partner: $NPC (space) -- (space) (the $NPC)
+    (if)
+        ($NPC has conversation queue $Queue)
+        (nonempty $Queue)
+    (then)
+        (line) Queue:
+        (comma separated list $Queue)
+        (line)
+    (endif)
+    (line)
+    Quips:
+    (line) (space 2) Current: { (current quip $Current) $Current (or) <unset> }
+    (line) (space 2) Previous: { (previous quip $Prev) $Prev (or) <unset> }
+    (line) (space 2) Grandparent: { (grandparent quip $Grand) $Grand (or) <unset> }
+    (par)
+    (discussable quips $Quips)
+    (nonempty $Quips)
+    (par)
+    Discussable quips:
+    (exhaust) {
+        *($Quip is one of $Quips)
+        (line)
+        (space 2) 
+        $Quip
+        (annotate [
+            { (conversation partner $NPC)
+              ($NPC recollects $Quip) recollected }
+            { (repeatable $Quip) repeatable }
+            { (restrictive $Quip) restrictive }
+            { ($Quip changes the subject) changes the subject }
+            { (dubious $Quip) dubious }
+            { ($Quip is relevant to current thread) relevant }
+        ])
+        (collect $Earlier)
+            *($Quip continues from $Earlier)
+        (into $Continues)
+        (if) (nonempty $Continues)
+        (then)
+            (line) (space 4)
+            Follows:
+            (comma separated list $Continues )
+        (endif)
+        (collect $Later)
+            *($Later continues from $Quip)
+        (into $Followers)
+        (if) (nonempty $Followers)
+        (then)
+            (line) (space 4)
+            Followers:
+            (comma separated list $Followers)
+        (endif)
+    }
+
+%% Debugging output utility.  Invokes a series of closures, which may succeed or fail, but should
+%% only produce output on success.  Outputs a comma separated list, in parens, of the succeeding closures,
+%% or outputs nothing at all if all closures fail.
+%% NOTE: Inefficient; invokes successful closures a second time.
+
+(interface (annotate $<ClosureList))
+
+(annotate $Closures)
+    (annotate $Closures 1)
+
+%% Impl for (annotate $List)
+
+(annotate [$Closure | $More] $First)
+    (collect words) (query $Closure) (into $Words)
+    (if) (empty $Words)
+    (then)
+        (annotate $More $First)
+    (else)
+        (if) ($First = 1)
+        (then) \(
+        (else) ,
+        (endif)
+        (query $Closure)
+        (annotate $More 0)
+    (endif)
+
+(annotate [] 0)
+    \)
+
+(annotate [] $)
+
+(interface (comma separated list $<List))
+(interface (comma separated list $<List $<Closure))
+
+(comma separated list $List)
+    (comma separated list $List { $_ })
+
+(comma separated list $List $Closure)
+    (comma separated list $List $Closure 0)
+
+(comma separated list [] $ $)
+
+(comma separated list [$First | $More] $Closure $Comma)
+    (if) ($Comma = 1) (then) , (endif)
+    { (query $Closure $First) (or) }
+    (comma separated list $More $Closure 1)
