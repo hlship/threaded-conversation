@@ -284,7 +284,7 @@ The above is an example from one of the tests; a full implementation in a comple
 `(player can see *)` to ensure that Thurg is present
 when the beans are spilled.
 
-## Immediate
+## Immediately Following
 
 In some cases, the phrasing of a comment or reply might vary based on whether the quip is executed immediately
 after its predecessor, or after returning to that line of conversation from some detour.
@@ -595,41 +595,6 @@ Different approaches may be appropriate at different times in your story.
 Query the global variable `(conversation partner $NPC)` to identify who the player is conversing with; the query will fail
 if there is no current conversation partner.
 
-## (conversation status)
-
-From the debugger, querying `(conversation status)` provides a detailed view of the data TC uses to make decisions:
-
-```
-You could ask about primates or ask about fish.
-
-> (conversation status)
-Conversation partner: #tree -- the tree of knowledge
-Quips:
-  Current: #mammal
-  Previous: #vertebrate
-  Grandparent: #animal
-
-Discussable quips:
-  #animal (recollected, repeatable, changes the subject)
-    Followers: #vertebrate, #invertebrate
-  #vegetable (repeatable, changes the subject)
-  #mineral (repeatable, changes the subject)
-    Followers: #metal, #stone
-  #invertebrate
-    Follows: #animal
-  #primate (relevant)
-    Follows: #mammal
-  #fish (relevant)
-    Follows: #vertebrate
-Query succeeded: (conversation status)
-```
-
-Quips annotated as `changes the subject` are those that are considered a change in subject, and will affect queued quips for the conversation partner.
-Quips annotated as `relevant` are considered part of the current thread (and are the quips generally suggested
-to the player).
-
-When the conversation partner has queued quips, those are also identified.
-
 ## Library Links
 
 When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
@@ -661,6 +626,12 @@ Discussable quips:
     
 >
 ```
+
+Quips annotated as `changes the subject` are those that are considered a change in subject, and will affect queued quips for the conversation partner.
+Quips annotated as `relevant` are considered part of the current thread (and are the quips generally suggested
+to the player).
+
+When the conversation partner has queued quips, those are also identified.
 
 ## roominfo command
 
