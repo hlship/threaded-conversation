@@ -1,4 +1,13 @@
-# 0.5.0 - 27 Sep 2020
+# 0.6 -- UNRELEASED
+
+Broke the debugging code into a companion library, `lib/debug/tcdebug.dg`.
+
+Added the `convinfo` debugging command, which display the conversation status.
+
+Added the `roominfo` debugging command, which displays information about the current room and
+the objects within -- like `@tree` but for a single room, and more detailed.
+
+# 0.5 -- 27 Sep 2020
 
 TC now extends and overrides the standard library ask/tell mechanics.
 
@@ -11,7 +20,7 @@ The traits used to identify quips have changed to `(asking quip $)`,
 Added the `(about $)` trait that modifies how actions for asking and telling
 quips are formatted.
 
-# 0.4.0 - 25 Jul 2020
+# 0.4 -- 25 Jul 2020
 
 - Added `(after $NPC has replied with $Quip)` notification
 

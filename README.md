@@ -15,11 +15,15 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 ```
   {:github "hlship/threaded-conversation" 
-   :version "v0.5"
+   :version "v0.6"
    :path "lib/tc.dg"}
 ```
 
-... or just copy `lib/tc.dg` from this respository into your workspace.
+... or just copy `lib/tc.dg` from this repository into your workspace.
+
+Debugging commands and support are now in a secondary library,
+`lib/tcdebug.dg`.
+
 
 # Dialog Version
 
@@ -631,6 +635,70 @@ When the conversation partner has queued quips, those are also identified.
 When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
 involving quips will output links, not just text. 
 The link will discuss the identified quip.
+
+## convinfo command
+
+In the debug library is a `convinfo` command that outputs information about the NPC, current quip, and related quips.
+
+For example, after `ask barmaid about rumors`, you would see:
+
+```
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: #whether-rumors-tell-truly
+  Previous: <unset>
+  Grandparent: #whether-rumors-tell-truly
+
+Discussable quips:
+  #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+  #where-garrick-lives (relevant)
+    Follows: #whether-rumors-tell-truly
+  #where-barmaid-comes-from (changes the subject)
+  #heard-the-stories (relevant)
+    Follows: #whether-rumors-tell-truly
+    
+>
+```
+
+## roominfo command
+
+This debugging command outputs useful information about the current room and all the objects within it.
+
+For example, `roominfo` at the start of [Sand-dancer](https://github.com/hlship/sanddancer-dialog) yields:
+
+```
+> roominfo
+#middle-of-nowhere (around the tower, in range of headlights, inherently dark)
+    #tire-tracks #in
+    #tower #in
+    #sagebrush #in
+    #desert-sand #in
+    #pickup-truck #in (closed)
+        #knock #in (provides light)
+            #lighter #heldby
+            #wallet #heldby (closed)
+                #license #in
+                #receipt #in
+                #photo #in (closed)
+                    #ultrasound #in
+            #jacket #wornby
+            #emotional-baggage #heldby
+                #grandmas-stories #in
+        #jade #in
+        #glove-compartment #partof (closed)
+            #pack #in
+        #headlights #partof
+    #whiffs-of-gasoline #in
+    #saguaro #in
+    #lizard #in (animate)
+```
+
+This provides a wealth of information about the current room all in a single place.
+
+The annotations (such as "closed" or "inherently dark") are extensible via the `(annotate $Obj with $Annotation)` predicate;
+Sand-dancer adds annotations to identify the region a room is in ("around the tower"), for example.
 
 # TODO
 

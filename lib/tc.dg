@@ -4,17 +4,15 @@
 
 (extension version)
     (line)
-    Threaded Conversation 0.5 by Howard Lewis Ship
+    Threaded Conversation 0.6 by Howard Lewis Ship
 
 %% There are three types of player-directed quips.
 
 (quip $Quip)    *(asking quip $Quip)   %% ask
 (asking quip $) (fail)
-%% (action verb (asking quip $)) ask
 
 (quip $Quip)    *(telling quip $Quip)   %% say/tell
 (telling quip $) (fail)
-%% (action verb (telling quip $)) say
 
 (quip $Quip)    *(performing quip $Quip)  %% other
 (performing quip $) (fail)
@@ -145,6 +143,7 @@
 %% Used to vary the text when a quip immediately follows its prior quip.
 %% If the player goes off on a tangent before returning to this quip,
 %% then (immediately following) will fail.
+
 (immediately following)
     (current quip $Current)
     (previous quip $Previous)
@@ -611,6 +610,7 @@
     (animate $NPC)
 
 %% This supports demonstrative quips but also the other two types
+
 (understand $Text as $Action)
     (conversation partner $NPC)
     *(understand $Text as quip $Quip for $NPC)
@@ -629,7 +629,9 @@
     (endif)    
     *(understand $Text as quip $Quip from $Quips)
 
-%% TODO: This is still a work in progress
+
+%% This works, but could use improvement; currently only the ask/tell <npc> about <topic>
+%% result in this action with [] (aka, "something").
 
 (prevent [talk to $NPC about []])
     (narrate $NPC expressing ignorance)
@@ -715,7 +717,6 @@
     (narrate $NPC expressing ignorance)
 
 %% Catch all for discussing topics (from stdlib ask/tell) or unknowns.
-%% TODO: Still a work in progress
 
 (perform [perform quip $])
     (conversation partner $NPC)

@@ -34,7 +34,7 @@ like you are mammals.
 
 You could ask about primates or ask about fish.
 
-> debug conversation
+> convinfo
 Conversation partner: #tree -- the tree of knowledge
 Quips:
   Current: #mammal
@@ -85,7 +85,7 @@ Mosses, land plants, and aquatic plants.
 You could ask about invertebrates, ask about fish, ask about metals, or ask
 about stone.
 
-> debug conversation
+> convinfo
 Conversation partner: #tree -- the tree of knowledge
 Quips:
   Current: #vegetable

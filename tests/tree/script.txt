@@ -2,12 +2,12 @@ talk to tree
  animal
 vertebrates
 mammals
-debug conversation
+convinfo
 change subject
 primates
 minerals
 plants
-debug conversation
+convinfo
 %% Because all the top-level quips (animal, plants, minerals)
 %% have been exhausted, there's no new thread to switch to.
 change the subject
