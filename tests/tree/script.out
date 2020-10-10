@@ -34,7 +34,7 @@ like you are mammals.
 
 You could ask about primates or ask about fish.
 
-> (conversation status)
+> debug conversation
 Conversation partner: #tree -- the tree of knowledge
 Quips:
   Current: #mammal
@@ -51,7 +51,7 @@ Discussable quips:
     Follows: #mammal
   #fish (relevant)
     Follows: #vertebrate
-Query succeeded: (conversation status)
+
 > change subject
 You could ask about plants or ask about minerals.
 
@@ -85,7 +85,7 @@ Mosses, land plants, and aquatic plants.
 You could ask about invertebrates, ask about fish, ask about metals, or ask
 about stone.
 
-> (conversation status)
+> debug conversation
 Conversation partner: #tree -- the tree of knowledge
 Quips:
   Current: #vegetable
@@ -101,7 +101,7 @@ Discussable quips:
     Follows: #mineral
   #stone (relevant)
     Follows: #mineral
-Query succeeded: (conversation status)
+
 > change the subject
 You can think of no changes of subject now.
 

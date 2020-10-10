@@ -3,11 +3,16 @@
 %% Debugging tools for Threaded Conversation
 %%
 
-(conversation status)
+(understand command [debug conversation])
+
+(perform [debug conversation])
+    (debug conversation)
+
+(debug conversation)
     ~(conversation partner $)
     (log) { No conversation partner. }
 
-(conversation status)
+(debug conversation)
     (conversation partner $NPC)
     Conversation partner: $NPC (space) -- (space) (the $NPC)
     (if)
