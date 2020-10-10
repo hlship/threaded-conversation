@@ -1,8 +1,8 @@
 # 0.6 -- 9 Oct 2020
 
-Broke the debugging code into a companion library, `lib/debug/tcdebug.dg`.
+Broke the debugging code into a companion library, `lib/tcdebug.dg`.
 
-Added the `convinfo` debugging command, which display the conversation status.
+Added the `convinfo` debugging command, which displays the conversation status.
 
 Added the `roominfo` debugging command, which displays information about the current room and
 the objects within -- like `@tree` but for a single room, and more detailed.
