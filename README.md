@@ -263,7 +263,9 @@ player and the conversation partner recollects the quip.
 
 After TC outputs the reply and marks the quip as recollected, it triggers a notification: `(after $NPC has replied with $Quip)`.
 
-This notification is more useful than an `after` rule, because three different actions can perform a quip.
+This notification is necessary because of how TC queues quips.
+Using `(after [discuss quip $Quip])` would trigger *before* the NPC has produced their comment;
+whereas `(after $NPC has replied with $Quip)` triggers properly: after the NPC's comment.
 
 This notification gives other NPCs or game logic a chance to react to the quip, for example:
 
@@ -280,8 +282,8 @@ This notification gives other NPCs or game logic a chance to react to the quip, 
     (game over { You have died. })
 ```
 
-The above is an example from one of the tests; a full implementation in a complete game might use 
-`(player can see *)` to ensure that Thurg is present
+The above is an example from one of the tests, `($ reveals alliance)` is a trait on certain quips; 
+a full implementation in a complete game might use `(player can see *)` to ensure that Thurg is present
 when the beans are spilled.
 
 ## Immediately Following

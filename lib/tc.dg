@@ -76,6 +76,7 @@
 %% the current quip.
 
 @(unrestrictive $Quip)   ~(restrictive $Quip)
+(restrictive $) (fail)
 
 %% Quips are normally plausible, but dubious clips are allowed.
 %% You have to be specific to choose a dubious quip, disambiguation
@@ -93,11 +94,6 @@
 %% the earlier quip is still the current quip.
 
 ($ directly follows $) (fail)
-
-%% Restrictive quips require a response; changes of subject are not allowed.
-%% Usually the response quips directly follow the restrictive quip.
-
-(restrictive $) (fail)
 
 %% Quips may supply one (or more) NPC, or be universal (supplies anyone).
 
@@ -122,7 +118,7 @@
 
 (global variable (conversation partner $))
 
-%% THese are the quips discussable by the player, based on
+%% These are the quips discussable by the player, based on
 %% the conversation partner, rebuilt on every tick.
 
 (global variable (discussable quips $))
@@ -427,7 +423,7 @@
 
 %% During a conversation, identify any plausible, novel quips that don't jump to a new thread.
 
-(on every tick)
+(late on every tick)
     %% The before rule that automatically engages in conversation also inhibits this logic
     %% for one tick.
     (if) (inhibit conversation suggestions)
@@ -609,7 +605,9 @@
     %% Tend to get some wacky disambiguations unless we insist the NPC is animate; preferably isn't enough
     (animate $NPC)
 
-%% This supports demonstrative quips but also the other two types
+%% This is necessary for demonstrative quips, but also the other two types.
+%% Experienced players tend to just type a keyword to progress the
+%% conversation.
 
 (understand $Text as $Action)
     (conversation partner $NPC)
@@ -685,7 +683,7 @@
 
 %% By default, the standard library ensures that any objects identified
 %% in an action list are in scope; quips are like topics, abstract,
-%% so these two negated predicates disable that check when discussing.
+%% so this negated predicate disables that check when discussing.
 
 ~(refuse [perform quip $])
 
@@ -704,6 +702,8 @@
 
 (before [talk to $NPC about $])
     ~(conversation partner $NPC)
+    %% Without this, you get an unwanted "You could say ..." bit in between the saying hello
+    %% and performing the already selected quip.
     (now) (inhibit conversation suggestions)
     (try [talk to $NPC]) (tick) (par)
 
@@ -711,6 +711,7 @@
 %% ask and tell both end up here.
 
 (instead of [talk to $ about (quip $Quip)])
+    %% All branches eventually lead to perform quip.
     (try [perform quip $Quip])
 
 (instead of [talk to $NPC about $])
