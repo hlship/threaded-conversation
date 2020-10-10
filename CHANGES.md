@@ -1,4 +1,4 @@
-# 0.6 -- UNRELEASED
+# 0.6 -- 9 Oct 2020
 
 Broke the debugging code into a companion library, `lib/debug/tcdebug.dg`.
 
