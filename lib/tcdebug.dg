@@ -10,7 +10,7 @@
 
 (conversation status)
     ~(conversation partner $)
-    (log) { No conversation partner. }
+    No conversation partner.
 
 (conversation status)
     (conversation partner $NPC)
@@ -139,14 +139,12 @@
 
 (room info)
     (current room $Room)
-    (log) {
-        $Room
-        (output annotations for $Room)
-        (line)
-        (exhaust) {
-            *($Obj has parent $Room)
-            (nested object info $Obj 4)
-        }
+    $Room
+    (output annotations for $Room)
+    (line)
+    (exhaust) {
+        *($Obj has parent $Room)
+        (nested object info $Obj 4)
     }
 
 (nested object info $Obj $Indent)
