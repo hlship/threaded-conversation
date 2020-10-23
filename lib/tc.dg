@@ -50,7 +50,7 @@
 (nag $) (fail)
 
 %% A beat is used to break up quips and such. Excellent chance to provide
-%% some varied, quip-specific output.
+%% some varied, quip- (or NPC-)specific output.
 
 (interface (beat $<Quip))
 
@@ -341,7 +341,7 @@
     (par)
     %% If found (and removed from queue) print the reply now
     (if) ($NPC has spoken this tick)
-    (then) (avoid talking heads for $Quip)
+    (then) (beat $Quip)
     (endif)
     (record current quip $Quip)
     (reply $Quip)
@@ -363,14 +363,6 @@
 
 (after $ has replied with $)
     (fail)
-
-%% The rule for breaking apart two quip replies from the NPC's queue, the default is
-%% just `(beat $Quip)`.
-
-(interface (avoid talking heads for $<Quip))
-
-(avoid talking heads for $Quip)
-    (beat $Quip)
 
 %% Identifying discussable quips
 %%

@@ -94,7 +94,9 @@ The player makes the comment ("Where I come from ...") and the barmaid NPC repli
 
 The style of TC is that the player's command is a bit general, but the comment and reply in the quip is more specific.
 
-In any case, it is possible to skip the `ask` or `tell` and just identify key words of the quip.
+In any case, it is possible to skip the `ask` or `tell` part of the command, and just identify key words of the quip.
+Because you are engaged in conversation, and the words you enter can be matched to a discussable quip, TC assumes that's you
+want to continue the conversation with an identified quip.
 
 The transcript also shows how the conversation evolves, with each quip introducing new lines of discussion.
 The goal with TC is to encourage the player to explore the conversation tree, while giving the NPCs an air of agency
@@ -123,7 +125,7 @@ Essentially, any quip that doesn't fit neatly into `ask <someone> about <somethi
 a performing quip.
 For example, a detective game might include a performing quip whose name is `accuse Hannigan of murder` which reads well as
 a command by the player, or a suggestion by TC; whereas `tell inspector about accuse hannigan of murder`, `tell about accuse Hannigan of murder`, or any
-other variation that TC understands or suggests for a telling quip will appear awkward.
+other variation that TC understands or suggests for a telling quip would be awkward.
 
 The optional `(about $Quip)` trait changes how quips are suggested to
 the player; `ask <quip name>` becomes `ask about <quip name>`
@@ -211,10 +213,14 @@ The mentioned object does *not* have to be in scope; it just has to be identifia
 
 Mentioning may also be used with Dialog topics.
 
+## Greeting
+
+The default text, `You say hello to <the NPC>.` is controlled by the `(narrate greeting $NPC)` predicate.
+
 ## Expressing Ignorance
 
 When you ask or tell an NPC about text that doesn't match a quip, the NPC will respond using
-the `(narrate $NPC expressing ignorance)`:
+the `(narrate $NPC expressing ignorance)` predicate:
 
 ```
 > ask barmaid about frobozz
@@ -312,9 +318,9 @@ The `(immediately following)` predicate will succeed when the quip is immediatel
     And how might I locate your castle?
 ```
 
-## Controling availability
+## Controlling Availability
 
-The `(off limits $)` predicate can remove a quip from availability.
+The `(off limits $Quip)` predicate can remove a quip from availability.
 This might be useful if a particular line of conversation makes sense only if other conditions have been met:
 an object must be present, a fact must be known, or so forth.
 
@@ -347,25 +353,6 @@ Dubious quips are never suggested to the player, but are still valid if the play
 Whereas quips that are not relevant to the conversation thread are unlikely, dubious quips are very unlikely.
 
 Here, we can accuse Hannigan of cannibalism at any time, but it won't be suggested to the player until some evidence is at hand.
-
-## The Beat
-
-When an NPC has queued quips, a beat, `(beat $Quip)` is used to break up the NPC's reply to the player's comment from the comment of the queued quip.
-By default, a beat simply outputs `A moment passes.` and a paragraph break.
-
-```
-(beat $)
-    (conversation partner #doctor-who)
-    The Doctor pulls his sonic screwdriver from a pocket of his jacket, and waves it about for a moment.
-    He seems
-    (select)
-        satisified (or) confused (or) alarmed (or) irritated
-    (at random)
-    with its readings, then replaces it in his jacket.
-    (par)
-```
-
-Providing a beat is a good chance to inject some character into the conversation.
 
 ## The Nag
 
@@ -554,33 +541,32 @@ There are a number of predicates for queuing quips:
 
 `(queue $Quip for $NPC as $Precedence)` is the predicate for actually queueing a quip.
 
-## Avoiding Talking Heads
+## Breaking Up Queued Quips
 
-Reading a series of plain alternating quotations can quickly become dull. An effective way to break up such monotony is to insert a short description, to describe a minor action, or even to convey important non-verbal information, either between two parts of an exchange or in the middle of one character's monologue. 
+Reading a series of plain alternating sequence of quotations can quickly become dull.
+An effective way to break up such monotony is to insert a short description, to describe a minor action, 
+or even to convey important non-verbal information, either between two parts of an exchange or in the middle of one character's monologue. 
 
-When TC prints the reply for a second quip in the same tick, it queries the predicate `(avoid talking heads for $Quip)`
+When TC prints the reply for a second quip in the same tick, it queries the predicate `(beat $Quip)`
 with the second quip, before outputting the quip's reply.
 This is used to create a bridge between the two quips so they don't run together.
 
-The default implementation is just `(beat $Quip)`.
-
-A quip can override this, to provide a custom bridge; often this is some randomly generated output related to the NPC discussing the quip.
-
-For example:
+By default, a beat simply outputs `A moment passes.` and a paragraph break, but this can be overridden easily enough:
 
 ```
-(avoid talking heads for $)
-    (conversation partner #barmaid)
-    The bar maid pauses for a moment, 
+(beat $)
+    (conversation partner #doctor-who)
+    The Doctor pulls his sonic screwdriver from a pocket of his jacket, and waves it about for a moment.
+    He seems
     (select)
-        scrubbing at a particularly stubborn stain on the table
-    (or)
-        sweeping a few crumbs into the hem of her skirt
-    (or)
-        leaning wearily on the table to take a deep breath
+        satisified (or) confused (or) alarmed (or) irritated
     (at random)
-    , before continuing.
+    with its readings, then replaces it in his jacket.
+    (par)
 ```
+
+Providing a beat is a good chance to inject some character into the conversation.
+
 
 ## (reset conversation partner)
 
@@ -636,6 +622,8 @@ to the player).
 When the conversation partner has queued quips, those are also identified.
 
 ## roominfo command
+
+> Technically, this is not part of TC, but has a home here until spun off as its own library.
 
 This debugging command outputs useful information about the current room and all the objects within it.
 

@@ -25,6 +25,11 @@
     dishes and mugs.
 (#player/#barmaid/#dog is #in *)    
 
+#drunk
+(male *)
+(name *) a passed-out drunk
+(* is #in #inn)
+
 #barmaid
 (female *)
 (name *) Bar Maid

@@ -6,7 +6,7 @@
 (understand command [convinfo])
 
 (perform [convinfo])
-    (conversation status)
+    (just) (conversation status)
 
 (conversation status)
     ~(conversation partner $)
