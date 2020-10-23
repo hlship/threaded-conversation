@@ -2,6 +2,7 @@
 
 - The suggestions are now triggered from `(late on every tick)`
 - `convinfo` and `roominfo` command no longer output using `(log)`
+- The `[perform quip $Quip]` action is now properly described
 
 # 0.6 -- 9 Oct 2020
 

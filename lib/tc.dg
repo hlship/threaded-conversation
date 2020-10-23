@@ -751,10 +751,13 @@
 
 (describe action $Action)
     ($Action = [perform quip $Quip])
-    (if) (library links enabled) (then)
-        (link $Action) { (name $Quip) }
+    %% Contrary to the documentation, using (link) (at least in the debugger), produces
+    %% odd output, so protecting it as here makes sense.
+    (if) (library links enabled)
+    (then)
+        (link) (describe quip $Quip)
     (else)
-       (name $Quip)
+        (describe quip $Quip)
     (endif)
 
 %% Clears the conversation partner and deletes most queued content.
