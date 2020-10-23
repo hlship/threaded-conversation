@@ -1,4 +1,4 @@
-# 0.7 -- UNRELEASED
+# 0.7 -- 22 Oct 2020
 
 - The suggestions are now triggered from `(late on every tick)`
 - `convinfo` and `roominfo` command no longer output using `(log)`

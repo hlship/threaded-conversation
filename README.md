@@ -15,7 +15,7 @@ When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your 
 
 ```
   {:github "hlship/threaded-conversation" 
-   :version "v0.6"
+   :version "v0.7"
    :path "lib/tc.dg"}
 ```
 
