@@ -1,3 +1,8 @@
+# 0.7.1 - 8 Jan 2021
+
+- Added `interface` rules to prevent warnings about a few built-in rules
+  (exposed by Dialog 0m/03).
+
 # 0.7 -- 22 Oct 2020
 
 - The suggestions are now triggered from `(late on every tick)`

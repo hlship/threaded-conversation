@@ -1,2 +1,4 @@
 out
+.clj-kondo/
+.lsp/
 *.code-workspace

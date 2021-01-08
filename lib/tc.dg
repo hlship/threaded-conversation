@@ -140,6 +140,8 @@
 %% If the player goes off on a tangent before returning to this quip,
 %% then (immediately following) will fail.
 
+(interface (immediately following))
+
 (immediately following)
     (current quip $Current)
     (previous quip $Previous)
@@ -720,6 +722,7 @@
 (narrate $NPC expressing ignorance)
     "I don't know anything about that," says (the $NPC).
 
+(interface (narrate nothing to say))
 (narrate nothing to say)
     You can't think of anything appropriate to say.
 
@@ -753,6 +756,7 @@
     (endif)
 
 %% Clears the conversation partner and deletes most queued content.
+(interface (reset conversation partner))
 
 (reset conversation partner)
     (if) (conversation partner $NPC)
