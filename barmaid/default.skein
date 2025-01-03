@@ -1,0 +1,209 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+It is a long and riotous evening, full of unlikely stories and tall tales. But
+now, most of the patrons have gone away to their rooms to sleep, or have passed
+out before the fire. Even the two black bitch pups are curled on the hearth-
+stone, snuffling through tiny wet noses, and pawing the air in sleep. Now is the
+time to find out whether the rumors that brought you to this neighborhood are
+true.
+
+The Inn
+The light is low and red. Above the fireplace hangs a map of this part of the
+Empire, and on the adjacent wall is the crimson and silver banner of Richard the
+Rose. The barmaid works her way from table to table, clearing away dishes and
+mugs.
+
+--------------------------------------------------------------------------------
+id: 1735881156075
+parent-id: 0
+command: ask barmaid about rumors
+--------------------------------------------------------------------------------
+> ask barmaid about rumors
+You say hello to the Bar Maid.
+
+"Where I come from, over the black hills there, they say that men this side of
+the mountain live as old as Methuselah," you remark. "They say the secret of
+eternal life is here."
+
+"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
+hand. "The oldest codger around these parts is old Garrick, and I would't put
+him beyond his four-score and ten."
+
+You could ask where Garrick lives, ask where she comes from, or ask whether
+she's heard the stories.
+
+--------------------------------------------------------------------------------
+id: 1735881156076
+parent-id: 1735881156075
+command: ask barmaid about eternal life
+--------------------------------------------------------------------------------
+> ask barmaid about eternal life
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156077
+parent-id: 1735881156076
+command: undo
+--------------------------------------------------------------------------------
+> undo
+Undoing the last turn (ask barmaid about eternal life).
+The Inn
+
+--------------------------------------------------------------------------------
+id: 1735881156078
+parent-id: 1735881156077
+command: ask barmaid about immortality
+--------------------------------------------------------------------------------
+> ask barmaid about immortality
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156079
+parent-id: 1735881156078
+command: codger
+--------------------------------------------------------------------------------
+> codger
+"Where does this old Garrick live?" you ask, trying not to seem too eager.
+
+"Down at the pig farm," she says. "The turn off is just before you come to the
+river, on the main road west. You can find it by the smell."
+
+You could ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156080
+parent-id: 1735881156079
+command: ask barmaid about frobozz
+--------------------------------------------------------------------------------
+> ask barmaid about frobozz
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156081
+parent-id: 1735881156080
+command: talk to barmaid about snert
+--------------------------------------------------------------------------------
+> talk to barmaid about snert
+"I don't know anything about that," says the Bar Maid.
+
+You could ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156082
+parent-id: 0
+command: talk to dog
+--------------------------------------------------------------------------------
+> talk to dog
+You say hello to the Dog.
+
+You could ask whether the rumors tell truly.
+
+--------------------------------------------------------------------------------
+id: 1735881156083
+parent-id: 1735881156082
+command: ask about rumors
+--------------------------------------------------------------------------------
+> ask about rumors
+"Where I come from, over the black hills there, they say that men this side of
+the mountain live as old as Methuselah," you remark. "They say the secret of
+eternal life is here."
+
+Woof!
+
+--------------------------------------------------------------------------------
+id: 1735881156084
+parent-id: 0
+command: talk to barmaid
+--------------------------------------------------------------------------------
+> talk to barmaid
+You say hello to the Bar Maid.
+
+You could ask whether the rumors tell truly or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156085
+parent-id: 1735881156084
+command: truly
+--------------------------------------------------------------------------------
+> truly
+"Where I come from, over the black hills there, they say that men this side of
+the mountain live as old as Methuselah," you remark. "They say the secret of
+eternal life is here."
+
+"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
+hand. "The oldest codger around these parts is old Garrick, and I would't put
+him beyond his four-score and ten."
+
+You could ask where Garrick lives, ask where she comes from, or ask whether
+she's heard the stories.
+
+--------------------------------------------------------------------------------
+id: 1735881156086
+parent-id: 1735881156085
+command: heard
+--------------------------------------------------------------------------------
+> heard
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1735881156087
+parent-id: 1735881156086
+command: barmaid
+--------------------------------------------------------------------------------
+> barmaid
+"What about yourself?" you ask. "Are you from around these parts?"
+
+"If by these parts you mean between the black hills and the river, no," she
+says. "I was born just at the far side of the ford. But I came over here to
+work."
+
+You could ask where Garrick lives.
+
+--------------------------------------------------------------------------------
+id: 1735881156088
+parent-id: 1735881156087
+command: lives
+--------------------------------------------------------------------------------
+> lives
+"Where does this old Garrick live?" you ask, trying not to seem too eager.
+
+"Down at the pig farm," she says. "The turn off is just before you come to the
+river, on the main road west. You can find it by the smell."
+
+--------------------------------------------------------------------------------
+id: 1735881156089
+parent-id: 0
+command: talk to bar maid about immortality
+--------------------------------------------------------------------------------
+> talk to bar maid about immortality
+You say hello to the Bar Maid.
+
+"I don't know anything about that," says the Bar Maid.
+
+You could ask whether the rumors tell truly or ask where she comes from.
+

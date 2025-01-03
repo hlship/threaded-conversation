@@ -1,5 +1,0 @@
-{:name "threaded-conversation-demo"
- :debug-sources ["lib/debug/*.dg"
-                 "/opt/homebrew/share/dialog-if/stddebug.dg"]
- :library-sources ["lib/*.dg"
-                   "/opt/homebrew/share/dialog-if/stdlib.dg"]}

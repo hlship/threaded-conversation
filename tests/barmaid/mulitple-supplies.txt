@@ -1,6 +1,0 @@
-%% Put the dog in just to see about handling reply predicate
-%% differently by NPC, but this is useful too
-%% (* supplies #barmaid/#dog) is allowed and handy.
-
-talk to dog
-ask about rumors
