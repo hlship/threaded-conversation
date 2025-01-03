@@ -1,0 +1,65 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+Conference Chamber
+A low ceilinged chamber with a scattering of heavy wooden tables, perfect for
+the exchange of information that can shape the course of history. Lavine is
+already seated at the nearest table, and Thurg hovers nearby.
+
+--------------------------------------------------------------------------------
+id: 1735882385344
+parent-id: 0
+command: talk lavine
+--------------------------------------------------------------------------------
+> talk lavine
+You say hello to Lavine.
+
+You could ask why she has come or say this alliance will be a happy one.
+
+--------------------------------------------------------------------------------
+id: 1735882385345
+parent-id: 1735882385344
+command: happy
+--------------------------------------------------------------------------------
+> happy
+"I am so glad to see you," you tell Lavine, "I am sure the alliance of our two
+peoples will be a long and happy one."
+
+"That is my hope as well," she says musically.
+
+Thurg roars in fury and begins to choke the life out of you, shouting "NO ELF-
+HUMAN ALLIANCE" again and again.
+
+     *** You have died. ***
+
+Would you like to:
+     UNDO the last move,
+     RESTORE a saved position,
+     QUIT the program,
+     or RESTART from the beginning?
+--------------------------------------------------------------------------------
+id: 1735882385346
+parent-id: 1735882385344
+command: ask why
+--------------------------------------------------------------------------------
+> ask why
+"Why have you come?" you demand of Lavine urgently. You keep your voice as low
+as you are able, but Thurg nonetheless watches you with obvious comprehension.
+
+"Why, to see what it was you were saying to the trolls, of course," she answers
+in a clear, bell-like tone. "Our alliance is still young, eh?"
+
+Thurg roars in fury and begins to choke the life out of you, shouting "NO ELF-
+HUMAN ALLIANCE" again and again.
+
+     *** You have died. ***
+
+Would you like to:
+     UNDO the last move,
+     RESTORE a saved position,
+     QUIT the program,
+     or RESTART from the beginning?
