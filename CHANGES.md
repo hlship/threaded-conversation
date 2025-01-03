@@ -1,3 +1,7 @@
+# 0.8 - UNRELEASED
+
+Test using dialog-tool 2.0.
+
 # 0.7.1 - 8 Jan 2021
 
 - Added `interface` rules to prevent warnings about a few built-in rules
