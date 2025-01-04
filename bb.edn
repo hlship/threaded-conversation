@@ -1,0 +1,14 @@
+{:tasks
+ {test
+  {:doc "Run all tests"
+   :task (doseq [dir ["barmaid"
+                      "conferences"
+                      "exchange"
+                      "immediate"
+                      "quest"
+                      "tree"
+                      "wanderer"]]
+           (println "Testing " dir " ...")
+           (shell {:continue true
+                   :dir dir}
+                  "dgt test"))}}}
