@@ -1,5 +1,5 @@
 {:format :zblorb
- :name "barmaid"
+ :name "test project"
  :sources
  {:main ["*.dg"]
   :library ["lib/*.dg"

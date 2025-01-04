@@ -1,5 +1,0 @@
-n
-ask why
-z
-no
-yes

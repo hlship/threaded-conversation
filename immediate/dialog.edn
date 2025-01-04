@@ -1,6 +1,1 @@
-{:format :zblorb
- :name "barmaid"
- :sources
- {:main ["*.dg"]
-  :library ["lib/*.dg"
-            "lib/dialog/*.dg"]}}
+../barmaid/dialog.edn
