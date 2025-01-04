@@ -4,7 +4,7 @@
 
 (extension version)
     (line)
-    Threaded Conversation 0.7.1 by Howard Lewis Ship
+    Threaded Conversation 0.8 by Howard Lewis Ship
 
 %% There are three types of player-directed quips.
 
@@ -165,7 +165,7 @@
     ~($Actor is one of $Actors)
     (now) ($Quip is recollected by [$Actor | $Actors])
 
-%% We have the quip track who recollects it, which seems odd, but if the
+%% We have each quip track who recollects it, which seems odd, but if the
 %% actor tracks the recollected quips, then the #player will end up with
 %% a potentially giant list.
 
@@ -642,7 +642,7 @@
     You say hello to (the $NPC).
     (par)
 
-%% Have to understand words as a possible quip via the works themselves,
+%% Have to understand words as a possible quip via the words themselves,
 %% or the object or topic mentioned by the quip.
 
 (interface (understand $<Words as quip $>Quip from $<Quips))
@@ -730,7 +730,7 @@
     (perform player quip $Quip)
 
 %% Perform a normal (not NPC) quip, starting with the quip's comment immediately,
-%% and quering the quip for the NPC's reply.
+%% and queing the quip for the NPC's reply.
 
 (perform player quip $Quip)
     (now) (last action was conversationally active)

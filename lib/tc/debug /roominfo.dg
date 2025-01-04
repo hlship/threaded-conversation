@@ -1,0 +1,49 @@
+%% Like @tree, but rooted in current room, and shows relations and other details
+%% about the room and items.
+
+(understand command [roominfo])
+
+(perform [roominfo])
+    (room info)
+
+(room info)
+    (current room $Room)
+    $Room
+    (output annotations for $Room)
+    (line)
+    (exhaust) {
+        *($Obj has parent $Room)
+        (nested object info $Obj 4)
+    }
+
+(nested object info $Obj $Indent)
+    ($Obj has relation $Rel)
+    (space $Indent)
+    $Obj $Rel
+    (output annotations for $Obj)
+    (line)
+    ($Indent plus 4 into $ChildIndent)
+    (exhaust) {
+        *($Child has parent $Obj)
+        (nested object info $Child $ChildIndent)
+    }
+
+%% Default room annotation:
+
+(annotate (inherently dark $) with [inherently dark])
+
+%% Default object annotations:
+
+(annotate (animate $) with @animate)
+
+(annotate ($ is hidden) with @hidden)
+
+(annotate ($ is locked) with @locked)
+
+(annotate ($ is closed) with @closed)
+
+(annotate ($ is broken) with @broken)
+
+(annotate ($ is off) with @off)
+
+(annotate ($ provides light) with [provides light])

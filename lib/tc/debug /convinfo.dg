@@ -1,0 +1,93 @@
+
+%%
+%% Debugging tools for Threaded Conversation
+%%
+
+(understand command [convinfo])
+
+(perform [convinfo])
+    (just) (conversation status)
+
+(conversation status)
+    ~(conversation partner $)
+    No conversation partner.
+
+(conversation status)
+    (conversation partner $NPC)
+    Conversation partner: $NPC (space) -- (space) (the $NPC)
+    (if)
+        ($NPC has conversation queue $Queue)
+        (nonempty $Queue)
+    (then)
+        (line) Queue:
+        (comma separated list $Queue)
+        (line)
+    (endif)
+    (line)
+    Quips:
+    (line) (space 2) Current: { (current quip $Current) $Current (or) <unset> }
+    (line) (space 2) Previous: { (previous quip $Prev) $Prev (or) <unset> }
+    (line) (space 2) Grandparent: { (grandparent quip $Grand) $Grand (or) <unset> }
+    (par)
+    (discussable quips $Quips)
+    (nonempty $Quips)
+    (par)
+    Discussable quips:
+    (exhaust) {
+        *($Quip is one of $Quips)
+        (line)
+        (space 2) 
+        $Quip
+        (output annotations for $Quip)
+        (collect $Earlier)
+            *($Quip continues from $Earlier)
+        (into $Continues)
+        (if) (nonempty $Continues)
+        (then)
+            (line) (space 4)
+            Follows:
+            (comma separated list $Continues )
+        (endif)
+        (collect $Later)
+            *($Later continues from $Quip)
+        (into $Followers)
+        (if) (nonempty $Followers)
+        (then)
+            (line) (space 4)
+            Followers:
+            (comma separated list $Followers)
+        (endif)
+    }
+
+(interface (comma separated list $<List))
+(interface (comma separated list $<List $<Closure))
+
+(comma separated list $List)
+    (comma separated list $List { $_ })
+
+(comma separated list $List $Closure)
+    (comma separated list $List $Closure 0)
+
+(comma separated list [] $ $)
+
+(comma separated list [$First | $More] $Closure $Comma)
+    (if) ($Comma = 1) (then) , (endif)
+    { (query $Closure $First) (or) }
+    (comma separated list $More $Closure 1)
+
+%% Default annotations for quips:
+ 
+(annotate (quip $Quip) with @recollected)
+    (conversation partner $NPC)
+    ($NPC recollects $Quip)
+
+(annotate (repeatable $) with @repeatable)
+
+(annotate (restrictive $) with @restrictive)
+
+(annotate (quip $Quip) with [changes the subject])
+    ($Quip changes the subject)
+
+(annotate (dubious $) with @dubious)
+
+(annotate ($ is relevant to current thread) with @relevant)

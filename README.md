@@ -4,30 +4,22 @@ This library adds threaded conversation with non-player characters (NPCs) to
 [Dialog](https://linusakesson.net/dialog/index.php).
 
 It is deeply indebted to
-[Threaded Conversation for Inform 7](https://github.com/i7/extensions/tree/master/Chris%20Conley)
+[Threaded Conversation for Inform 7](https://github.com/i7/extensions/tree/10.1/Chris%20Conley)
 by Emily Short, Chris Conley, and many more.
 
 This implementation borrows terminology and ideas from the original work, but is not a direct translation.
 
-# Distribution
-
-When using [dgt](https://github.com/hlship/dialog-tool), add this entry to your `:library-sources` key:
-
-```
-  {:github "hlship/threaded-conversation" 
-   :version "v0.7"
-   :path "lib/tc.dg"}
-```
-
-... or just copy `lib/tc.dg` from this repository into your workspace.
-
-Debugging commands and support are now in a secondary library,
-`lib/tcdebug.dg`.
-
+Out of convenience, this repository also hosts some additional code (such as the `roominfo` debugging command) that is
+not specifically tied to threaded conversations.  Treat this as a buffet ... consume just what you need.
 
 # Dialog Version
 
-TC has been tracking along with each new release of Dialog; it currently works with Dialog `0k/05` through `0m/01`.
+TC has been tracking along with each new release of Dialog; it is currently tested against `0m/01`, the latest release.
+
+# Distribution
+
+Simply copy the `lib/tc` folder into your repository.  Add `lib/tc/*.dg` to your :library sources, 
+and `lib/tc/debug/*.dg` to your :debug sources.
 
 # Using Threaded Conversation
 
@@ -289,7 +281,7 @@ This notification gives other NPCs or game logic a chance to react to the quip, 
 ```
 
 The above is an example from one of the tests, `($ reveals alliance)` is a trait on certain quips; 
-a full implementation in a complete game might use `(player can see *)` to ensure that Thurg is present
+a full implementation in a complete game might add a `(player can see *)` guard to ensure that Thurg is present
 when the beans are spilled.
 
 ## Immediately Following
@@ -591,7 +583,7 @@ The link will discuss the identified quip.
 
 ## convinfo command
 
-In the debug library is a `convinfo` command that outputs information about the NPC, current quip, and related quips.
+The `lib/tc/debug/convinfo.dg` library provides a `convinfo` command that outputs information about the NPC, current quip, and related quips.
 
 For example, after `ask barmaid about rumors`, you would see:
 
@@ -623,9 +615,8 @@ When the conversation partner has queued quips, those are also identified.
 
 ## roominfo command
 
-> Technically, this is not part of TC, but has a home here until spun off as its own library.
-
-This debugging command outputs useful information about the current room and all the objects within it.
+This `lib/tc/debug/roominfo.dg` library provides a `roominfo` 
+command that outputs useful information about the current room and all the objects within it.
 
 For example, `roominfo` at the start of [Sand-dancer](https://github.com/hlship/sanddancer-dialog) yields:
 
@@ -673,7 +664,7 @@ Sand-dancer adds annotations to identify the region a room is in ("around the to
 
 (c) 2019-present Howard M. Lewis Ship
 
-Licensed under the terms of the Apache Sofware Licence 2.0.
+Licensed under the terms of the Apache Software License 2.0.
 
 Pull Requests are encouraged; by submitting a pull request, you are irrevocably assigning copyright for any submitted
 materials to the repository owner, Howard Lewis Ship.
