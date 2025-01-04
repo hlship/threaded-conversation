@@ -1,3 +1,8 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
 
 
 It is a long and riotous evening, full of unlikely stories and tall tales. But
@@ -15,12 +20,22 @@ mugs.
 
 A wanderer in grubby trousers slouches at the seat nearest the fire.
 
-> talk to the barmaid
+--------------------------------------------------------------------------------
+id: 1736024132523
+parent-id: 0
+command: talk to barmaid
+--------------------------------------------------------------------------------
+> talk to barmaid
 You say hello to the Bar Maid.
 
 You could ask whether the rumors tell truly or ask where the barmaid comes from.
 
-> ask the barmaid about rumors 
+--------------------------------------------------------------------------------
+id: 1736024132524
+parent-id: 1736024132523
+command: ask the barmaid about rumors
+--------------------------------------------------------------------------------
+> ask the barmaid about rumors
 "Where I come from, over the black hills there, they say that men this side of
 the mountain live as old as Methuselah," you remark. "They say the secret of
 eternal life is here."
@@ -32,6 +47,11 @@ him beyond his four-score and ten."
 You could ask where Garrick lives, ask whether she's heard the stories, or ask
 where the barmaid comes from.
 
+--------------------------------------------------------------------------------
+id: 1736024132525
+parent-id: 1736024132524
+command: ask about garrick
+--------------------------------------------------------------------------------
 > ask about garrick
 "Where does this old Garrick live?" you ask, trying not to seem too eager.
 
@@ -41,9 +61,19 @@ river, on the main road west. You can find it by the smell."
 You could ask whether she's heard the stories or ask where the barmaid comes
 from.
 
-> talk to the wanderer 
+--------------------------------------------------------------------------------
+id: 1736024132526
+parent-id: 1736024132525
+command: talk to the wanderer
+--------------------------------------------------------------------------------
+> talk to the wanderer
 You say hello to the Wanderer.
 
+--------------------------------------------------------------------------------
+id: 1736024132527
+parent-id: 1736024132526
+command: ask him about the rumors
+--------------------------------------------------------------------------------
 > ask him about the rumors
 "Where I come from, over the black hills there, they say that men this side of
 the mountain live as old as Methuselah," you remark. "They say the secret of
@@ -54,6 +84,11 @@ that will deny it."
 
 You could ask what the wanderer knows.
 
+--------------------------------------------------------------------------------
+id: 1736024132528
+parent-id: 1736024132527
+command: ask knows
+--------------------------------------------------------------------------------
 > ask knows
 "What do you know about those who live forever?" you ask.
 
@@ -64,6 +99,11 @@ not aged a moment."
 
 You could ask whether you may see the miniature.
 
+--------------------------------------------------------------------------------
+id: 1736024132529
+parent-id: 1736024132528
+command: ask about it
+--------------------------------------------------------------------------------
 > ask about it
 "May I see this miniature? I'm curious to see the man who has lived without
 aging."
@@ -76,4 +116,20 @@ And he extends for view an old-fashioned locket: painted on an ivory rectangle
 are the images of two young men. They are painted so small it would be hard to
 guarantee that you would recognize them again.
 
-> 
+--------------------------------------------------------------------------------
+id: 1736024132530
+parent-id: 1736024132529
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #wanderer -- the Wanderer
+Quips:
+  Current: #see-miniature
+  Previous: #what-the-wanderer-knows
+  Grandparent: #whether-rumors-tell-truly
+
+Discussable quips:
+  #what-the-wanderer-knows (recollected, repeatable)
+    Follows: #whether-rumors-tell-truly
+    Followers: #see-miniature
+
