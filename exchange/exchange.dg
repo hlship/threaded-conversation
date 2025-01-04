@@ -11,6 +11,7 @@
 #foggy-alley
 (room *)
 (name *) Foggy Alley
+(inherently dark *)
 (look *)
     You would be hard pressed to find a more cliche location for
     the drop off than this deserted alley. Fog billows in from somewhere,
@@ -19,7 +20,7 @@
     (par)
     Malory, your contact, stands just outside the weak cone of light from the lamppost.
     (notice #malory)
-(#player is #in *)
+(#player/#lamppost is #in *)
 
 %% In this example, there's only #malory as a CP, so there's no need to
 %% do any ($ supplies $) rules.
@@ -199,3 +200,12 @@
     Begrudgingly,
     (stopping)
     it's time to hand him the package and hope for the best.
+
+#lamppost
+(name *) lamppost
+(dict *) lamp light post
+(* provides light)
+(descr *)
+  Mallory keeps to the small circle of light under the lamp post; he takes
+  the "lamplighters" reference seriously.
+  

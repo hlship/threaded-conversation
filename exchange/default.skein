@@ -1,4 +1,3 @@
-engine: :dgdebug
 --------------------------------------------------------------------------------
 id: 0
 label: START
@@ -298,3 +297,31 @@ Would you like to:
      RESTORE a saved position,
      QUIT the program,
      or RESTART from the beginning?
+--------------------------------------------------------------------------------
+id: 1736025615707
+parent-id: 1735881651539
+command: roominfo
+--------------------------------------------------------------------------------
+> roominfo
+#foggy-alley (inherently dark)
+    #player #in
+        #package #heldby
+    #lamppost #in (provides light)
+    #malory #in (animate)
+
+--------------------------------------------------------------------------------
+id: 1736025615708
+parent-id: 1736025615707
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #malory -- Agent Malory
+Quips:
+  Current: #pass-phrase
+  Previous: #field-work-too-taxing
+  Grandparent: #pass-phrase
+
+Discussable quips:
+  #damnable-weather (changes the subject)
+    Followers: #pleasantries
+

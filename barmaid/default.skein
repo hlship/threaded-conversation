@@ -1,4 +1,3 @@
-engine: :dgdebug
 --------------------------------------------------------------------------------
 id: 0
 label: START
@@ -206,4 +205,182 @@ You say hello to the Bar Maid.
 "I don't know anything about that," says the Bar Maid.
 
 You could ask whether the rumors tell truly or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1736025190748
+parent-id: 1735881156081
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: #where-garrick-lives
+  Previous: #heard-the-stories
+  Grandparent: #whether-rumors-tell-truly
+
+Discussable quips:
+  #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+  #where-barmaid-comes-from (changes the subject)
+
+--------------------------------------------------------------------------------
+id: 1736025190749
+parent-id: 1736025190748
+command: roominfo
+--------------------------------------------------------------------------------
+> roominfo
+#inn
+    #player #in
+    #barmaid #in (animate)
+    #dog #in (animate)
+    #drunk #in (animate)
+
+--------------------------------------------------------------------------------
+id: 1736025190750
+parent-id: 0
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+No conversation partner.
+
+--------------------------------------------------------------------------------
+id: 1736025190751
+parent-id: 1736025190750
+command: talk to barmaid
+--------------------------------------------------------------------------------
+> talk to barmaid
+You say hello to the Bar Maid.
+
+You could ask whether the rumors tell truly or ask where she comes from.
+
+--------------------------------------------------------------------------------
+id: 1736025190752
+parent-id: 1736025190751
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: <unset>
+  Previous: <unset>
+  Grandparent: <unset>
+
+Discussable quips:
+  #whether-rumors-tell-truly (repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+  #where-barmaid-comes-from (changes the subject)
+
+--------------------------------------------------------------------------------
+id: 1736025190753
+parent-id: 1736025190752
+command: where she comes
+--------------------------------------------------------------------------------
+> where she comes
+"What about yourself?" you ask. "Are you from around these parts?"
+
+"If by these parts you mean between the black hills and the river, no," she
+says. "I was born just at the far side of the ford. But I came over here to
+work."
+
+You could ask whether the rumors tell truly.
+
+--------------------------------------------------------------------------------
+id: 1736025190754
+parent-id: 1736025190753
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: #where-barmaid-comes-from
+  Previous: <unset>
+  Grandparent: #where-barmaid-comes-from
+
+Discussable quips:
+  #whether-rumors-tell-truly (repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+
+--------------------------------------------------------------------------------
+id: 1736025190755
+parent-id: 1736025190754
+command: rumors
+--------------------------------------------------------------------------------
+> rumors
+"Where I come from, over the black hills there, they say that men this side of
+the mountain live as old as Methuselah," you remark. "They say the secret of
+eternal life is here."
+
+"Oh, do they?" she says, sweeping crumbs of cheese and crusty bread into her
+hand. "The oldest codger around these parts is old Garrick, and I would't put
+him beyond his four-score and ten."
+
+You could ask where Garrick lives or ask whether she's heard the stories.
+
+--------------------------------------------------------------------------------
+id: 1736025190756
+parent-id: 1736025190755
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: #whether-rumors-tell-truly
+  Previous: #where-barmaid-comes-from
+  Grandparent: #whether-rumors-tell-truly
+
+Discussable quips:
+  #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+  #where-garrick-lives (relevant)
+    Follows: #whether-rumors-tell-truly
+  #heard-the-stories (relevant)
+    Follows: #whether-rumors-tell-truly
+
+--------------------------------------------------------------------------------
+id: 1736025190757
+parent-id: 1736025190756
+command: stories
+--------------------------------------------------------------------------------
+> stories
+"Have you heard any stories of long-living men?" you press her.
+
+She purses her lips and scrubs at a circle-shaped stain on the table before her.
+"If you're a fool come looking for a spring of life or a vein of immortal gold
+buried in the black hills, you'd do better to go back home where you come from."
+
+You could ask where Garrick lives.
+
+--------------------------------------------------------------------------------
+id: 1736025190758
+parent-id: 1736025190757
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #barmaid -- the Bar Maid
+Quips:
+  Current: #heard-the-stories
+  Previous: #whether-rumors-tell-truly
+  Grandparent: #where-barmaid-comes-from
+
+Discussable quips:
+  #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
+    Followers: #where-garrick-lives, #heard-the-stories
+  #where-garrick-lives (relevant)
+    Follows: #whether-rumors-tell-truly
+
+--------------------------------------------------------------------------------
+id: 1736025190759
+parent-id: 1736025190749
+command: talk to drunk
+--------------------------------------------------------------------------------
+> talk to drunk
+You say hello to the a passed-out drunk.
+
+--------------------------------------------------------------------------------
+id: 1736025190760
+parent-id: 1736025190759
+command: ask drunk about rumors
+--------------------------------------------------------------------------------
+> ask drunk about rumors
+"I don't know anything about that," says the a passed-out drunk.
 
