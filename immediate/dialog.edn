@@ -1,5 +1,5 @@
 {:format :zblorb
- :name "conferences"
+ :name "barmaid"
  :sources
  {:main ["*.dg"]
   :library ["lib/*.dg"

@@ -41,7 +41,7 @@ grandparent quip
    potential new conversation partner
 
 
-Suprisingly hard to get error output for unrecognized quip
+Surprisingly hard to get error output for unrecognized quip
 
 ```
 > ask barmaid about fizzbin
