@@ -1,0 +1,41 @@
+%%
+%% Annotations support; uses the (annotate $Object with $Annotation) predicate;
+%% an annotation may be a simple value or list; these are output comma separated
+%% and enclosed in parens; e.g. "(handled, provides light)"
+%%
+
+%% 
+%% Provide an annotation for an object, typically driven by
+%% traits or per-object flags and attributes.
+%%
+
+(interface (annotate $<Object with $>Word))
+
+(output annotations for $Object)
+    (collect $Annotation)
+        *(annotate $Object with $Annotation)
+    (into $Annotations)
+    (if) (nonempty $Annotations)
+    (then)
+        (output annotations $Annotations 0)
+    (endif)
+
+(output annotations [] $)
+    \)
+
+(output annotations [$Annotation | $More] $CommaFlag)
+    (if) ($CommaFlag = 0) (then) \( (else) , (endif)
+    (output annotation $Annotation)
+    (output annotations $More 1)
+
+%% A list annotation (e.g., [provides light]) is simply
+%% each of the words.
+
+(output annotation (list $List))
+    (exhaust) { *($Value is one of $List) $Value }
+
+%% This is the normal case, where $Value is a dictionary
+%% word, an object, or (less likely) a number.
+
+(output annotation $Value) $Value
+

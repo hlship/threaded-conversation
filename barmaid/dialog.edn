@@ -1,0 +1,8 @@
+{:format :zblorb
+ :name "test project"
+ :sources
+ {:main ["."]
+  :debug ["lib/tc/debug"
+          "lib/dialog/debug"]
+  :library ["lib/tc"
+            "lib/dialog"]}}

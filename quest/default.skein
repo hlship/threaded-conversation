@@ -1,0 +1,89 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+Long have you searched for a quest worthy for you to submit yourself before the
+kind. Perhaps this is the day?
+
+Verdant Valley
+A verdant valley; northwards lies a menacing pass through the mountains.
+
+--------------------------------------------------------------------------------
+id: 1736023629913
+parent-id: 0
+command: n
+--------------------------------------------------------------------------------
+> n
+You walk north.
+
+Menacing Pass
+A narrow pass through the jagged mountains leading from the valley (to the
+south) northwards to unknown territory.
+
+A wizened old hermit blocks your path, muttering something about quests and
+dragons under his breath.
+
+The hermit runs up to you, blocking your path forward.
+
+You could ask why he is blocking the way.
+
+--------------------------------------------------------------------------------
+id: 1736023629914
+parent-id: 1736023629913
+command: ask why
+--------------------------------------------------------------------------------
+> ask why
+"Why dost thou block my way, hermit?" you ask.
+
+"A dragon has awoke north of here and some brave soul must undertake the task to
+defeat it before it lays waste to the valley yonder" he replies.
+
+--------------------------------------------------------------------------------
+id: 1736023629915
+parent-id: 1736023629914
+command: z
+--------------------------------------------------------------------------------
+> z
+A moment slips away.
+
+"Wilt thou accept this quest, hero?"
+
+"Though must!" insists the hermit.
+
+You could say yes or say no.
+
+--------------------------------------------------------------------------------
+id: 1736023629916
+parent-id: 1736023629915
+command: no
+--------------------------------------------------------------------------------
+> no
+"No."
+
+"But thou must!"
+
+You could say yes.
+
+--------------------------------------------------------------------------------
+id: 1736023629917
+parent-id: 1736023629916
+command: yes
+--------------------------------------------------------------------------------
+> yes
+"Yes."
+
+"Truly, thou art brave!".
+
+--------------------------------------------------------------------------------
+id: 1736023629919
+parent-id: 1736023629915
+command: yes
+--------------------------------------------------------------------------------
+> yes
+"Yes."
+
+"Truly, thou art brave!".
+

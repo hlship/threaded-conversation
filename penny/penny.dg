@@ -1,0 +1,79 @@
+(story title) Penny Drop
+
+(intro)
+    Just wait here, we won't be but a minute.
+    (par)
+    (try [look])
+
+#office
+(room *)
+(name *) Empty Office
+(#player/#table is #in #office)
+(look *)
+    You've been left in this office to stew a bit before they are ready for your interview.
+    To say it is bare-bones is an understatement. No windows, or even any furniture beyond a 
+    single battered table.
+    (if) (#penny-dropped in progress)
+    (then)
+        The edges of the floor are lit with a dim red light, and you can hear a low hum.
+    (endif)
+
+(current player #player)
+
+#table
+(supporter *)
+(name *) table
+(dict *) dented metal battered
+(descr *) 
+    A dented and dusty metal table.
+    (if) (#penny is pristine)
+    (then)
+        Someone has left a shiny penny on the table.
+    (endif)    
+    (if) (#metronome is pristine)
+    (then)
+        Oddly, the only decoration in the room is a metronome sitting in one corner
+        of the table.
+    (endif)
+(#penny/#metronome is #on *)
+
+
+#penny
+(item *)
+(name *) shiny penny
+(descr *)
+    Not one of the valuable ones, but quite shiny given that the year of manufacture is quite a bit
+    before you were even born.
+
+#metronome
+(item *)
+(name *) metronome
+(dict *) metro
+(descr *)
+    A small box with a kind of inverted pendulum standing up.  If it were pushed, it would
+    start swinging back and forth at an even rate.
+(after [push *])
+    (now) (* is active)
+
+#penny-dropped
+(scene *)
+(recurring *)
+(start *) 
+    (#penny is #in #office)
+    (par)
+    As the penny hits the floor, you hear a click and a low humming starts.
+    A thin red line of illumination appears around the edges of the floor.
+(complete *)
+    ~(#penny is #in #office)
+    (par)
+    As you pick up the penny, there's another click, and the red illumination disappears.
+
+#the-beat
+(scene *)
+(start *)
+    (#metronome is active)
+    As expected, the metronome's pendulum starts to swing back and forth.
+(on every tick during *)
+    (par)
+    The metronome's pendulum swings to one extreme and there's an audible click.
+

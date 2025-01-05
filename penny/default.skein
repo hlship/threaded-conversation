@@ -1,0 +1,319 @@
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+Just wait here, we won't be but a minute.
+
+Empty Office
+You've been left in this office to stew a bit before they are ready for your
+interview. To say it is bare-bones is an understatement. No windows, or even any
+furniture beyond a single battered table.
+
+--------------------------------------------------------------------------------
+id: 1736104077955
+parent-id: 0
+command: x table
+--------------------------------------------------------------------------------
+> x table
+A dented and dusty metal table. Someone has left a shiny penny on the table.
+Oddly, the only decoration in the room is a metronome sitting in one corner of
+the table.
+
+--------------------------------------------------------------------------------
+id: 1736104077956
+parent-id: 1736104077955
+command: sceneinfo
+--------------------------------------------------------------------------------
+> sceneinfo
+#penny-dropped (recurring)
+#the-beat
+
+--------------------------------------------------------------------------------
+id: 1736104077957
+parent-id: 1736104077956
+command: take penny
+--------------------------------------------------------------------------------
+> take penny
+You take the shiny penny off the table.
+
+--------------------------------------------------------------------------------
+id: 1736104077958
+parent-id: 1736104077957
+command: drop it
+--------------------------------------------------------------------------------
+> drop it
+The shiny penny falls to the ground.
+
+As the penny hits the floor, you hear a click and a low humming starts. A thin
+red line of illumination appears around the edges of the floor.
+
+--------------------------------------------------------------------------------
+id: 1736104077959
+parent-id: 1736104077958
+command: l
+--------------------------------------------------------------------------------
+> l
+Empty Office
+You've been left in this office to stew a bit before they are ready for your
+interview. To say it is bare-bones is an understatement. No windows, or even any
+furniture beyond a single battered table. The edges of the floor are lit with a
+dim red light, and you can hear a low hum.
+
+You see a shiny penny here.
+
+--------------------------------------------------------------------------------
+id: 1736104077960
+parent-id: 1736104077959
+command: sceneinfo
+--------------------------------------------------------------------------------
+> sceneinfo
+#penny-dropped (recurring, has started, in progress)
+#the-beat
+
+--------------------------------------------------------------------------------
+id: 1736104077961
+parent-id: 1736104077960
+command: x metro
+--------------------------------------------------------------------------------
+> x metro
+A small box with a kind of inverted pendulum standing up. If it were pushed, it
+would start swinging back and forth at an even rate.
+
+--------------------------------------------------------------------------------
+id: 1736104077962
+parent-id: 1736104077961
+command: push it
+--------------------------------------------------------------------------------
+> push it
+You give the metronome a bit of a push. As expected, the metronome's pendulum
+starts to swing back and forth.
+
+--------------------------------------------------------------------------------
+id: 1736104077963
+parent-id: 1736104077962
+command: l
+--------------------------------------------------------------------------------
+> l
+Empty Office
+You've been left in this office to stew a bit before they are ready for your
+interview. To say it is bare-bones is an understatement. No windows, or even any
+furniture beyond a single battered table. The edges of the floor are lit with a
+dim red light, and you can hear a low hum.
+
+You see a shiny penny here.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104077964
+parent-id: 1736104077963
+command: sceneinfo
+--------------------------------------------------------------------------------
+> sceneinfo
+#penny-dropped (recurring, has started, in progress)
+#the-beat (has started, in progress)
+
+--------------------------------------------------------------------------------
+id: 1736104077965
+parent-id: 1736104077964
+command: take penny
+--------------------------------------------------------------------------------
+> take penny
+You take the shiny penny.
+
+As you pick up the penny, there's another click, and the red illumination
+disappears.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104077966
+parent-id: 1736104077965
+command: l
+--------------------------------------------------------------------------------
+> l
+Empty Office
+You've been left in this office to stew a bit before they are ready for your
+interview. To say it is bare-bones is an understatement. No windows, or even any
+furniture beyond a single battered table.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104077967
+parent-id: 1736104077966
+command: sceneinfo
+--------------------------------------------------------------------------------
+> sceneinfo
+#penny-dropped (recurring, has started, has completed)
+#the-beat (has started, in progress)
+
+--------------------------------------------------------------------------------
+id: 1736104077968
+parent-id: 1736104077967
+command: drop penny
+--------------------------------------------------------------------------------
+> drop penny
+The shiny penny falls to the ground.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+As the penny hits the floor, you hear a click and a low humming starts. A thin
+red line of illumination appears around the edges of the floor.
+
+--------------------------------------------------------------------------------
+id: 1736104077969
+parent-id: 1736104077968
+command: l
+--------------------------------------------------------------------------------
+> l
+Empty Office
+You've been left in this office to stew a bit before they are ready for your
+interview. To say it is bare-bones is an understatement. No windows, or even any
+furniture beyond a single battered table. The edges of the floor are lit with a
+dim red light, and you can hear a low hum.
+
+You see a shiny penny here.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759384
+parent-id: 1736104077956
+command: debug scenes
+--------------------------------------------------------------------------------
+> debug scenes
+Scene debugging enabled.
+
+--------------------------------------------------------------------------------
+id: 1736104759385
+parent-id: 1736104759384
+command: take penny
+--------------------------------------------------------------------------------
+> take penny
+You take the shiny penny off the table.
+
+--------------------------------------------------------------------------------
+id: 1736104759386
+parent-id: 1736104759385
+command: drop penny
+--------------------------------------------------------------------------------
+> drop penny
+The shiny penny falls to the ground.
+
+As the penny hits the floor, you hear a click and a low humming starts. A thin
+red line of illumination appears around the edges of the floor.
+scene #penny-dropped started
+
+--------------------------------------------------------------------------------
+id: 1736104759387
+parent-id: 1736104759386
+command: push metronome
+--------------------------------------------------------------------------------
+> push metronome
+You give the metronome a bit of a push.
+scene #penny-dropped in progress
+As expected, the metronome's pendulum starts to swing back and forth.
+scene #the-beat started
+
+--------------------------------------------------------------------------------
+id: 1736104759388
+parent-id: 1736104759387
+command: z
+--------------------------------------------------------------------------------
+> z
+A moment slips away.
+scene #penny-dropped in progress
+scene #the-beat in progress
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759389
+parent-id: 1736104759388
+command: take penny
+--------------------------------------------------------------------------------
+> take penny
+You take the shiny penny.
+
+As you pick up the penny, there's another click, and the red illumination
+disappears.
+scene #penny-dropped completed
+scene #the-beat in progress
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759390
+parent-id: 1736104759389
+command: z
+--------------------------------------------------------------------------------
+> z
+A moment slips away.
+scene #the-beat in progress
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759391
+parent-id: 1736104759390
+command: drop penny
+--------------------------------------------------------------------------------
+> drop penny
+The shiny penny falls to the ground.
+scene #the-beat in progress
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+As the penny hits the floor, you hear a click and a low humming starts. A thin
+red line of illumination appears around the edges of the floor.
+scene #penny-dropped started
+
+--------------------------------------------------------------------------------
+id: 1736104759392
+parent-id: 1736104759391
+command: z
+--------------------------------------------------------------------------------
+> z
+A moment slips away.
+scene #penny-dropped in progress
+scene #the-beat in progress
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759393
+parent-id: 1736104759392
+command: debug scenes off
+--------------------------------------------------------------------------------
+> debug scenes off
+Scene debugging disabled.
+
+--------------------------------------------------------------------------------
+id: 1736104759394
+parent-id: 1736104759393
+command: take penny
+--------------------------------------------------------------------------------
+> take penny
+You take the shiny penny.
+
+As you pick up the penny, there's another click, and the red illumination
+disappears.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+--------------------------------------------------------------------------------
+id: 1736104759395
+parent-id: 1736104759394
+command: drop penny
+--------------------------------------------------------------------------------
+> drop penny
+The shiny penny falls to the ground.
+
+The metronome's pendulum swings to one extreme and there's an audible click.
+
+As the penny hits the floor, you hear a click and a low humming starts. A thin
+red line of illumination appears around the edges of the floor.
+

@@ -1,0 +1,89 @@
+%% Approximation of Inform scenes; scenes can be in progress or not; scenes can repeat.
+%% Scenes are triggered by an initial condition, and end with another condition.
+%% Scenes can be linked such that one scene starts when another begins.
+
+(extension version)
+    (line)
+    Scenes 0.8 by Howard Lewis Ship
+
+%% Scenes have the (scene $) trait.
+
+%% Scenes supply the (start $) predicate, which succeeds when the scene begins;
+%% the predicate should also perform any state updates and provide any narration pertaining
+%% to the start of the scene.
+
+%% Started scenes will receive the flag ($ in progress) and ($ has started).
+
+%% Scenes must supply the (complete $) predicate, the counterpart to (start $); 
+%% when this succeeds, the ($ in progress) flag is cleared, and the ($ has completed) flag
+%% is set.
+
+%% On each tick, scenes complete before new scenes start; this allows scenes to start triggered
+%% by other scenes being just completed.
+
+%% By default, scenes execute once (once a scene has completed, there are no further checks
+%% to see if it should start).
+%% Scenes with the (recurring $) trait can start again even once completed.
+
+%% The predicate (scene debugging enabled) will enable debug output as scenes are started, completed, or 'ticked'.
+
+(scene debugging enabled)
+    (fail)
+
+(start $) (fail)
+(scene $) (fail)
+(complete $) (fail)
+(recurring $) (fail)
+
+%% Each scene that is in progress at the start of the tick and not completed during the tick
+%% is notified via this predicate.  It doesn't matter whether this predicate succeeds or fails.
+(on every tick during $) (fail)
+
+(on every tick)
+    (identify completed scenes)
+    (tick scenes in progress)
+    (identify starting scenes)
+     
+(identify completed scenes)
+    (exhaust) {
+        *(scene $Scene)
+        ($Scene in progress)
+        (complete $Scene)
+        (if) (scene debugging enabled)
+        (then)
+            (log) { scene $Scene completed }
+        (endif)
+        (now) ~($Scene in progress)
+        %% The scene has completed, at least once
+        (now) ($Scene has completed)
+    }
+
+(tick scenes in progress)
+    (exhaust) {
+        *(scene $Scene)
+        ($Scene in progress)
+        (if) (scene debugging enabled)
+        (then)
+             (log) { scene $Scene in progress }
+        (endif)
+        (exhaust) *(on every tick during $Scene)
+    }
+
+(identify starting scenes)
+    (exhaust) {
+        *(scene $Scene)
+        (ready to start scene $Scene)
+        (start $Scene)
+        (if) (scene debugging enabled)
+        (then)
+          (log) { scene $Scene started }
+        (endif)
+        (now) ($Scene in progress)
+        %% The scene has started, at least once.
+        %% Important for recurring scenes.
+        (now) ($Scene has started)
+    }
+
+(ready to start scene $Scene)
+    ~($Scene in progress)
+    { ~($Scene has completed) (or) (recurring $Scene) }

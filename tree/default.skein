@@ -1,0 +1,183 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+Altar of the Tree of Knowledge
+You have reached the altar of the Tree of Knowlege. The tree's branches rise up,
+out of the deep ravine, towards the light; its roots have worked their way into
+the living rock, and entagle the great stone altar.
+
+--------------------------------------------------------------------------------
+id: 1736023924987
+parent-id: 0
+command: talk to tree
+--------------------------------------------------------------------------------
+> talk to tree
+The voice of the tree eminates from all around. "You may ask about things
+animal, vegetable, or mineral."
+
+You could ask about animals, ask about plants, or ask about minerals.
+
+--------------------------------------------------------------------------------
+id: 1736023924988
+parent-id: 1736023924987
+command: animal
+--------------------------------------------------------------------------------
+> animal
+You ask about animals.
+
+Are you interested in vertebrates or invertebrates?
+
+You could ask about plants, ask about minerals, ask about vertebrates, or ask
+about invertebrates.
+
+--------------------------------------------------------------------------------
+id: 1736023924989
+parent-id: 1736023924988
+command: vertebrates
+--------------------------------------------------------------------------------
+> vertebrates
+What are vertebrates?
+
+Animals with backbones are vertebrates, such as mammals, fish, and lizards.
+
+You could ask about invertebrates, ask about mammals, or ask about fish.
+
+--------------------------------------------------------------------------------
+id: 1736023924990
+parent-id: 1736023924989
+command: mammals
+--------------------------------------------------------------------------------
+> mammals
+What are mammals?
+
+Mammals are warm blooded, bear their young alive, and produce milk. Primates
+like you are mammals.
+
+You could ask about primates or ask about fish.
+
+--------------------------------------------------------------------------------
+id: 1736023924991
+parent-id: 1736023924990
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #tree -- the tree of knowledge
+Quips:
+  Current: #mammal
+  Previous: #vertebrate
+  Grandparent: #animal
+
+Discussable quips:
+  #vegetable (changes the subject)
+  #mineral (changes the subject)
+    Followers: #metal, #stone
+  #invertebrate
+    Follows: #animal
+  #primate (relevant)
+    Follows: #mammal
+  #fish (relevant)
+    Follows: #vertebrate
+
+--------------------------------------------------------------------------------
+id: 1736023924992
+parent-id: 1736023924991
+command: change subject
+--------------------------------------------------------------------------------
+> change subject
+You could ask about plants or ask about minerals.
+
+--------------------------------------------------------------------------------
+id: 1736023924993
+parent-id: 1736023924992
+command: primates
+--------------------------------------------------------------------------------
+> primates
+What's a primate?
+
+Larger brains, opposable thumbs. An interesting experiment you could say.
+
+A moment passes.
+
+You are a primate. Rather less well adapted than a chimp or a great ape, I
+believe.
+
+You could ask about plants, ask about minerals, ask about invertebrates, or ask
+about fish.
+
+--------------------------------------------------------------------------------
+id: 1736023924994
+parent-id: 1736023924993
+command: minerals
+--------------------------------------------------------------------------------
+> minerals
+What are minerals?
+
+Minerals are non-living elements, many of which are building blocks of life.
+Metals, stone, and crystals are types of minerals.
+
+You could ask about plants, ask about invertebrates, ask about fish, ask about
+metals, or ask about stone.
+
+--------------------------------------------------------------------------------
+id: 1736023924995
+parent-id: 1736023924994
+command: plants
+--------------------------------------------------------------------------------
+> plants
+Plants and vegetables?
+
+Mosses, land plants, and aquatic plants.
+
+You could ask about invertebrates, ask about fish, ask about metals, or ask
+about stone.
+
+--------------------------------------------------------------------------------
+id: 1736023924996
+parent-id: 1736023924995
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #tree -- the tree of knowledge
+Quips:
+  Current: #vegetable
+  Previous: #mineral
+  Grandparent: #vegetable
+
+Discussable quips:
+  #invertebrate
+    Follows: #animal
+  #fish
+    Follows: #vertebrate
+  #metal (relevant)
+    Follows: #mineral
+  #stone (relevant)
+    Follows: #mineral
+
+--------------------------------------------------------------------------------
+id: 1736023924997
+parent-id: 1736023924996
+command: change the subject
+--------------------------------------------------------------------------------
+> change the subject
+You can think of no changes of subject now.
+
+--------------------------------------------------------------------------------
+id: 1736023924998
+parent-id: 0
+command: ask about animals
+--------------------------------------------------------------------------------
+> ask about animals
+(I only understood you as far as wanting to ask someone about something.)
+
+--------------------------------------------------------------------------------
+id: 1736023924999
+parent-id: 1736023924998
+command: topics
+--------------------------------------------------------------------------------
+> topics
+You're not talking to anyone right now.
+

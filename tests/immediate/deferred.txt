@@ -1,5 +1,0 @@
-talk ted
-ask beard
-lumberjack
-%% The lumberjack quip interrupts the flow, so we get the non-immediate version of the exchange.
-a girlfriend

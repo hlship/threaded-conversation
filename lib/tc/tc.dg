@@ -1,0 +1,814 @@
+%% Based on Threaded Conversation by Emily Short, Chris Connelly, et al.
+
+%% I7 refers to the baseline implementation in Inform7
+
+(extension version)
+    (line)
+    Threaded Conversation 0.8 by Howard Lewis Ship
+
+%% There are three types of player-directed quips.
+
+(quip $Quip)    *(asking quip $Quip)   %% ask
+(asking quip $) (fail)
+
+(quip $Quip)    *(telling quip $Quip)   %% say/tell
+(telling quip $) (fail)
+
+(quip $Quip)    *(performing quip $Quip)  %% other
+(performing quip $) (fail)
+
+%% An asking quip with the about trait adds `about` between the `ask` verb
+%% and the name of the quip.  For a telling quip it is either `say` or `tell about`.
+(about $) (fail)
+
+%% All player-initiated quips are topics for ask/tell, with overrides
+%% for scope and availability.
+
+%% NPC-directed quips (currently) are just objects.  Not even (quip $).
+%% They just have a (reply $) and other quips may follow them.
+
+%% (comment $) - PC's speech
+
+(interface (comment $<Quip))
+
+(comment $Quip)
+    (line) ERROR: No comment was supplied for $Quip.
+    (fail)
+
+%% (reply $) -- NPC's reply
+
+(interface (reply $<Quip))
+
+(reply $Quip)
+    (line) ERROR: No reply was supplied for $Quip.
+    (fail)
+
+%% (nag $) -- optional message, mostly used with restrictive quips
+
+(interface (nag $<Quip))
+
+(nag $) (fail)
+
+%% A beat is used to break up quips and such. Excellent chance to provide
+%% some varied, quip- (or NPC-)specific output.
+
+(interface (beat $<Quip))
+
+(beat $)
+    A moment passes.
+    (par)
+
+%% Quips are usually one time (per NPC) but can be repeatable instead.
+
+@(one-time $Quip)     ~(repeatable $Quip)
+(repeatable $) (fail)
+
+%% Quips are usually available; a quip that is off limits is simply treated
+%% as if it does not exist. This is not the final word, as quips may be
+%% further filtered down based on other factors, such as following prior quips,
+%% repeatablilty etc.
+
+@(available $Quip)   ~(off limits $Quip)
+(off limits $) (fail)
+
+%% Most quips are unrestrictive (the player may change the subject).
+%% Restrictive quips enforce that the next player quip must directly follow
+%% the current quip.
+
+@(unrestrictive $Quip)   ~(restrictive $Quip)
+(restrictive $) (fail)
+
+%% Quips are normally plausible, but dubious clips are allowed.
+%% You have to be specific to choose a dubious quip, disambiguation
+%% normally ignores dubious quips if any plausible quips match the players command.
+
+@(plausible $Quip)   ~(dubious $Quip)
+(dubious $) (fail)
+
+%% A quip may follow some other quip, and is discussable anytime after the
+%% the earlier quip has been discussed.
+
+($ follows $) (fail)
+
+%% A quip that directly follows an earlier quip is only discussable when
+%% the earlier quip is still the current quip.
+
+($ directly follows $) (fail)
+
+%% Quips may supply one (or more) NPC, or be universal (supplies anyone).
+
+($ supplies $) (fail)
+@($Quip supplies anyone) ~($Quip supplies $)
+
+%% We use 'discuss' here as a shorthand for any kind of ask/tell/demonstrate interation
+($NPC can discuss $Quip)
+    ($Quip supplies anyone) (or) ($Quip supplies $NPC)
+
+%% A quip may mention a Dialog topic; the topic is assumed to be known to all NPCs.
+%% The topic may be an object (which doesn't have to be in scope), or a Dialog topic
+%% (a dictionary word).
+
+($ mentions $) (fail)
+
+%% Make sure the quip name is not prefixed with 'the' in disambiguation.
+
+(proper (quip $))
+
+%% This is "current interlocutor" in I7:
+
+(global variable (conversation partner $))
+
+%% These are the quips discussable by the player, based on
+%% the conversation partner, rebuilt on every tick.
+
+(global variable (discussable quips $))
+
+%% The most recent quip for which the comment or reply has been output.
+
+(global variable (current quip $))
+
+%% After an NPC performs their part of a comment/reply (via the NPC's queue)
+%% the current quip becomes the previous quip.
+
+(global variable (previous quip $))
+
+%% Grandparent quip is considered the "entry point" of a thread of conversation.
+
+(global variable (grandparent quip $))
+
+%% Used to vary the text when a quip immediately follows its prior quip.
+%% If the player goes off on a tangent before returning to this quip,
+%% then (immediately following) will fail.
+
+(interface (immediately following))
+
+(immediately following)
+    (current quip $Current)
+    (previous quip $Previous)
+    ($Current follows $Previous)
+
+%% Recollection of quips
+%% When the player's comment is printed, the player will recollect the quip
+%% When the NPC's reply is printed, the NPC will recollect the quip
+%% TODO: Currently, a queued quip may not have a comment, and the player will
+%% not recollect the quip even though the NPC does.
+
+%% Dialog doesn't handle multi-valued properties.  So we have
+%% a dynamic property ($Quip is recollected by $ActorList) and a rule
+%% ($Actor recollects $Quip).
+%% The term Actor here means "player or NPC" (and, by NPC, we really mean, animate).
+
+(interface (make $<Actor recollect $<Quip))
+
+(make $Actor recollect $Quip)
+    { ($Quip is recollected by $Actors) (or) ($Actors = []) }
+    ~($Actor is one of $Actors)
+    (now) ($Quip is recollected by [$Actor | $Actors])
+
+%% We have each quip track who recollects it, which seems odd, but if the
+%% actor tracks the recollected quips, then the #player will end up with
+%% a potentially giant list.
+
+(interface ($<Actor recollects $<Quip))
+
+($Actor recollects $Quip)
+    ($Quip is recollected by $Actors)
+    ($Actor is one of $Actors)
+
+%% Rules for quips, threads, availablility, etc.
+
+($Quip changes the subject)
+    ~($Quip continues from $)
+
+($Quip is dead-ended)
+    ~($ continues from $Quip)
+
+@($Quip is mid-thread)
+    ~($Quip changes the subject)
+    ~($Quip is dead-ended)
+
+%% I7 makes all directly follows also follows, but
+%% don't think that is necessary.
+
+(interface ($Quip continues from $EarlierQuip))
+
+($Quip continues from $EarlierQuip)
+    *($Quip directly follows $EarlierQuip) 
+    (or)
+    *($Quip follows $EarlierQuip)
+
+($Quip is discussable with $NPC)
+    (available $Quip)
+    ($NPC can discuss $Quip)
+    { ($Quip changes the subject)
+        (or) *($Quip follows $EarlierQuip)
+             ($NPC recollects $EarlierQuip)
+        (or) (current quip $CurrentQuip) %% Player *just* discussed it
+             ($Quip directly follows $CurrentQuip)
+    }
+    %% Watch out for one-time quips that this NPC has already performed
+    { (repeatable $Quip) (or) ~($NPC recollects $Quip) }
+    %% Guard against changing the subject during
+    %% a restrictive quip
+    (if) (current quip $CurrentQuip)
+         (restrictive $CurrentQuip) 
+    (then) ($Quip continues from $CurrentQuip)
+    (endif)
+
+%% Queuing of quips
+%% The quip comments (the player side) is output when discussing,
+%% and the quip is queued for the next tick to output the quip's reply (the NPC's side).
+%% Sometimes, as a side effect of the quip comment, or some other actions,
+%% additional NPC-directed quips are queued as well.
+
+%% Queue a quip for the NPC at precendence
+%% precedences:
+%% #immediate-obligatory - reply to player's comment
+%% #postponed-obligatory - important, survives change of subject
+%% #postponed-optional - casual, cleared on change of subject
+%% #immediate-optional - casual, cleared on any player comment
+
+(interface (queue $<Quip for $<NPC))
+
+(queue $Quip for $NPC)
+    (queue $Quip for $NPC as #immediate-obligatory)
+
+%% Queue a quip for the current conversation partner, but
+%% do nothing if no partner.
+
+(interface (queue $<Quip))
+
+(queue $Quip)
+    (conversation partner $NPC)
+    (queue $Quip for $NPC)
+
+%% Queues a quip for the current NPC as #postponed-optional, but
+%% only if the NPC doesn't already recollect the quip, the quip applies to the NPC, and also only
+%% if the current quip is not restrictive.
+
+(interface (casually queue $<Quip))
+
+(casually queue $Quip)
+    (current quip $Current)
+    (unrestrictive $Current)
+    (conversation partner $NPC)
+    ($NPC can discuss $Quip)
+    ~($NPC recollects $Quip)
+    (queue $Quip for $NPC as #postponed-optional)
+
+(interface (queue $<Quip for $<NPC as $<Precedence))
+
+(queue $Quip for $NPC as $Precedence)
+    %% I7 just queues the quips and sets a quip property to identify
+    %% how it is queued. That just doesn't feel right.
+    { ($NPC has conversation queue $Queue) (or) ($Queue = []) }
+    %% TODO: May need to ensure quip or tuple not already queued?
+    (now) ($NPC has conversation queue [[$Precedence $Quip] | $Queue])
+    
+(interface (extract next quip for $<NPC as $>Quip))
+
+(extract next quip for $NPC as $Quip)
+    ($NPC has conversation queue $Queue)
+    *($Tuple is one of $Queue)
+    ($Tuple = [$ $Quip])
+    (remove $Tuple from $Queue as $NewQueue)
+    (now) ($NPC has conversation queue $NewQueue)
+
+(interface (purge $<Precedence from conversation queue for $<NPC))
+
+(purge $Precedence from conversation queue for $NPC)
+    (if)
+        ($NPC has conversation queue $OldQueue)
+        (nonempty $OldQueue)
+    (then)
+        (collect $Tuple)
+            *($Tuple is one of $OldQueue)
+            ~($Tuple = [$Precedence $])
+
+        (into $NewQueue)
+        (now) ($NPC has conversation queue $NewQueue)
+    (endif)
+
+(interface (purge optional conversation for $<NPC))
+
+(purge optional conversation for $NPC)
+    (purge #postponed-optional from conversation queue for $NPC)
+    (purge #immediate-optional from conversation queue for $NPC)
+
+(interface (record current quip $<Quip))
+
+(record current quip $Quip)
+    %% This gets called just before the player's comment, then again
+    %% just before the NCP's reply.
+    (if) ~(current quip $Quip) 
+    (then)
+        (if) ~($Quip is relevant to current thread)
+        (then)
+            (conversation partner $NPC)
+            (purge optional conversation for $NPC)
+            (now) (grandparent quip $Quip)
+        (else)
+            (if) (previous quip $NewGrandparent)
+            (then)
+                (now) (grandparent quip $NewGrandparent)
+            (endif)
+        (endif)
+        (if) (current quip $NewPrevious)
+        (then)
+            (now) (previous quip $NewPrevious)
+        (endif)
+        (now) (current quip $Quip)
+    (endif)
+
+%% Handle the reply to the PC's comment
+(on every tick)
+    %% TODO: unless we allow multiple NPCs to talk in a single tick, this could be
+    %% a global flag rather than an object flag.
+    (now) ~($ has spoken this tick)
+    (conversation partner $NPC)
+    %% After a player comment, the first queued quip will be the NPC reply.
+    %% If the player didn't comment but there was a queued quip, its reply is printed now.
+    (perform queued quip for $NPC)
+    (current quip $Quip)
+    %% If the current quip (either the NPC reply, or a queued NPC quip) is dead ended and
+    %% the NPC has another quip ready to go, then print its reply now.
+    %% TODO: Is dead ended enough?  What if there are valid, but dubious quips?
+    ($Quip is dead-ended)
+    (perform queued quip for $NPC)
+
+(interface (perform queued quip for $<NPC))
+
+(perform queued quip for $NPC)
+    (extract next quip for $NPC as $Quip)
+    (par)
+    %% If found (and removed from queue) print the reply now
+    (if) ($NPC has spoken this tick)
+    (then) (beat $Quip)
+    (endif)
+    (record current quip $Quip)
+    (reply $Quip)
+    (now) ($NPC has spoken this tick)
+    %% The player recollects it on the prior tick; the NPC
+    %% recollects after the reply is produced.
+    (make $NPC recollect $Quip)
+    %% TODO: A queued quip may not be recollected by the player!
+    %% This may have been a queued quip, it is now the current quip
+    %% which will affect quip discussability.
+    (exhaust) { *(after $NPC has replied with $Quip) }
+
+%% A notification, allowing other (presumably, present) NPCs to react to a particular
+%% NPC replying with a quip. 
+
+(interface (after $<NPC has replied with $<Quip))
+
+%% The default for this notification is to do nothing.
+
+(after $ has replied with $)
+    (fail)
+
+%% Identifying discussable quips
+%%
+%% As an optimization, at the start of each tick, the possible discussable quips
+%% (based on conversation partner, current quip, thread of conversation, etc.)
+%% is identified and stored in the (discussable quips $List) global.
+%% Some of these quips may be dubious or represent a change of subject, in which case
+%% they are unlikely (but still possible), but only likely quips, continuations of
+%% the current thread, are ever suggested to the player.
+
+%% Identify which quips (even if dubious or unlikely) are available for the current NPC
+%% for the player to select.
+
+(interface ($<NPC has discussable quips $>Quips))
+
+($NPC has discussable quips $Quips)
+    %% Iterating over all quips may not scale well when there are hundreds;
+    %% filtering by NPC first may make sense. We'll see.
+    (collect $Quip)
+        *(quip $Quip)
+        ($Quip is discussable with $NPC)
+    (into $Quips)
+
+(on every tick)
+    (rebuild discussable quips)
+
+(rebuild discussable quips)
+    (now) (discussable quips [])
+    (conversation partner $NPC)
+    ($NPC has discussable quips $Quips)
+    (now) (discussable quips $Quips)
+
+%% When the player does anything but discuss a quip when there's a quip hanging
+%% properly, output the nag.
+(on every tick)
+    (current quip $Quip)
+    ~(last action was conversationally active)
+    %% You'll almost always want a nag to start with `(beat *)`.
+    %% An attempt to collect the output from nag and do the beat automatically
+    %% didn't work ... text came out lower-case dictionary words.
+
+    %% If the nag is successful, add paragraph break, then fail to continue normal
+    %% processing of the action.  Nags are always optional, but can add a lot of flavor.
+    %% Because we can't tell if there's a nag without invoking it, the nag is responsible for
+    %% the paragraph break.
+    (nag $Quip)
+
+(on every tick)
+    (now) ~(last action was conversationally active)
+
+%% During a conversation, identify any plausible, novel quips that don't jump to a new thread.
+
+(late on every tick)
+    %% The before rule that automatically engages in conversation also inhibits this logic
+    %% for one tick.
+    (if) (inhibit conversation suggestions)
+    (then)
+        (now) ~(inhibit conversation suggestions)
+    (else)
+        (discussable quips $Quips)
+        (nonempty $Quips)
+        (current player $Player)
+        (collect $Quip)
+            *($Quip is one of $Quips)
+            (plausible $Quip)
+            %% Never suggest to the player a quip they've already discussed (even with another NPC).
+            ~($Player recollects $Quip)
+            ~($Quip is not relevant to current thread)
+        (into $SuggestedQuips)
+        (nonempty $SuggestedQuips)
+        (par)
+        You could (list quips $SuggestedQuips).
+    (endif)
+    
+
+(interface (action from quip $<Quip is $>Action))
+
+(action from quip (performing quip $Quip) is [perform quip $Quip])
+
+(action from quip (asking quip $Quip) is [ask $NPC about $Quip])
+    (conversation partner $NPC)
+
+(action from quip (telling quip $Quip) is [tell $NPC about $Quip])
+    (conversation partner $NPC)
+
+(list quips $Quips)
+    (listing $Quips { (describe quip $_) } @or [] 0)
+
+%% (describe quip $) is only used in the context of an active conversation partner,
+%% so it's preferable to converting the quip to an action and describing the action, as
+%% it doesn't repeatedly mention the CP.
+
+(describe quip (asking quip $Quip))
+    ask 
+    (if) (about $Quip) (then) about (endif)
+    (name $Quip)
+
+(describe quip (telling quip $Quip))
+    (if) (about $Quip)
+    (then) tell about 
+    (else) say    
+    (endif)
+    (name $Quip)
+
+(describe quip (performing quip $Quip))
+    (name $Quip)
+
+%% Unlikely helps weed out non-relevant quips, and is tied into the
+%% "You could ..." every tick rules.
+(unlikely [ask/tell $ about (quip $Quip)])
+    ($Quip is not relevant to current thread)
+
+(unlikely [perform quip $Quip])
+    ($Quip is not relevant to current thread)
+
+($Quip is not relevant to current thread)
+    (current quip $Current)
+    ($Current is mid-thread)
+    ~($Quip is relevant to current thread)
+
+(interface ($<Quip is relevant to current thread))
+
+($Quip is relevant to current thread)
+    {
+        (current quip $Current)
+        ($Quip continues from $Current)
+    }
+    (or)
+    {
+        (previous quip $Previous)
+        ($Quip continues from $Previous)
+    }
+    (or)
+    {  
+        (grandparent quip $Grandparent)
+        ($Quip continues from $Grandparent)
+        (current quip $Current)
+        ($Current continues from $Grandparent)
+        (previous quip $Previous)
+        ($Previous continues from $Grandparent)
+    }
+
+%% All dubious quips are very unlikely actions; this again keeps
+%% them from being suggested.
+
+(very unlikely [ask/tell $ about (quip $Quip)])
+    (dubious $Quip)
+
+(very unlikely [perform quip $Quip])
+    (dubious $Quip)
+ 
+%% Repeatable quips can be returned to, but are unlikely, so they are never
+%% suggested.
+
+(unlikely [perform quip $Quip])
+    ($Quip is repeatable and recollected)
+
+(unlikely [ask/tell $ about (quip $Quip)])
+    ($Quip is repeatable and recollected)
+
+%% If the standard library matches against a topic, make that very unlikely; if 
+%% that ends up being the best match that can be found, then it will ultimately
+%% trigger the "narrate ignorance".
+%% Likewise, ensure that the who is animate, preventing further disambiguation
+%% problems.
+
+(very unlikely [ask/tell $Who about $Something])
+    ~{
+        (animate $Who)
+        (quip $Something)
+    }
+
+(very unlikely [talk to $Who about $Something])
+    ~{
+        (animate $Who)
+        (quip $Something)
+    }
+
+%% These are stub verbs that exist for the stdlib to ask for more information
+
+(very unlikely [ask/tell $Who])
+    ~(animate $Who)
+
+%% Another place where you can get unwanted disambiguation
+
+(unlikely [talk to $Who about $])
+    ~(animate $Who)
+
+($Quip is repeatable and recollected)
+    (repeatable $Quip)
+    (current player $Player)
+    ($Player recollects $Quip)
+
+%% Override and extend stdlib grammar for ask/tell
+
+(understand [a/ask | $Words] as [ask $NPC about $Quip])
+    (split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (asking quip $Quip)
+
+(understand [a/ask about | $What] as [ask $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (asking quip $Quip)
+
+(understand [a/ask | $What] as [ask $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (asking quip $Quip)
+
+(understand [tell | $Words] as [tell $NPC about $Quip])
+    (split $Words by [about] into $Who and $What)
+    *(understand $Who as NPC $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (telling quip $Quip)
+
+(understand [tell about | $What] as [tell $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (telling quip $Quip)
+
+(understand [say/tell | $What] as [tell $NPC about $Quip])
+    (conversation partner $NPC)
+    *(understand $What as quip $Quip for $NPC)
+    (telling quip $Quip)
+
+%% Disable stdlib understanding of ask and tell command:
+    
+(understand $Words as NPC $NPC)
+    *(understand $Words as single object $NPC)
+    %% Tend to get some wacky disambiguations unless we insist the NPC is animate; preferably isn't enough
+    (animate $NPC)
+
+%% This is necessary for demonstrative quips, but also the other two types.
+%% Experienced players tend to just type a keyword to progress the
+%% conversation.
+
+(understand $Text as $Action)
+    (conversation partner $NPC)
+    *(understand $Text as quip $Quip for $NPC)
+    (action from quip $Quip is $Action)
+
+(understand $Text as quip $Quip for $NPC)   
+    (filter $Text into $Filtered)
+    (nonempty $Filtered)
+    (if) (conversation partner $NPC) (then)
+        %% If mid-conversation with someone, then the discussable quips were calculated
+        %% at the start of the tick.
+        (discussable quips $Quips)
+    (else)
+        %% This could get expensive to keep recalculating if several words each identify the same NPC
+        ($NPC has discussable quips $Quips)
+    (endif)    
+    *(understand $Text as quip $Quip from $Quips)
+
+
+%% This works, but could use improvement; currently only the ask/tell <npc> about <topic>
+%% result in this action with [] (aka, "something").
+
+(prevent [talk to $NPC about []])
+    (narrate $NPC expressing ignorance)
+
+%% This overrides the stub from stdlib:
+
+(perform [talk to $NPC])
+    (now) (conversation partner $NPC)
+    (now) (last action was conversationally active)
+    (narrate greeting $NPC)  %% Doesn't look like I7 version quite does this?
+    (notice $NPC)
+
+(interface (narrate greeting $<NPC))
+
+(narrate greeting $NPC)
+    You say hello to (the $NPC).
+    (par)
+
+%% Have to understand words as a possible quip via the words themselves,
+%% or the object or topic mentioned by the quip.
+
+(interface (understand $<Words as quip $>Quip from $<Quips))
+
+%% Take 1: The words identify the quip by dict name
+
+(understand $Words as quip $Quip from $Quips)
+    (determine object $Quip)
+        *($Quip is one of $Quips)
+    (from words)
+        *(dict $Quip)
+    (matching all of $Words)
+
+%% Take 2: understand quips that mention a topic that matches the words
+
+(understand $Words as quip $Quip from $Quips)
+    *(understand $Words as topic $Topic)
+    *($Quip is one of $Quips)
+    ($Quip mentions $Topic)
+
+%% Take 3: understand quips that mention an object (which doesn't have to be in scope)
+%% This should also work with topic objects.
+
+(understand $Words as quip $Quip from $Quips)
+    *($Quip is one of $Quips)
+    (determine object $Mention)
+        *($Quip mentions $Mention)
+        (object $Mention)
+    (from words)
+        *(dict $Mention)
+    (matching all of $Words)
+
+%% By default, the standard library ensures that any objects identified
+%% in an action list are in scope; quips are like topics, abstract,
+%% so this negated predicate disables that check when discussing.
+
+~(refuse [perform quip $])
+
+(instead of [greet $NPC])
+    (try [talk to $NPC])
+
+(when not talking to anyone)
+    ~(conversation partner $)
+    You're not talking to anyone right now.
+
+(prevent [perform quip $])
+    (when not talking to anyone)
+
+(perform [perform quip $Quip])
+    (perform player quip $Quip)
+
+(before [talk to $NPC about $])
+    ~(conversation partner $NPC)
+    %% Without this, you get an unwanted "You could say ..." bit in between the saying hello
+    %% and performing the already selected quip.
+    (now) (inhibit conversation suggestions)
+    (try [talk to $NPC]) (tick) (par)
+
+%% Under TC, the person to ask/tell is always the CP.
+%% ask and tell both end up here.
+
+(instead of [talk to $ about (quip $Quip)])
+    %% All branches eventually lead to perform quip.
+    (try [perform quip $Quip])
+
+(instead of [talk to $NPC about $])
+    (narrate $NPC expressing ignorance)
+
+%% Catch all for discussing topics (from stdlib ask/tell) or unknowns.
+
+(perform [perform quip $])
+    (conversation partner $NPC)
+    (narrate $NPC expressing ignorance)
+         
+(interface (narrate $<NPC expressing ignorance))
+
+(narrate $NPC expressing ignorance)
+    "I don't know anything about that," says (the $NPC).
+
+(interface (narrate nothing to say))
+(narrate nothing to say)
+    You can't think of anything appropriate to say.
+
+(perform [perform quip $Quip])
+    (perform player quip $Quip)
+
+%% Perform a normal (not NPC) quip, starting with the quip's comment immediately,
+%% and queing the quip for the NPC's reply.
+
+(perform player quip $Quip)
+    (now) (last action was conversationally active)
+    %% Record the quip as the current quip now, which ensures that the
+    %% (immediately following) predicate operates correctly.
+    (record current quip $Quip)
+    (comment $Quip)
+    (current player $Player)
+    (make $Player recollect $Quip)
+    (conversation partner $NPC)
+    (purge #immediate-optional from conversation queue for $NPC)
+    (queue $Quip for $NPC as #immediate-obligatory)
+
+(describe action $Action)
+    ($Action = [perform quip $Quip])
+    %% Contrary to the documentation, using (link) (at least in the debugger), produces
+    %% odd output, so protecting it as here makes sense.
+    (if) (library links enabled)
+    (then)
+        (link) (describe quip $Quip)
+    (else)
+        (describe quip $Quip)
+    (endif)
+
+%% Clears the conversation partner and deletes most queued content.
+(interface (reset conversation partner))
+
+(reset conversation partner)
+    (if) (conversation partner $NPC)
+    (then)
+        (purge optional conversation for $NPC)
+        (now) ~(conversation partner $)
+        (now) ~(discussable quips $)
+        (now) ~(current quip $)
+        (now) ~(previous quip $)
+        (now) ~(grandparent quip $)
+    (endif)
+
+(understand command [change subject])
+(describe action [change subject])
+    change the subject
+
+(understand [topics] as [change subject])
+(understand [change the subject] as [change subject])
+
+(prevent [change subject])
+    (when not talking to anyone)
+
+(perform [change subject])
+    (discussable quips $Quips)
+    (nonempty $Quips)
+    (current player $Player)
+    (collect $Quip)
+        *($Quip is one of $Quips)
+        (plausible $Quip)
+        %% Never suggest to the player a quip they've already discussed (even with another NPC).
+        ~($Player recollects $Quip)
+        ($Quip changes the subject)
+    (into $SuggestedQuips)
+    (if) (empty $SuggestedQuips)
+    (then)
+        (narrate no changes of subject)
+    (else)
+        You could
+        (list quips $SuggestedQuips).
+    (endif)
+
+(narrate no changes of subject)
+    You can think of no changes of subject now.
+
+%%
+%% Utilities
+%%
+
+(interface (remove $<Value from $<List as $>NewList))
+
+(remove $Value from $List as $NewList)
+    (collect $Term)
+        *($Term is one of $List)
+        ~($Term = $Value)
+    (into $NewList)
