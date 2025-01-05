@@ -1,10 +1,10 @@
 # Scenes
 
-Scenes represent special situations within the overall flow of your project. 
-The `lib/tc/scenes.dg` library represents a more concrete set of code than the general pattern of 
+Scenes represent special situations within the overall flow of your project's narrative. 
+The `lib/hls/scenes.dg` library represents a more concrete set of code than the general pattern of 
 scenes described in [the Dialog manual](https://linusakesson.net/dialog/docs/timeprogress.html#cutscenes).
 
-Essentially, each scene is triggered by some situation in the world, runs for a bit, then complete. Most scenes
+Essentially, each scene is triggered by some situation in the world, runs for a bit, then completes. Most scenes
 are one-offs, but other scenes can repeat.
 
 Example ideas for scenes:
@@ -182,7 +182,7 @@ can be checked inside `(start $)`.  However, those can be as simple as a propert
 
 # Debugging Scenes
 
-The `lib/tc/debug/sceneinfo.dg` library contains three debugging commands.
+The `lib/hls/debug/sceneinfo.dg` library contains three debugging commands.
 
 The `sceneinfo` command outputs the state of all scenes:
 

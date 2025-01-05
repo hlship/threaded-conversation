@@ -2,7 +2,7 @@
  :name "test project"
  :sources
  {:main ["."]
-  :debug ["lib/tc/debug"
+  :debug ["lib/hls/debug"
           "lib/dialog/debug"]
-  :library ["lib/tc"
+  :library ["lib/hls"
             "lib/dialog"]}}

@@ -1,5 +1,6 @@
-%% Based on Threaded Conversation by Emily Short, Chris Connelly, et al.
+%% dependencies: none
 
+%% Based on Threaded Conversation by Emily Short, Chris Connelly, et al.
 %% I7 refers to the baseline implementation in Inform7
 
 (extension version)

@@ -1,5 +1,12 @@
 
-# Using Threaded Conversation
+# Threaded Conversation
+
+The `lib/hls/tc.dg` library adds threaded conversation with non-player characters (NPCs) to
+[Dialog](https://linusakesson.net/dialog/index.php).
+
+Conversations are designed to flow naturally, giving NPCs (the illusion of) understanding
+the conversation and having agency. Command parsing is more sophisticated than the 
+Dialog standard library's ask/tell system.
 
 Threaded conversation (TC) consists of a string of interactions between the player and non-player characters (NPC);
 The player makes a comment, the NPC provides a reply.
@@ -72,6 +79,12 @@ want to continue the conversation with an identified quip.
 The transcript also shows how the conversation evolves, with each quip introducing new lines of discussion.
 The goal with TC is to encourage the player to explore the conversation tree, while giving the NPCs an air of agency
 in how they respond.
+
+This library is deeply indebted to
+[Threaded Conversation for Inform 7](https://github.com/i7/extensions/tree/10.1/Chris%20Conley)
+by Emily Short, Chris Conley, and many more.
+
+This implementation borrows terminology and ideas from the original work, but is not a direct translation.
 
 ## NPCs
 
@@ -562,7 +575,7 @@ The link will discuss the identified quip.
 
 ## convinfo command
 
-The `lib/tc/debug/convinfo.dg` library provides a `convinfo` command that outputs information about the NPC, current quip, and related quips.
+The `lib/hls/debug/convinfo.dg` library provides a `convinfo` command that outputs information about the NPC, current quip, and related quips.
 
 For example, after `ask barmaid about rumors`, you would see:
 
@@ -591,42 +604,3 @@ Quips annotated as `relevant` are considered part of the current thread (and are
 to the player).
 
 When the conversation partner has queued quips, those are also identified.
-
-## roominfo command
-
-This `lib/tc/debug/roominfo.dg` library provides a `roominfo` 
-command that outputs useful information about the current room and all the objects within it.
-
-For example, `roominfo` at the start of [Sand-dancer](https://github.com/hlship/sanddancer-dialog) yields:
-
-```
-> roominfo
-#middle-of-nowhere (around the tower, in range of headlights, inherently dark)
-    #tire-tracks #in
-    #tower #in
-    #sagebrush #in
-    #desert-sand #in
-    #pickup-truck #in (closed)
-        #knock #in (provides light)
-            #lighter #heldby
-            #wallet #heldby (closed)
-                #license #in
-                #receipt #in
-                #photo #in (closed)
-                    #ultrasound #in
-            #jacket #wornby
-            #emotional-baggage #heldby
-                #grandmas-stories #in
-        #jade #in
-        #glove-compartment #partof (closed)
-            #pack #in
-        #headlights #partof
-    #whiffs-of-gasoline #in
-    #saguaro #in
-    #lizard #in (animate)
-```
-
-This provides a wealth of information about the current room all in a single place.
-
-The annotations (such as "closed" or "inherently dark") are extensible via the `(annotate $Obj with $Annotation)` predicate;
-Sand-dancer adds annotations to identify the region a room is in ("around the tower"), for example.

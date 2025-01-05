@@ -1,3 +1,5 @@
+%% dependencies: annoations.dg
+
 %% Like @tree, but rooted in current room, and shows relations and other details
 %% about the room and items.
 

@@ -1,4 +1,5 @@
-%%
+%% dependencies: none
+
 %% Annotations support; uses the (annotate $Object with $Annotation) predicate;
 %% an annotation may be a simple value or list; these are output comma separated
 %% and enclosed in parens; e.g. "(handled, provides light)"

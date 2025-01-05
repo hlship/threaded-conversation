@@ -1,3 +1,5 @@
+%% dependencies: annotations.dg
+
 %% Enable or disable debugging of scenes
 
 (understand command [debug scenes])

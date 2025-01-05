@@ -1,3 +1,5 @@
+%% dependencies: none
+
 %% Approximation of Inform scenes; scenes can be in progress or not; scenes can repeat.
 %% Scenes are triggered by an initial condition, and end with another condition.
 %% Scenes can be linked such that one scene starts when another begins.

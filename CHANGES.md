@@ -1,5 +1,6 @@
 # 0.8 -- UNRELEASED
 
+- Renamed repository to 'dialog-libs' since its not just about threaded conversation anymore
 - Split out debug code into several smaller libraries
 - Add the scenes library
 - Split up the documentation
@@ -18,7 +19,7 @@
 
 # 0.6 -- 9 Oct 2020
 
-Broke the debugging code into a companion library, `lib/tcdebug.dg`.
+Broke the debugging code into a companion library, `lib/hlsdebug.dg`.
 
 Added the `convinfo` debugging command, which displays the conversation status.
 
