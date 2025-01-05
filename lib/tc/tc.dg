@@ -18,7 +18,7 @@
 (performing quip $) (fail)
 
 %% An asking quip with the about trait adds `about` between the `ask` verb
-%% and the name of the quip.  For a tellilng quip it is either `say` or `tell about`.
+%% and the name of the quip.  For a telling quip it is either `say` or `tell about`.
 (about $) (fail)
 
 %% All player-initiated quips are topics for ask/tell, with overrides

@@ -1,0 +1,30 @@
+%% Enable or disable debugging of scenes
+
+(understand command [debug scenes])
+(perform [debug scenes])
+    Scene debugging enabled.
+    (now) (scene debugging enabled)
+
+(understand command [debug scenes off])
+(perform [debug scenes off])
+    Scene debugging disabled.
+    (now) ~(scene debugging enabled)
+
+(understand command [sceneinfo])
+
+(perform [sceneinfo])
+    (scene info)
+
+(scene info)
+    (exhaust) {
+        *(scene $Scene)
+        $Scene
+        (output annotations for $Scene)
+
+        (line)
+    }
+
+(annotate (recurring $) with @recurring)
+(annotate ($ has started) with [has started])
+(annotate ($ in progress) with [in progress])
+(annotate ($ has completed) with [has completed])

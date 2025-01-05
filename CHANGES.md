@@ -1,6 +1,8 @@
 # 0.8 -- UNRELEASED
 
-- Split out debug code into several smaller libraries.
+- Split out debug code into several smaller libraries
+- Add the scenes library
+- Split up the documentation
 
 # 0.7.1 -- 8 Jan 2021
 

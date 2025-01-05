@@ -1,6 +1,8 @@
 {:format :zblorb
  :name "test project"
  :sources
- {:main ["*.dg"]
-  :library ["lib/*.dg"
-            "lib/dialog/*.dg"]}}
+ {:main ["."]
+  :debug ["lib/tc/debug"
+          "lib/dialog/debug"]
+  :library ["lib/tc"
+            "lib/dialog"]}}
