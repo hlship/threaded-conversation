@@ -69,3 +69,10 @@
   ($Switchable is on)
 (annotate (vehicle $) with @vehicle)
 (annotate (wearable $) with @wearable)
+
+(annotate (actor container $Container) with @enterable)
+    ~(room $Container)
+
+(annotate $This with @attracted)
+    (current room $Room) %% must come first
+    ($Room attracts $This)
