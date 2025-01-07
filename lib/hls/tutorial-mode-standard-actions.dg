@@ -1,0 +1,136 @@
+
+%% The order here is important.
+
+#inventory
+(tutorial suggestion *)
+(can perform * with [])
+(suggest * with $)
+    Try (suggest command {inventory})\(or just 
+    (suggest command {i})\) to see what you are carrying.
+(* is performed by [inventory])
+
+#examine
+(tutorial suggestion *)
+(can perform * with $Object) 
+    (current player $Player)
+    %% Choose an object in the current room
+    (current room $Room)
+    *($Object is #in $Room)
+    %% Exclude what the player carries
+    ~($Object = $Player)
+    ~($Object has ancestor $Player)
+    *(player can see $Object)
+(suggest * with $Item)
+    Often, there will be interesting objects nearby; you can get more information
+    about them by examining them;
+    try (suggest command {examine (suggestible name $Item)})
+    \(or just (suggest command { x (suggestible name $Item)}) \).
+(* is performed by [examine])
+    
+#look-self
+(tutorial suggestion *)
+(can perform * with [])
+(suggest * with $)
+    You are present as part of this world too. Try 
+    (suggest command {look at me})
+    or (suggest command {l self})
+    to get an idea of who you are.
+
+#take
+(tutorial suggestion *)
+(can perform * with $Item)
+    *(item $Item)
+    ~($Item is hidden)
+    (player can see $Item)
+    ~(out of reach $Item) 
+    (current player $Player)
+    ~($Item has ancestor $Player)
+(suggest * with $Item)
+    (if) ($Item is pristine)
+    (then)
+        The room description mentioned (a $Item).
+    (else)
+        There's (a $Item) nearby.
+    (endif)
+    You could (suggest command {take (suggestible name $Item)})to pick it up.
+(* is performed by [take $])
+
+#drop
+(tutorial suggestion *)
+(can perform * with $Item)
+    (#inventory has been performed)
+    (current player $Player)
+    *($Item is $ $Player)
+(suggest * with $Item)
+    You are carrying (a $Item); you can leave it here with
+    (suggest command {drop (suggestible name $Item) }).
+(* is performed by [drop $])
+
+#wear
+(tutorial suggestion *)
+(can perform * with $Item)
+    (#take has been performed)
+    (current player $Player)
+    *(wearable $Item)
+    ~($Item has ancestor $Player)
+    (player can see $Item)
+    ~(out of reach $Item) 
+(suggest * with $Item)
+    (The $Item) is a piece of clothing; you can
+    (suggest command {wear (suggestible name $Item)})to put it on.
+(* is performed by [wear $])
+(narrate after suggestion *)
+    We try to be (italic)kind(roman); 
+    if an object is nearby but not actually in your inventory, we'll automatically try to pick it up
+    before wearing it. This applies to most verbs.
+
+#leave
+(tutorial suggestion *)
+(can perform * with $Direction)
+    (current room $Room)
+    (from $Room go $Direction to $)
+(suggest * with $Direction)
+    (current room $Room)
+    The world consists of distinct locations your can visit.
+    You started in (name $Room), but could
+    (suggest command {go (name $Direction)})
+    \( or just 
+    (suggest command { (name $Direction) }) \) to 
+    move to a different location.
+    (par)
+    Direction names include the eight cardinal directions \( 
+    (suggest command {north }), 
+    (suggest command {northeast}), 
+    (suggest command {east}), etc.\)
+    as well as (suggest command {up }),
+    (suggest command {down}),
+    (suggest command {in}), and
+    (suggest command {out})
+    .
+    (par)
+    Finally, you can abbreviate most directions:
+    (suggest command {n}) for (suggest command {north}),
+    (suggest command {ne}) for (suggest command {northeast}), and so forth.
+(* is performed by [go $])
+(narrate after suggestion *)
+    The world is not on a perfect grid; sometimes you go east, and return to
+    where you started by going south \(not west\).  
+    Sometimes a direction is a one-way trip, and you have to find a entirely different
+    route back to where you started, if that is even possible.
+
+#enter 
+(tutorial suggestion *)
+(can perform * with $Container)
+    (current room $Room)
+    *($Container is #in $Room)
+    (actor container $Container)
+(suggest * with $Container)
+    Sometimes, you move around the world not by walking in any particular direction,
+    but by going inside some of the things you find.  For example,
+    you can (suggest command {enter (suggestible name $Container)})
+    to see what's inside (the $Container).
+(* is performed by [enter $])
+(narrate after suggestion *)
+    If you can (suggest command {enter}), you can probably (suggest command {leave})as well.
+
+

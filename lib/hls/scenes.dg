@@ -4,10 +4,6 @@
 %% Scenes are triggered by an initial condition, and end with another condition.
 %% Scenes can be linked such that one scene starts when another begins.
 
-(extension version)
-    (line)
-    Scenes 0.8 by Howard Lewis Ship
-
 %% Scenes have the (scene $) trait.
 
 %% Scenes supply the (start $) predicate, which succeeds when the scene begins;

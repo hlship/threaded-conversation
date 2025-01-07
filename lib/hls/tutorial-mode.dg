@@ -1,0 +1,80 @@
+(understand command [tutorial off])
+
+(perform [tutorial off])
+    (now) ~(tutorial mode is enabled)
+    Tutorial mode has been turned off; you can re-enable tutorials with 
+    (suggest command {tutorial on}).
+
+(understand command [tutorial on])
+
+(perform [tutorial on])
+    (now) (tutorial mode is enabled)
+    Tutorial mode has been turned on; you can turn it off with 
+    (suggest command {tutorial off}).
+
+(interface (tutorial intro))
+
+(tutorial intro)
+    (now) (tutorial mode is enabled)
+    \[This game has a built-in tutorial mode for players new to interactive fiction;
+    it suggests common commands that you can try.  You can turn this off with
+    (suggest command {tutorial off})
+    or back on with (suggest command {tutorial on}).\]
+
+(late on every tick)
+    (tutorial mode is enabled)
+    (make tutorial suggestion)
+
+(interface (can perform $<Suggestion with $>Operand))
+(interface (narrate after suggestion $<Suggestion))
+
+(suggest command $Closure)
+    (span @bold) {
+    %% TODO: Find a way to output the closure in all caps
+        (query $Closure)
+    }
+
+(make tutorial suggestion)
+    ~(just narrated after suggestion)
+    *(tutorial suggestion $Suggestion)
+    ~($Suggestion has been performed)
+    ~($Suggestion has been suggested)
+    (can perform $Suggestion with $Operand)
+    (par)
+    \[(suggest $Suggestion with $Operand)\]
+    (now) ($Suggestion has been suggested)
+
+(after $Command)
+    (now) ~(just narrated after suggestion)
+    *(tutorial suggestion $Suggestion)
+    ~($Suggestion has been performed)
+    ($Suggestion is performed by $Command)
+    (now) ($Suggestion has been performed)
+    %% Only want to narrate the after if the suggestion has been made; otherwise
+    %% the after is a non-sequitur.
+    ($Suggestion has been suggested)
+    %% This is clumsy, but keeps each narrate after from having to supply the (par)
+    %% and brackets.
+    (collect words)
+       (narrate after suggestion $Suggestion)
+    (into $Output)
+    ~(empty $Output)
+    (par)
+    \[
+    (narrate after suggestion $Suggestion)
+    \]
+    (now) (just narrated after suggestion)
+
+
+%% Optional rule for objects that want to override how (suggestible name $) operates.
+
+(interface (suggestible name <$Object))
+
+(suggestible name $Object)
+    (collect words)
+        (name $Object)
+    (into $NameWords)
+    (last $NameWords $Name)
+    %% We assume the last word is most significant, and in a tutorial, will
+    %% be sufficient to identify the object uniquely.
+    $Name

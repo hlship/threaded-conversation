@@ -1,0 +1,13 @@
+(understand command [tutorialinfo])
+
+(perform [tutorialinfo])
+    Tutorial suggestions:
+    (exhaust)  {
+        *(tutorial suggestion $Suggestion)
+        (line)
+        $Suggestion
+        (output annotations for $Suggestion)
+    }
+
+(annotate ($ has been suggested) with @suggested)
+(annotate ($ has been performed) with @performed)

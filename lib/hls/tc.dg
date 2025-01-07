@@ -3,10 +3,6 @@
 %% Based on Threaded Conversation by Emily Short, Chris Connelly, et al.
 %% I7 refers to the baseline implementation in Inform7
 
-(extension version)
-    (line)
-    Threaded Conversation 0.8 by Howard Lewis Ship
-
 %% There are three types of player-directed quips.
 
 (quip $Quip)    *(asking quip $Quip)   %% ask
