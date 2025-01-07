@@ -305,9 +305,9 @@ command: roominfo
 > roominfo
 #foggy-alley (inherently dark)
     #player #in
-        #package #heldby
+        #package #heldby (item)
     #lamppost #in (provides light)
-    #malory #in (animate)
+    #malory #in (animate, male)
 
 --------------------------------------------------------------------------------
 id: 1736025615708

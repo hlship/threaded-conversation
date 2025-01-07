@@ -231,9 +231,9 @@ command: roominfo
 > roominfo
 #inn
     #player #in
-    #barmaid #in (animate)
-    #dog #in (animate)
-    #drunk #in (animate)
+    #barmaid #in (animate, female)
+    #dog #in (animate, female)
+    #drunk #in (animate, male)
 
 --------------------------------------------------------------------------------
 id: 1736025190750

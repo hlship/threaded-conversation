@@ -36,16 +36,36 @@
 
 %% Default object annotations:
 
-(annotate (animate $) with @animate)
-
-(annotate ($ is hidden) with @hidden)
-
-(annotate ($ is locked) with @locked)
-
-(annotate ($ is closed) with @closed)
-
+(annotate ($ blocks passage) with [blocks passage])
 (annotate ($ is broken) with @broken)
-
-(annotate ($ is off) with @off)
-
+(annotate ($ is hidden) with @hidden)
 (annotate ($ provides light) with [provides light])
+(annotate (animate $) with @animate)
+(annotate (consultable $) with @consultable)
+(annotate (door $) with @door)
+(annotate (edible $) with @edible)
+(annotate (female $) with @female)
+(annotate (in-seat $) with [in seat])
+(annotate (intangible $) with @intangible)
+(annotate (item $) with @item)
+(annotate (item $Item) with @handled)
+    ($Item is handled)
+(annotate (lockable $) with @lockable)
+(annotate (lockable $Lockable) with @unlocked)
+    ($Lockable is unlocked)
+(annotate (male $) with @male)
+(annotate (not here $) with [not here])
+(annotate (on-seat $) with [on seat])
+(annotate (opaque $) with @opaque)
+(annotate (openable $) with @openable)
+(annotate ($Openable is open) with @open)
+    (openable $Openable)
+(annotate (out of reach $) with [out of reach])
+(annotate (potable $) with @potable)
+(annotate (pushable $) with @pushable)
+(annotate (sharp $) with @sharp)
+(annotate (switchable $) with @switchable)
+(annotate (switchable $Switchable) with @on)
+  ($Switchable is on)
+(annotate (vehicle $) with @vehicle)
+(annotate (wearable $) with @wearable)
