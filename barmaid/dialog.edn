@@ -1,8 +1,8 @@
 {:format :zblorb
- :name "test project"
+ :name "template for all test projects"
  :sources
  {:main ["."]
-  :debug ["lib/hls/debug"
-          "lib/dialog/debug"]
-  :library ["lib/hls"
-            "lib/dialog"]}}
+  :debug ["../lib/hls/debug"
+          "../lib/dialog/debug"]
+  :library ["../lib/hls"
+            "../lib/dialog"]}}
