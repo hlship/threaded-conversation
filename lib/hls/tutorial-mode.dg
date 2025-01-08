@@ -1,37 +1,44 @@
 (understand command [tutorial off])
 
 (perform [tutorial off])
-    (now) ~(tutorial mode is enabled)
+    (now) ~(tutorial mode enabled)
+    (narrate tutorial disabled)
+
+(narrate tutorial disabled)
     Tutorial mode has been turned off; you can re-enable tutorials with 
-    (suggest command {tutorial on}).
+    (suggest command [tutorial on]).
 
 (understand command [tutorial on])
 
 (perform [tutorial on])
-    (now) (tutorial mode is enabled)
+    (now) (tutorial mode enabled)
     Tutorial mode has been turned on; you can turn it off with 
-    (suggest command {tutorial off}).
-
-(interface (tutorial intro))
-
-(tutorial intro)
-    (now) (tutorial mode is enabled)
-    \[This game has a built-in tutorial mode for players new to interactive fiction;
-    it suggests common commands that you can try.  You can turn this off with
-    (suggest command {tutorial off})
-    or back on with (suggest command {tutorial on}).\]
+    (suggest command [tutorial off]).
 
 (late on every tick)
-    (tutorial mode is enabled)
+    (tutorial mode enabled)
     (make tutorial suggestion)
+
+(enable tutorial mode)
+    (now) (tutorial mode enabled)
+    (tutorial intro)
+
+(tutorial intro)
+#disable-tutorial
+    This game has a built-in tutorial mode for players new to interactive fiction;
+    it suggests common commands that you can try.  You can turn this off with
+    (suggest command [tutorial off])
+    or back on with (suggest command [tutorial on]).
 
 (interface (can perform $<Suggestion with $>Operand))
 (interface (narrate after suggestion $<Suggestion))
 
-(suggest command $Closure)
-    (span @bold) {
-    %% TODO: Find a way to output the closure in all caps
-        (query $Closure)
+(suggest command $Action)
+   (span @bold) {
+        (exhaust) {
+         *($Word is one of $Action)
+            (command word $Word)
+        }
     }
 
 (make tutorial suggestion)
@@ -50,6 +57,7 @@
     ~($Suggestion has been performed)
     ($Suggestion is performed by $Command)
     (now) ($Suggestion has been performed)
+    (tutorial mode enabled)
     %% Only want to narrate the after if the suggestion has been made; otherwise
     %% the after is a non-sequitur.
     ($Suggestion has been suggested)
@@ -66,11 +74,11 @@
     (now) (just narrated after suggestion)
 
 
-%% Optional rule for objects that want to override how (suggestible name $) operates.
+%% Optional rule for objects that want to override how (suggest command $) operates.
 
-(interface (suggestible name <$Object))
+(interface (command word <$Word))
 
-(suggestible name $Object)
+(command word (object $Object))
     (collect words)
         (name $Object)
     (into $NameWords)
@@ -78,3 +86,6 @@
     %% We assume the last word is most significant, and in a tutorial, will
     %% be sufficient to identify the object uniquely.
     $Name
+
+(command word $Any)
+    $Any

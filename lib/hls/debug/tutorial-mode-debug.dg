@@ -1,7 +1,10 @@
 (understand command [tutorialinfo])
 
 (perform [tutorialinfo])
-    Tutorial suggestions:
+    Tutorial mode \(
+    (if) (tutorial mode enabled) (then) enabled (else) disabled (endif)
+        \)
+    suggestions:
     (exhaust)  {
         *(tutorial suggestion $Suggestion)
         (line)
