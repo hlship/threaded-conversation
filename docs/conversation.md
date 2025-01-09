@@ -99,7 +99,7 @@ Quips come in four varieties, defined by traits:
 * `(asking quip $)` - the player asks the NPC a question  ("ask does Lily look well?" or "ask about the gnawed shin bone")
 * `(telling quip $)` - the player tells the NPC something ("say hello" or "tell about the missing cheese")
 * `(performing quip $)` - the player performs some bit of behavior ("curse the fates")
-* NPC-directed quips have no identifying trait; these can be queued up and are output when the NPC has no immediate response
+* NPC-directed quips have no identifying trait; these can be queued up and are printed when the NPC has no immediate response
 
 The actions `[ask $NPC about $Quip]`, `[tell $NPC about $Quip]` and `[perform quip $Quip]` correspond to the three player-initiated quips. 
 However, the first two delegate to the `[talk to $NPC about $Quip]`, and that in turn delegates to
@@ -251,7 +251,7 @@ player and the conversation partner recollects the quip.
 
 ## Reacting To Quips
 
-After TC outputs the reply and marks the quip as recollected, it triggers a notification: `(after $NPC has replied with $Quip)`.
+After TC prints the reply and marks the quip as recollected, it triggers a notification: `(after $NPC has replied with $Quip)`.
 
 This notification is necessary because of how TC queues quips.
 Using `(after [discuss quip $Quip])` would trigger *before* the NPC has produced their comment;
@@ -490,12 +490,12 @@ the quip is queued for the NPC.
 On the following tick, the queued quip's `(reply $)` is printed.
 NPC-directed quips are just objects that have a `(reply $)` rule; there isn't a specific trait.
 
-On each tick, the first quip queued for the NPC will have its reply output.
+On each tick, the first quip queued for the NPC will have its reply printed.
 This quip then becomes the current quip (if it wasn't already).  In most cases, the current quip is the quip
-the player just discussed in the previous tick, and this is the chance for the NPCs reply to be output.
+the player just discussed in the previous tick, and this is the chance for the NPCs reply to be printed.
 
 If the current quip is dead ended (no further quips follow it directly or indirectly) and there's any additional
-queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply is output (and the
+queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply is printed (and the
 quip becomes the current quip).
 
 Quips may be queued in one of four ways:
@@ -532,10 +532,10 @@ An effective way to break up such monotony is to insert a short description, to 
 or even to convey important non-verbal information, either between two parts of an exchange or in the middle of one character's monologue. 
 
 When TC prints the reply for a second quip in the same tick, it queries the predicate `(beat $Quip)`
-with the second quip, before outputting the quip's reply.
+with the second quip, before printing the quip's reply.
 This is used to create a bridge between the two quips so they don't run together.
 
-By default, a beat simply outputs `A moment passes.` and a paragraph break, but this can be overridden easily enough:
+By default, a beat simply prints `A moment passes.` and a paragraph break, but this can be overridden easily enough:
 
 ```
 (beat $)
@@ -570,12 +570,12 @@ if there is no current conversation partner.
 ## Library Links
 
 When the Dialog predicate `(library links enabled)` succeeds, then the `(describe action $)` predicates
-involving quips will output links, not just text. 
+involving quips will print links, not just text. 
 The link will discuss the identified quip.
 
 ## convinfo command
 
-The `lib/hls/debug/convinfo.dg` library provides a `convinfo` command that outputs information about the NPC, current quip, and related quips.
+The `lib/hls/debug/convinfo.dg` library provides a `convinfo` command that prints information about the NPC, current quip, and related quips.
 
 For example, after `ask barmaid about rumors`, you would see:
 

@@ -14,24 +14,38 @@
     (now) (tutorial mode enabled)
     Tutorial mode has been turned on; you can turn it off with 
     (suggest command [tutorial off]).
+<<<<<<< HEAD
     %% This is a command, no tick, but it's nice to see a suggestion pop up immediately
     %% (if any are applicable).
+=======
+>>>>>>> ce07026 (Cleanups)
     (make tutorial suggestion)
 
 (late on every tick)
     (tutorial mode enabled)
     (make tutorial suggestion)
 
+(interface (enable tutorial mode))
+
 (enable tutorial mode)
     (now) (tutorial mode enabled)
     (tutorial intro)
 
 (tutorial intro)
+<<<<<<< HEAD
+=======
+    (par)
+>>>>>>> ce07026 (Cleanups)
     \[
     This game has a built-in tutorial mode for players new to interactive fiction;
     it suggests common commands that you can try.  You can turn this off with
     (suggest command [tutorial off])
+<<<<<<< HEAD
     or back on with (suggest command [tutorial on]). \]
+=======
+    or back on with (suggest command [tutorial on]).
+    \]
+>>>>>>> ce07026 (Cleanups)
 
 (interface (can perform $<Suggestion with $>Operand))
 (interface (narrate after suggestion $<Suggestion))

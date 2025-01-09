@@ -40,7 +40,7 @@ The start predicate should also narrate the scene's opening.
 
 An in progress scene is also checked every tick; the `(complete $)` rule is invoked for each in progress scene.
 If a scene completes, it will be marked as `($ has completed)` and `~($ in progress)`.  Like start, the complete
-predicate will output text discussing how the scene ends, if it succeeds.
+predicate will print text discussing how the scene ends, if it succeeds.
 
 In addition, there is an `(on every tick during $)` predicate that is invoked for each in progress scene.
 
@@ -184,7 +184,7 @@ can be checked inside `(start $)`.  However, those can be as simple as a propert
 
 The `lib/hls/debug/sceneinfo.dg` library contains three debugging commands.
 
-The `sceneinfo` command outputs the state of all scenes:
+The `sceneinfo` command prints the state of all scenes:
 
 ```
 > sceneinfo

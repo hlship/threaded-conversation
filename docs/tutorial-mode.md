@@ -127,6 +127,14 @@ managed to enter something before the #enter suggestion was suggested, then the 
 When this narration does occur, then no new suggestion will be made that tick; this ensures you only get at
 most one block of tutorial per command.
 
+## Timing
+
+Suggestions are printed from `(late on every tick)` so they are generally
+the last thing output just before the input prompt.
+
+[Threaded conversation](conversation.md) also operates `(late on every tick)` but will make suggestions about conversation topics _before_ tutorial mode prints
+its suggestions.
+
 ## Customizations
 
 The `(suggest command $)` rule can be passed objects in the action list; 
