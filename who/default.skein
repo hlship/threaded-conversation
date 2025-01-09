@@ -1,0 +1,309 @@
+engine: :dgdebug
+--------------------------------------------------------------------------------
+id: 0
+label: START
+--------------------------------------------------------------------------------
+
+
+Well, that was odd. Your were just... someplace? And now you're... someplace
+else?
+
+An Interactive Fiction
+An interactive fiction by Anonymous.
+Release 1. Serial number DEBUG.
+Dialog Interactive Debugger (dgdebug) version 0m/03. Library version 0.46.
+Debugging extension 1.1.
+Dialog Libs 0.8 by Howard Lewis Ship
+
+Outside The Lamp And The Egg Pub
+You're on a narrow cobblestone path that threads between closely-set, squat
+stone houses. It's just after sunset and, and in the dimness, you can make out a
+number of doors, all closed, and a few windows, all barricaded behind sturdy
+shutters.
+
+The exception is the pub itself; through the somewhat dusty panes of the window
+you can make out a hint of light and movement.
+
+[This game has a built-in tutorial mode for players new to interactive fiction;
+it suggests common commands that you can try. You can turn this off with 
+tutorial off or back on with tutorial on.]
+
+--------------------------------------------------------------------------------
+id: 1736385469771
+parent-id: 0
+command: tutorial off
+--------------------------------------------------------------------------------
+> tutorial off
+Tutorial mode has been turned off; you can re-enable tutorials with tutorial on.
+
+--------------------------------------------------------------------------------
+id: 1736385469772
+label: suggests immediately after turning tutorial back on
+parent-id: 1736385469777
+command: tutorial on
+--------------------------------------------------------------------------------
+> tutorial on
+Tutorial mode has been turned on; you can turn it off with tutorial off.
+
+[Try inventory (or just i) to see what you are carrying.]
+
+--------------------------------------------------------------------------------
+id: 1736385469774
+parent-id: 1736385469772
+command: i
+--------------------------------------------------------------------------------
+> i
+You have a small key. You're wearing your grey trousers and your frilly jacket.
+
+[Often, there will be interesting objects nearby; you can get more information
+about them by examining them; try examine door (or just x door).]
+
+--------------------------------------------------------------------------------
+id: 1736385469775
+parent-id: 1736385469774
+command: x door
+--------------------------------------------------------------------------------
+> x door
+The door is fashioned from heavy wood darkened by time and use, with impressive
+brass fittings.
+
+[You are present as part of this world too. Try look at me or l self to get an
+idea of who you are.]
+
+--------------------------------------------------------------------------------
+id: 1736385469776
+label: shows enabled tutorial status
+parent-id: 1736385469775
+command: tutorialinfo
+--------------------------------------------------------------------------------
+> tutorialinfo
+Tutorial mode (enabled) suggestions:
+#inventory (suggested, performed)
+#examine (suggested)
+#look-self (suggested)
+#take
+#drop
+#wear
+#leave
+#enter
+
+--------------------------------------------------------------------------------
+id: 1736385469777
+label: shows disabled tutorial status
+parent-id: 1736385469771
+command: tutorialinfo
+--------------------------------------------------------------------------------
+> tutorialinfo
+Tutorial mode (disabled) suggestions:
+#inventory
+#examine
+#look-self
+#take
+#drop
+#wear
+#leave
+#enter
+
+--------------------------------------------------------------------------------
+id: 1736385469778
+label: explicitly ignored by tutorial is skipped (by drop tutorial)
+parent-id: 1736385469776
+command: l self
+--------------------------------------------------------------------------------
+> l self
+You glance down down with the odd feeling that you'll be surprised by what you
+see. You are a tall, lean figure, with a shock of white hair over a clean-shaven
+and somewhat long face.
+
+[You are carrying your frilly jacket; you can leave it here with drop jacket.]
+
+--------------------------------------------------------------------------------
+id: 1736385469780
+parent-id: 1736385469787
+command: drop jacket
+--------------------------------------------------------------------------------
+> drop jacket
+(first attempting to remove your frilly jacket)
+You take off your frilly jacket.
+
+Your frilly jacket falls to the ground.
+
+[Your frilly jacket is nearby. You could take jacket to pick it up.]
+
+--------------------------------------------------------------------------------
+id: 1736385469781
+parent-id: 1736385469780
+command: drop trousers
+--------------------------------------------------------------------------------
+> drop trousers
+(first attempting to remove your grey trousers)
+That sounds somewhat unseemly.
+
+--------------------------------------------------------------------------------
+id: 1736385469783
+parent-id: 1736385469781
+command: take jacket
+--------------------------------------------------------------------------------
+> take jacket
+You take your frilly jacket.
+
+[Your frilly jacket is a piece of clothing; you can wear jacket to put it on.]
+
+--------------------------------------------------------------------------------
+id: 1736385469784
+label: after suggestion narration
+parent-id: 1736385469783
+command: wear jacket
+--------------------------------------------------------------------------------
+> wear jacket
+You put on your frilly jacket.
+
+[We try to be kind; if an object is nearby but not actually in your inventory,
+we'll automatically try to pick it up before wearing it. This applies to most
+verbs.]
+
+--------------------------------------------------------------------------------
+id: 1736385469785
+parent-id: 1736385469784
+command: x door
+--------------------------------------------------------------------------------
+> x door
+The door is fashioned from heavy wood darkened by time and use, with impressive
+brass fittings.
+
+--------------------------------------------------------------------------------
+id: 1736385469786
+parent-id: 1736385469785
+command: x windows
+--------------------------------------------------------------------------------
+> x windows
+The coolness brought on with the setting sun has left the windows nearly opaque
+with condensation on the inside, and the outside surface is a blaze of nearly
+microscopic scratches and pits. Even so, you can sense some warmth and movement
+inside.
+
+--------------------------------------------------------------------------------
+id: 1736385469787
+label: TODO: wait needed to prevent double suggestions
+parent-id: 1736385469778
+command: z
+--------------------------------------------------------------------------------
+> z
+A moment slips away.
+
+[The world consists of distinct locations you can visit. You started in Outside
+The Lamp And The Egg Pub, but could go east (or just east) to move to a
+different location.
+
+Direction names include the eight cardinal directions (north, northeast, east,
+etc.) as well as up, down, in, and out.
+
+Finally, you can abbreviate most directions: n for north, ne for northeast, and
+so forth.]
+
+--------------------------------------------------------------------------------
+id: 1736385469788
+parent-id: 1736385469784
+command: e
+--------------------------------------------------------------------------------
+> e
+You walk east through the pub door.
+
+Inside the Pub
+The pub's interior matches your every expectation. Dark wood, a well polished
+bar, several deep booths. Despite the early hour and chill outside, the pub is
+empty but for the bartender, who glances up and gives you a welcoming nod before
+returning to polishing the bar.
+
+[The world is not on a perfect grid; sometimes you go east, and return to where
+you started by going south (not west). Sometimes a direction is a one-way trip,
+and you have to find an entirely different route back to where you started, if
+that is even possible.]
+
+--------------------------------------------------------------------------------
+id: 1736385469790
+parent-id: 1736385469788
+command: w
+--------------------------------------------------------------------------------
+> w
+You walk west through the pub door.
+
+Outside The Lamp And The Egg Pub
+You're on a narrow cobblestone path that threads between closely-set, squat
+stone houses. It's just after sunset and, and in the dimness, you can make out a
+number of doors, all closed, and a few windows, all barricaded behind sturdy
+shutters.
+
+The exception is the pub itself; through the somewhat dusty panes of the window
+you can make out a hint of light and movement.
+
+--------------------------------------------------------------------------------
+id: 1736385469791
+parent-id: 1736385469788
+command: x bartender
+--------------------------------------------------------------------------------
+> x bartender
+Younger than you'd think, he wears a lightly stained apron and never seems to
+stop moving, even though he also seems rooted in place.
+
+--------------------------------------------------------------------------------
+id: 1736385469792
+parent-id: 1736385469791
+command: x booth
+--------------------------------------------------------------------------------
+> x booth
+Each booth contains a pair of well-worn benches comfortably facing in towards
+each other, separated by a high table.
+
+--------------------------------------------------------------------------------
+id: 1736385469793
+parent-id: 1736385469792
+command: enter booth
+--------------------------------------------------------------------------------
+> enter booth
+Relaxing with a pint or two seems at odds with whatever your purpose is here.
+
+--------------------------------------------------------------------------------
+id: 1736385469796
+label: adjust room descr based on entering
+parent-id: 1736385469788
+command: l
+--------------------------------------------------------------------------------
+> l
+Inside the Pub
+The pub's interior matches your every expectation. Dark wood, a well polished
+bar, several deep booths. Despite the early hour and chill outside, the pub is
+empty but for the bartender, endlessly polishing the bar to a high gleam.
+
+--------------------------------------------------------------------------------
+id: 1736385469797
+parent-id: 1736385469796
+command: w
+--------------------------------------------------------------------------------
+> w
+You walk west through the pub door.
+
+Outside The Lamp And The Egg Pub
+You're on a narrow cobblestone path that threads between closely-set, squat
+stone houses. It's just after sunset and, and in the dimness, you can make out a
+number of doors, all closed, and a few windows, all barricaded behind sturdy
+shutters.
+
+The exception is the pub itself; through the somewhat dusty panes of the window
+you can make out a hint of light and movement.
+
+--------------------------------------------------------------------------------
+id: 1736385469798
+label: so much fun giving NPCs life
+parent-id: 1736385469797
+command: e
+--------------------------------------------------------------------------------
+> e
+You walk east through the pub door.
+
+Inside the Pub
+The pub's interior matches your every expectation. Dark wood, a well polished
+bar, several deep booths. Despite the early hour and chill outside, the pub is
+empty but for the bartender who calls out to you: "Back again? You're quite the
+busy beaver."
+

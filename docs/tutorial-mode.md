@@ -102,7 +102,7 @@ The `(narrate after suggestion $)` predicate provides this opportunity.
     *($Container is #in $Room)
     (actor container $Container)
     (player can see $Container)
-    ~($Container is hidden)
+    ~(ignored by tutorial $Container)
 (suggest * with $Container)
     Sometimes, you move around the world not by walking in any particular direction,
     but by going inside some of the things you find.  For example,
@@ -113,12 +113,16 @@ The `(narrate after suggestion $)` predicate provides this opportunity.
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
 ```
 
-Note how `($ is performed by $)` doesn't care what you enter, just the fact that you've successfully
+The `(ignored by tutorial $)` trait can be used to have suggestions ignore certain objects (this is the responsibility
+of the suggestions `(can perform $ with $)` rule). All hidden objects `($ is hidden)` are ignored by tutorial.
+You may have cases where particular objects are not ideal as examples in a tutorial and can be made ignored explicitly.
+
+Note how `($ is performed by $)` doesn't care what you specifically did enter, just the fact that you've successfully
 performed the command.  After doing so, you get the suggestion for how to leave.  Often `(narrate after suggestion $)`
 is easier than creating an entirely new suggestion.
 
-`(narrate after suggestion $)` will only be invoked if tutorial prints a suggestion; if the player 
-managed to enter something before #enter was suggested, then the after narration is skipped.
+`(narrate after suggestion $)` will only be invoked if tutorial mode printed the suggestion; as some point; if the player 
+managed to enter something before the #enter suggestion was suggested, then the after narration is skipped.
 
 When this narration does occur, then no new suggestion will be made that tick; this ensures you only get at
 most one block of tutorial per command.

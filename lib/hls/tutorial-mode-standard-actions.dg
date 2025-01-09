@@ -20,7 +20,7 @@
     %% Exclude what the player carries
     ~($Object has ancestor $Player)
     *(player can see $Object)
-    ~($Object is hidden)
+    ~(ignored by tutorial $Object)
 (suggest * with $Item)
     Often, there will be interesting objects nearby; you can get more information
     about them by examining them;
@@ -41,7 +41,7 @@
 (tutorial suggestion *)
 (can perform * with $Item)
     *(item $Item)
-    ~($Item is hidden)
+    ~(ignored by tutorial $Item)
     (player can see $Item)
     ~(out of reach $Item) 
     (current player $Player)
@@ -51,7 +51,7 @@
     (then)
         The room description mentioned (a $Item).
     (else)
-        There's (a $Item) nearby.
+        (A $Item) is nearby.
     (endif)
     You could (suggest command [take $Item]) to pick it up.
 (* is performed by [take $])
@@ -62,8 +62,9 @@
     (#inventory has been performed)
     (current player $Player)
     *($Item is $ $Player)
+    ~(ignored by tutorial $Item)
 (suggest * with $Item)
-    You are carrying (a $Item); you can leave it here with
+    You are carrying (a $Item); you can leave (them $Item) here with
     (suggest command [drop $Item]).
 (* is performed by [drop $])
 
@@ -73,14 +74,16 @@
     (#take has been performed)
     (current player $Player)
     *(wearable $Item)
-    ~($Item has ancestor $Player)
+    ~($Item is #wornby $Player)
     (player can see $Item)
+    ~(ignored by tutorial $Item)
     ~(out of reach $Item) 
 (suggest * with $Item)
     (The $Item) is a piece of clothing; you can
     (suggest command [wear $Item]) to put it on.
 (* is performed by [wear $])
 (narrate after suggestion *)
+    %% This is slightly wasted if the clothing was already held, but it still reads ok.
     We try to be (italic)kind(roman); 
     if an object is nearby but not actually in your inventory, we'll automatically try to pick it up
     before wearing it. This applies to most verbs.
@@ -91,8 +94,12 @@
     (current room $Room)
     (from $Room go $Direction to $)
 (suggest * with $Direction)
+    %% If you create a game w/ its own distinct set of directions (like a ship, or Discworld), you-ll probably 
+    %% need to rewrite this entire rule.
     (current room $Room)
-    The world consists of distinct locations your can visit.
+    The world consists of distinct locations you can visit.
+    %% This is an assumption that will hold for most cases; it's rare in games for your first movement
+    %% to be an 'enter object' rather than a 'go direction'.
     You started in (name $Room), but could
     (suggest command [go $Direction])
     \( or just 
@@ -116,7 +123,7 @@
 (narrate after suggestion *)
     The world is not on a perfect grid; sometimes you go east, and return to
     where you started by going south \(not west\).  
-    Sometimes a direction is a one-way trip, and you have to find a entirely different
+    Sometimes a direction is a one-way trip, and you have to find an entirely different
     route back to where you started, if that is even possible.
 
 #enter 
@@ -126,7 +133,7 @@
     *($Container is #in $Room)
     (actor container $Container)
     (player can see $Container)
-    ~($Container is hidden)
+    ~(ignored by tutorial $Container)
 (suggest * with $Container)
     Sometimes, you move around the world not by walking in any particular direction,
     but by going inside some of the things you find.  For example,

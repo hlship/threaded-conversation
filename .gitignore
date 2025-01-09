@@ -2,3 +2,4 @@ out
 .clj-kondo/
 .lsp/
 *.code-workspace
+.DS_Store

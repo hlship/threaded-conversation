@@ -14,6 +14,9 @@
     (now) (tutorial mode enabled)
     Tutorial mode has been turned on; you can turn it off with 
     (suggest command [tutorial off]).
+    %% This is a command, no tick, but it's nice to see a suggestion pop up immediately
+    %% (if any are applicable).
+    (make tutorial suggestion)
 
 (late on every tick)
     (tutorial mode enabled)
@@ -24,11 +27,11 @@
     (tutorial intro)
 
 (tutorial intro)
-#disable-tutorial
+    \[
     This game has a built-in tutorial mode for players new to interactive fiction;
     it suggests common commands that you can try.  You can turn this off with
     (suggest command [tutorial off])
-    or back on with (suggest command [tutorial on]).
+    or back on with (suggest command [tutorial on]). \]
 
 (interface (can perform $<Suggestion with $>Operand))
 (interface (narrate after suggestion $<Suggestion))
@@ -89,3 +92,11 @@
 
 (command word $Any)
     $Any
+
+%% Optional trait that new suggestions should honor.
+
+(interface (ignored by tutorial $<Object))
+
+%% Hidden objects should always be ignored.
+
+(ignored by tutorial ($ is hidden))
