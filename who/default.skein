@@ -1,4 +1,3 @@
-engine: :dgdebug
 --------------------------------------------------------------------------------
 id: 0
 label: START
@@ -8,9 +7,9 @@ label: START
 Well, that was odd. Your were just... someplace? And now you're... someplace
 else?
 
-An Interactive Fiction
-An interactive fiction by Anonymous.
-Release 1. Serial number DEBUG.
+Who Goes There
+An interactive fiction by Howard M. Lewis Ship.
+Release 0. Serial number DEBUG.
 Dialog Interactive Debugger (dgdebug) version 0m/03. Library version 0.46.
 Debugging extension 1.1.
 Dialog Libs 0.8 by Howard Lewis Ship
@@ -184,7 +183,6 @@ inside.
 
 --------------------------------------------------------------------------------
 id: 1736385469787
-label: TODO: wait needed to prevent double suggestions
 parent-id: 1736385469778
 command: z
 --------------------------------------------------------------------------------

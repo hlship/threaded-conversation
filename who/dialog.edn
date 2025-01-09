@@ -1,1 +1,8 @@
-../barmaid/dialog.edn
+{:format :zblorb
+ :name "whogoesthere"
+ :sources
+ {:main ["."]
+  :debug ["../lib/hls/debug"
+          "../lib/dialog/debug"]
+  :library ["../lib/hls"
+            "../lib/dialog"]}}
