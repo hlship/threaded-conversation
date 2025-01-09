@@ -5,6 +5,7 @@ This repository is a collection of small libraries to extend
 
 - [Threaded Conversation](docs/conversation.md) - make NPCs more interactive with complex conversations
 - [Scenes](docs/scenes.md)  - organize game logic
+- [Tutorial Mode](docs/tutorial-mode.md) - give new players some help
 - [roominfo command](docs/roominfo.md) - concise, hierarchical description of current room (for debugging)
 
 
