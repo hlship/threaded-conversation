@@ -1,0 +1,16 @@
+#enter-conversation
+(tutorial suggestion *)
+(can perform * with $Who)
+    ~(conversation partner $)
+    *(animate $Who)
+    (player can see $Who)
+    ~(ignored by tutorial $Who)
+    %% This may need some refinement
+    *(quip $Quip)
+    ($Who can discuss $Quip)
+(suggest * with $Who)
+    There are other characters about, such as (the $Who).
+    We can strike up a conversation with them, with
+    (suggest command [talk to $Who])
+    \(or
+    (suggest command [hello $Who])\).

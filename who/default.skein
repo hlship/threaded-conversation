@@ -85,6 +85,7 @@ Tutorial mode (enabled) suggestions:
 #wear
 #leave
 #enter
+#enter-conversation
 
 --------------------------------------------------------------------------------
 id: 1736385469777
@@ -102,6 +103,7 @@ Tutorial mode (disabled) suggestions:
 #wear
 #leave
 #enter
+#enter-conversation
 
 --------------------------------------------------------------------------------
 id: 1736385469778
@@ -247,6 +249,9 @@ Younger than you'd think, he wears a lightly stained apron, and has rolled up
 the sleeves of his button-down shirt. He never seems to stop moving, even though
 he also seems rooted in place.
 
+[There are other characters about, such as the bartender. We can strike up a
+conversation with them, with talk to bartender (or hello bartender).]
+
 --------------------------------------------------------------------------------
 id: 1736385469792
 parent-id: 1736385469791
@@ -275,6 +280,9 @@ Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
 empty but for the bartender endlessly polishing the bar.
+
+[There are other characters about, such as the bartender. We can strike up a
+conversation with them, with talk to bartender (or hello bartender).]
 
 --------------------------------------------------------------------------------
 id: 1736385469797
@@ -346,7 +354,7 @@ parent-id: 1736571515918
 command: talk to bartender
 --------------------------------------------------------------------------------
 > talk to bartender
-You catch the bartender's eye, and he's eager to engage his only customer.
+You catch the bartender's eye, and he's eager to engage with his only customer.
 
 You could ask where is everyone.
 

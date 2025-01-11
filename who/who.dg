@@ -114,6 +114,7 @@
     (stopping)
 (complete *)
     (current room #outside-pub)
+    (reset conversation partner)
 
 #bartender
 (male *)
@@ -129,7 +130,7 @@
     He looks down for a bit, working his rag over a spot that looks mirror-smooth to you.
     (par)
 (narrate greeting *)
-    You catch the bartender's eye, and he's eager to engage his only customer.
+    You catch the bartender's eye, and he's eager to engage with his only customer.
 
 #where-is-everyone
 (asking quip *)

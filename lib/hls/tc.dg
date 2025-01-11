@@ -778,7 +778,6 @@
 
 (perform [change subject])
     (discussable quips $Quips)
-    (nonempty $Quips)
     (current player $Player)
     (collect $Quip)
         *($Quip is one of $Quips)
