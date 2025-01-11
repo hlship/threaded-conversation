@@ -261,9 +261,9 @@ command: convinfo
 > convinfo
 Conversation partner: #barmaid -- the Bar Maid
 Quips:
-  Current: <unset>
-  Previous: <unset>
-  Grandparent: <unset>
+  Current: none
+  Previous: none
+  Grandparent: none
 
 Discussable quips:
   #whether-rumors-tell-truly (repeatable, changes the subject)
@@ -293,7 +293,7 @@ command: convinfo
 Conversation partner: #barmaid -- the Bar Maid
 Quips:
   Current: #where-barmaid-comes-from
-  Previous: <unset>
+  Previous: none
   Grandparent: #where-barmaid-comes-from
 
 Discussable quips:

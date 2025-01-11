@@ -210,13 +210,15 @@ You walk east through the pub door.
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender, who glances up and gives you a welcoming nod before
-returning to polishing the bar.
+empty but for the bartender endlessly polishing the bar.
 
 [The world is not on a perfect grid; sometimes you go east, and return to where
 you started by going south (not west). Sometimes a direction is a one-way trip,
 and you have to find an entirely different route back to where you started, if
 that is even possible.]
+
+The bartender glances up and gives you a welcoming nod before returning to his
+polishing efforts.
 
 --------------------------------------------------------------------------------
 id: 1736385469790
@@ -241,8 +243,9 @@ parent-id: 1736385469788
 command: x bartender
 --------------------------------------------------------------------------------
 > x bartender
-Younger than you'd think, he wears a lightly stained apron and never seems to
-stop moving, even though he also seems rooted in place.
+Younger than you'd think, he wears a lightly stained apron, and has rolled up
+the sleeves of his button-down shirt. He never seems to stop moving, even though
+he also seems rooted in place.
 
 --------------------------------------------------------------------------------
 id: 1736385469792
@@ -271,7 +274,7 @@ command: l
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender, endlessly polishing the bar to a high gleam.
+empty but for the bartender endlessly polishing the bar.
 
 --------------------------------------------------------------------------------
 id: 1736385469797
@@ -293,7 +296,7 @@ you can make out a hint of light and movement.
 --------------------------------------------------------------------------------
 id: 1736385469798
 label: so much fun giving NPCs life
-parent-id: 1736385469797
+parent-id: 1736571515914
 command: e
 --------------------------------------------------------------------------------
 > e
@@ -302,8 +305,9 @@ You walk east through the pub door.
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender who calls out to you: "Back again? You're quite the
-busy beaver."
+empty but for the bartender endlessly polishing the bar.
+
+"Back again?" says the bartender, "You're quite the busy beaver."
 
 --------------------------------------------------------------------------------
 id: 1736568390392
@@ -319,4 +323,55 @@ command: roominfo
         #trousers #wornby (item, wearable, ignored by tutorial)
         #key #heldby (item)
     #sign #in
+
+--------------------------------------------------------------------------------
+id: 1736571515914
+parent-id: 1736385469797
+command: sceneinfo
+--------------------------------------------------------------------------------
+> sceneinfo
+#entering-the-pub (recurring, has started, has completed)
+
+--------------------------------------------------------------------------------
+id: 1736571515918
+parent-id: 1736385469793
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+No conversation partner.
+
+--------------------------------------------------------------------------------
+id: 1736571515919
+parent-id: 1736571515918
+command: talk to bartender
+--------------------------------------------------------------------------------
+> talk to bartender
+You catch the bartender's eye, and he's eager to engage his only customer.
+
+You could ask where is everyone.
+
+--------------------------------------------------------------------------------
+id: 1736571515920
+parent-id: 1736571515919
+command: where
+--------------------------------------------------------------------------------
+> where
+"Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't
+it?"
+
+"Right you are sir!" he says, with just a note of agitation. "Been like this for
+too long, I say. But it's not like folks are going to go all dry, is it?" He
+thinks for a moment. "Things will pick up, soon enough; they have to."
+
+--------------------------------------------------------------------------------
+id: 1736571515921
+parent-id: 1736571515920
+command: convinfo
+--------------------------------------------------------------------------------
+> convinfo
+Conversation partner: #bartender -- the bartender
+Quips:
+  Current: #where-is-everyone
+  Previous: none
+  Grandparent: #where-is-everyone
 

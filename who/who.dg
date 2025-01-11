@@ -83,10 +83,6 @@
     and the outside surface is a blaze of nearly microscopic scratches and pits. Even so, you can sense some warmth
     and movement inside.
 
-%% This is just good enough for the bartender's reaction when you walk in, but it is clumsy.
-
-(global variable (prior room was $))
-
 (enter $Room)
     (current room $Prior)
     (now) (prior room was $Prior)
@@ -99,28 +95,51 @@
 (* attracts #pub-door/#window)
 (look *)
     The pub's interior matches your every expectation. Dark wood, a well polished bar, several deep booths.
-    Despite the early hour and chill outside, the pub is empty but for the bartender
-    (if) (prior room was #outside-pub)
-    (then)
-        (select)
-        , who glances up and gives you a welcoming nod before returning to polishing the bar.
-        (or)
-        who calls out to you: "Back again? You're quite the busy beaver."
-        (stopping)
-    (else)
-    , endlessly polishing the bar to a high gleam.
-    (endif)
-    (now) ~(prior room was $)
-
+    Despite the early hour and chill outside, the pub is empty but for the bartender endlessly
+    polishing the bar.
 (from * go #west through #pub-door to #outside-pub)
 (#bartender/#booths is #in *)
+    
+#entering-the-pub
+(scene *)
+(recurring *)
+(start *)
+    %% This occurs a little later than I'd like, after any tutorial suggestion, but that's livable.
+    (current room #pub-interior)
+    (par)
+    (select)
+    The bartender glances up and gives you a welcoming nod before returning to his polishing efforts.
+    (or)
+    "Back again?" says the bartender, "You're quite the busy beaver."
+    (stopping)
+(complete *)
+    (current room #outside-pub)
 
 #bartender
 (male *)
 (name *) bartender
 (dict *) man
 (descr *)
-    Younger than you'd think, he wears a lightly stained apron and never seems to stop moving, even though he also seems rooted in place.
+    Younger than you'd think, he wears a lightly stained apron, and has rolled up the sleeves
+    of his button-down shirt.
+    He never seems to stop moving, even though he also seems rooted in place.
+(narrate * expressing ignorance)
+    "Not sure I I follow you there" he says.
+(beat $)
+    He looks down for a bit, working his rag over a spot that looks mirror-smooth to you.
+    (par)
+(narrate greeting *)
+    You catch the bartender's eye, and he's eager to engage his only customer.
+
+#where-is-everyone
+(asking quip *)
+(* supplies #bartender)
+(name *) where is everyone
+(comment *)
+    "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't it?"
+(reply *)
+    "Right you are sir!" he says, with just a note of agitation. "Been like this for too long, I say. But it's not
+    like folks are going to go all dry, is it?"  He thinks for a moment. "Things will pick up, soon enough; they have to."
 
 
 #booths

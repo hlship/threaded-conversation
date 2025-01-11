@@ -584,7 +584,7 @@ For example, after `ask barmaid about rumors`, you would see:
 Conversation partner: #barmaid -- the Bar Maid
 Quips:
   Current: #whether-rumors-tell-truly
-  Previous: <unset>
+  Previous: none
   Grandparent: #whether-rumors-tell-truly
 
 Discussable quips:

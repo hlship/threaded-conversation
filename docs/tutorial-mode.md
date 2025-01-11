@@ -11,7 +11,7 @@ Tutorial mode is available in the library `lib/hls/tutorial-mode.dg`.
 A second file, `lib/hls/tutorial-mode-standard-actions.dg` provides suggestions
 for many of Dialog's built in actions.
 
-This is an example for the tutorial mode test suite, the first few moves of a game
+This is an example from the tutorial mode test suite, the first few moves of a game
 under development:
 
 ```

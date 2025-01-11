@@ -26,9 +26,10 @@
     (endif)
     (line)
     Quips:
-    (line) (space 2) Current: { (current quip $Current) $Current (or) <unset> }
-    (line) (space 2) Previous: { (previous quip $Prev) $Prev (or) <unset> }
-    (line) (space 2) Grandparent: { (grandparent quip $Grand) $Grand (or) <unset> }
+    (line) (space 2) Current: { (current quip $Current) $Current (or) none }
+    (line) (space 2) Previous: { (previous quip $Prev) $Prev (or) none }
+    (line) (space 2) Grandparent: { (grandparent quip $Grand) $Grand (or) none }
+    (just)
     (par)
     (discussable quips $Quips)
     (nonempty $Quips)
