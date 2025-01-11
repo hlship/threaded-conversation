@@ -1,3 +1,5 @@
+%% dependencies: annotations.dg
+
 (understand command [tutorialinfo])
 
 (perform [tutorialinfo])

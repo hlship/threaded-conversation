@@ -1,0 +1,3 @@
+%% dependencies: annotations.dg
+
+(annotate (ignored by tutorial $) with [ignored by tutorial])

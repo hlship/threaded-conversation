@@ -305,3 +305,18 @@ bar, several deep booths. Despite the early hour and chill outside, the pub is
 empty but for the bartender who calls out to you: "Back again? You're quite the
 busy beaver."
 
+--------------------------------------------------------------------------------
+id: 1736568390392
+parent-id: 1736385469786
+command: roominfo
+--------------------------------------------------------------------------------
+> roominfo
+#outside-pub
+    #pub-door #in (door, attracted)
+    #window #in (attracted)
+    #player #in
+        #jacket #wornby (item, handled, wearable)
+        #trousers #wornby (item, wearable, ignored by tutorial)
+        #key #heldby (item)
+    #sign #in
+
