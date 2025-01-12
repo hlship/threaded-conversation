@@ -1,0 +1,16 @@
+#entering-the-pub
+(scene *)
+(recurring *)
+(start *)
+    %% This occurs a little later than I'd like, after any tutorial suggestion, but that's livable.
+    (current room #pub-interior)
+    (par)
+    (select)
+    The bartender glances up and gives you a welcoming nod before returning to his polishing efforts.
+    (or)
+    "Back again?" says the bartender, "You're quite the eager beaver."
+    (stopping)
+(complete *)
+    (current room #outside-pub)
+    (reset conversation partner)
+

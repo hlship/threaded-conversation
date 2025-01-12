@@ -1,0 +1,5 @@
+(intro)
+    Well, that was odd.  You were just ... someplace?  And now you're ... someplace else?
+    (banner)
+    (try [look])
+    (enable tutorial mode)

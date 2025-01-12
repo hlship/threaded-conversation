@@ -15,13 +15,14 @@ Debugging extension 1.1.
 Dialog Libs 0.8 by Howard Lewis Ship
 
 Outside The Lamp And The Egg Pub
-You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset, and in the dimness, you can make out a
-number of doors, all closed, and a few windows, all barricaded behind sturdy
-shutters.
+You're on a narrow cobblestone path running north and south that threads between
+closely-set, squat stone houses. It's just after sunset, and in the dimness, you
+can make out a number of doors, all closed, and a few windows, all barricaded
+behind sturdy shutters.
 
-The exception is the pub itself; through the somewhat dusty panes of the window
-you can make out a hint of light and movement.
+The exception is the pub on the east side of the path; under a rather involved
+bit of signage is quite the formidable door. Through the somewhat dusty panes of
+the flanking windows you can make out a hint of light and movement.
 
 The coolness following the setting sun has caused a light mist to form.
 
@@ -229,13 +230,14 @@ command: w
 You walk west through the pub door.
 
 Outside The Lamp And The Egg Pub
-You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset, and in the dimness, you can make out a
-number of doors, all closed, and a few windows, all barricaded behind sturdy
-shutters.
+You're on a narrow cobblestone path running north and south that threads between
+closely-set, squat stone houses. It's just after sunset, and in the dimness, you
+can make out a number of doors, all closed, and a few windows, all barricaded
+behind sturdy shutters.
 
-The exception is the pub itself; through the somewhat dusty panes of the window
-you can make out a hint of light and movement.
+The exception is the pub on the east side of the path; under a rather involved
+bit of signage is quite the formidable door. Through the somewhat dusty panes of
+the flanking windows you can make out a hint of light and movement.
 
 The mist is thicker and heavier now, giving everything a hazy, unformed look.
 
@@ -292,13 +294,14 @@ command: w
 You walk west through the pub door.
 
 Outside The Lamp And The Egg Pub
-You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset, and in the dimness, you can make out a
-number of doors, all closed, and a few windows, all barricaded behind sturdy
-shutters.
+You're on a narrow cobblestone path running north and south that threads between
+closely-set, squat stone houses. It's just after sunset, and in the dimness, you
+can make out a number of doors, all closed, and a few windows, all barricaded
+behind sturdy shutters.
 
-The exception is the pub itself; through the somewhat dusty panes of the window
-you can make out a hint of light and movement.
+The exception is the pub on the east side of the path; under a rather involved
+bit of signage is quite the formidable door. Through the somewhat dusty panes of
+the flanking windows you can make out a hint of light and movement.
 
 The mist is thicker and heavier now, giving everything a hazy, unformed look.
 
@@ -316,7 +319,7 @@ The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
 empty but for the bartender endlessly polishing the bar.
 
-"Back again?" says the bartender, "You're quite the busy beaver."
+"Back again?" says the bartender, "You're quite the eager beaver."
 
 --------------------------------------------------------------------------------
 id: 1736568390392
@@ -327,7 +330,7 @@ command: roominfo
 #outside-pub
     #pub-door #in (door, attracted)
     #mist #in (attracted)
-    #window #in (attracted)
+    #windows #in (attracted)
     #player #in
         #jacket #wornby (item, handled, wearable)
         #trousers #wornby (item, wearable, ignored by tutorial)
@@ -357,8 +360,8 @@ between you and another character in the world
 
 Here you could ask bartender where everyone is, or (because you are already
 talking to the bartender) ask where everyone is. In fact, you can just type some
-or all of the suggested topic, for example, everyone, and the game will figure
-out that it's part of the ongoing conversation.]
+or all of the suggested topic, everyone and the game will figure out that it's
+part of the ongoing conversation.]
 
 --------------------------------------------------------------------------------
 id: 1736571515920
@@ -376,4 +379,24 @@ that are not suggested for puzzle or narrative reasons.]
 "Right you are sir!" he says, with just a note of agitation. "Been like this for
 too long, I say. But it's not like folks are going to go all dry, is it?" He
 thinks for a moment. "Things will pick up, soon enough; they have to."
+
+--------------------------------------------------------------------------------
+id: 1736577052091
+parent-id: 1736385469771
+command: x sign
+--------------------------------------------------------------------------------
+> x sign
+The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
+light radiate out at uniform angles to form the the backdrop. In the other hand
+is a shiny gold egg decorated with intricate, baroque patterns.
+
+--------------------------------------------------------------------------------
+id: 1736577052092
+parent-id: 1736577052091
+command: x egg
+--------------------------------------------------------------------------------
+> x egg
+The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
+light radiate out at uniform angles to form the the backdrop. In the other hand
+is a shiny gold egg decorated with intricate, baroque patterns.
 

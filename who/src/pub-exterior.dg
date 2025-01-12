@@ -1,0 +1,94 @@
+#outside-pub
+(name *) Outside The Lamp And The Egg Pub
+(room *)
+(look *)
+    You're on a narrow cobblestone path running north and south that threads between closely-set, squat stone houses.  It's
+    just after sunset, and in the dimness, you can make out a number of doors, all closed,
+    and a few windows, all barricaded behind sturdy shutters.
+    (par)
+    The exception is the pub on the east side of the path; under a rather involved bit of signage
+    is quite the formidable door.
+    Through the somewhat dusty panes of the flanking windows you can make out a hint of
+    light and movement.
+(#player/#sign is #in #outside-pub)
+(from * go #east through #pub-door to #pub-interior)
+(* attracts #pub-door/#windows/#mist)
+#mist
+(name *) mist
+(descr *)
+    There's not much to look at, really.
+(appearance * $ $ ) 
+    (#pub-interior is visited)
+    The mist is thicker and heavier now, giving everything a hazy, unformed look.
+(appearance * $ $ )
+    The coolness following the setting sun has caused a light mist to form.
+
+
+#sign
+(name *) Lamp and Egg Sign
+(descr *)
+    The sign depicts two disembodied hands; one holds an antique brass lamp; rays
+    of light radiate out at uniform angles to form the the backdrop.
+    In the other hand is a shiny gold egg decorated with intricate, baroque patterns.
+
+#player
+(current player *)
+(descr *)
+    (select)
+        You glance down down with the odd feeling that you'll be surprised by what you see. 
+        You are
+    (or)
+        No change since last time; you are still
+    (stopping)
+    %% How are we seeing our own hair and face?
+    a tall, lean figure, with a shock of white hair over a clean-shaven and somewhat long face.
+(#trousers/#jacket is #wornby *)
+(#key is #heldby *)
+
+#trousers
+(wearable *)
+(ignored by tutorial *)
+(name *)
+    grey trousers
+(dict *) wool woolen pair
+(your *)
+(pair *)
+(descr *)
+    An uremarkable pair of grey woollen trousers.
+(prevent [remove *])
+    That sounds somewhat unseemly.
+
+#jacket
+(wearable *)
+(name *) frilly jacket
+(your *)
+(descr *)
+    Your jacket is the height of fashion ... somewhere.  Crushed velour in an somewhat dramatic green, cut not too tightly 
+    to give you freedom of movement; the wide lapels are in a dark red.
+
+#key
+(item *)
+(name *) small key
+(descr *)
+    A small brass key on a short loop of string.
+
+#pub-door
+(door *)
+(name *) pub door
+(descr *)
+    The door is fashioned from heavy wood darkened by time and use, with impressive brass fittings.
+
+#windows
+(name *) windows
+(dict *) pane panes glass
+(pair *)
+(descr *)
+    The coolness brought on with the setting sun has left the windows nearly opaque with condensation on the inside,
+    and the outside surface is a blaze of nearly microscopic scratches and pits. Even so, you can sense some warmth
+    and movement inside.
+
+(enter $Room)
+    (current room $Prior)
+    (now) (prior room was $Prior)
+	(move player to #in $Room)
+	(narrate entering $Room)

@@ -1,0 +1,50 @@
+#pub-interior
+(name *) Inside the Pub
+(room *)
+(* attracts #pub-door/#window)
+(look *)
+    The pub's interior matches your every expectation. Dark wood, a well polished bar, several deep booths.
+    Despite the early hour and chill outside, the pub is empty but for the bartender endlessly
+    polishing the bar.
+(from * go #west through #pub-door to #outside-pub)
+(#bartender/#booths is #in *)
+    
+#bartender
+(male *)
+(name *) bartender
+(dict *) man
+(descr *)
+    Younger than you'd think, he wears a lightly stained apron, and has rolled up the sleeves
+    of his button-down shirt.
+    He never seems to stop moving, even though he also seems rooted in place.
+(narrate * expressing ignorance)
+    "Not sure I follow you there" he says.
+(beat $)
+    He looks down for a bit, working his rag over a spot that looks mirror-smooth to you.
+    (par)
+(narrate greeting *)
+    You catch the bartender's eye, and he's eager to engage with his only customer.
+
+#where-everyone-is
+(asking quip *)
+(* supplies #bartender)
+(name *) where everyone is
+(command word *) everyone
+(comment *)
+    "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't it?"
+(reply *)
+    "Right you are sir!" he says, with just a note of agitation. "Been like this for too long, I say. But it's not
+    like folks are going to go all dry, is it?"  He thinks for a moment. "Things will pick up, soon enough; they have to."
+
+
+#booths
+(actor container *)
+(ignored by tutorial *)
+(name *) deep wooden booths
+(dict *) booth
+(plural *)
+(descr *)
+    Each booth contains a pair of well-worn benches comfortably facing in towards each other, separated by a high table.
+(prevent [enter *])
+    Relaxing with a pint or two seems at odds with whatever your purpose is here.
+
