@@ -18,7 +18,18 @@
     light and movement.
 (#player/#sign is #in #outside-pub)
 (from * go #east through #pub-door to #pub-interior)
-(* attracts #pub-door/#window)
+(* attracts #pub-door/#window/#mist)
+
+#mist
+(name *) mist
+(descr *)
+    There's not much to look at, really.
+(appearance * $ $ ) 
+    (#pub-interior is visited)
+    The mist is thicker and heavier now, giving everything a hazy, unformed look.
+(appearance * $ $ )
+    The coolness following the setting sun has caused a light mist to form.
+
 
 #sign
 (name *) Lamp and Egg Sign
@@ -125,17 +136,18 @@
     of his button-down shirt.
     He never seems to stop moving, even though he also seems rooted in place.
 (narrate * expressing ignorance)
-    "Not sure I I follow you there" he says.
+    "Not sure I follow you there" he says.
 (beat $)
     He looks down for a bit, working his rag over a spot that looks mirror-smooth to you.
     (par)
 (narrate greeting *)
     You catch the bartender's eye, and he's eager to engage with his only customer.
 
-#where-is-everyone
+#where-everyone-is
 (asking quip *)
 (* supplies #bartender)
-(name *) where is everyone
+(name *) where everyone is
+(command word *) everyone
 (comment *)
     "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't it?"
 (reply *)

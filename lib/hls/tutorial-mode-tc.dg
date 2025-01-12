@@ -8,9 +8,41 @@
     %% This may need some refinement
     *(quip $Quip)
     ($Who can discuss $Quip)
+(* is performed by [talk to $])
 (suggest * with $Who)
     There are other characters about, such as (the $Who).
     We can strike up a conversation with them, with
     (suggest command [talk to $Who])
     \(or
     (suggest command [hello $Who])\).
+
+#make-conversation
+(tutorial suggestion *)
+(can perform * with [$NPC $Quip])
+    (conversation partner $NPC)
+    (discussable quips $Quips)
+    *($Quip is one of $Quips)
+    %% Picky here because otherwise much of the suggestion will be 
+    (asking quip $Quip)
+    ~(about $Quip)
+    ($Quip is discussable with $NPC)
+(* is performed by [discuss quip $])
+(suggest * with [$NPC $Quip])
+    (collect words)
+        (name $Quip)
+    (into $QuipWords)
+    Conversations take the form of connect series of questions or statements between you
+    and another character in the world
+    
+    (par)Here you could
+    (suggest command [ask $NPC  | $QuipWords]), or 
+    \(because you are already talking to (the $NPC)\)
+    (suggest command [ask | $QuipWords]).  In fact, you can just type some or all of the suggested topic,
+    %% This is tricky, if because that last word may be ambiguous, in which case, the game author
+    %% should mark the quips as ignored, or provide a command name to the quip.
+    (suggest command [$Quip]) and the game will figure out that it's part of the ongoing conversation.
+(* is performed by [perform quip $])
+(narrate after suggestion *)
+    After each exchange, you are provided with a list of other things you might say
+    to continue the subject. There may be other things you can discuss, however, that
+    are not mentioned for puzzle or narrative reasons.

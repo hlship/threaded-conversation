@@ -9,9 +9,10 @@
     \(or just (suggest command [i]) \) to see what you are carrying.
 (* is performed by [inventory])
 
-#examine
+#examine-something
 (tutorial suggestion *)
 (can perform * with $Object) 
+
     (current player $Player)
     %% Choose an object in the current room
     (current room $Room)
@@ -26,18 +27,20 @@
     about them by examining them;
     try (suggest command [examine $Item])
     \(or just (suggest command [x $Item]) \).
-(* is performed by [examine])
+(* is performed by [examine $])
     
 #look-self
 (tutorial suggestion *)
 (can perform * with [])
+(* is performed by [examine $Self])
+    (current player $Self)
 (suggest * with $)
     You are present as part of this world too. Try 
     (suggest command [look at me])
     or (suggest command [l self])
     to get an idea of who you are.
 
-#take
+#take-something
 (tutorial suggestion *)
 (can perform * with $Item)
     *(item $Item)
@@ -56,7 +59,7 @@
     You could (suggest command [take $Item]) to pick it up.
 (* is performed by [take $])
 
-#drop
+#drop-something
 (tutorial suggestion *)
 (can perform * with $Item)
     (#inventory has been performed)
@@ -68,7 +71,7 @@
     (suggest command [drop $Item]).
 (* is performed by [drop $])
 
-#wear
+#wear-some-clothing
 (tutorial suggestion *)
 (can perform * with $Item)
     (#take has been performed)
@@ -88,7 +91,7 @@
     if an object is nearby but not actually in your inventory, we'll automatically try to pick it up
     before wearing it. This applies to most verbs.
 
-#leave
+#go-somewhere
 (tutorial suggestion *)
 (can perform * with $Direction)
     (current room $Room)
@@ -126,7 +129,7 @@
     Sometimes a direction is a one-way trip, and you have to find an entirely different
     route back to where you started, if that is even possible.
 
-#enter 
+#enter-something
 (tutorial suggestion *)
 (can perform * with $Container)
     (current room $Room)

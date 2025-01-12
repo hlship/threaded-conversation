@@ -23,6 +23,8 @@ shutters.
 The exception is the pub itself; through the somewhat dusty panes of the window
 you can make out a hint of light and movement.
 
+The coolness following the setting sun has caused a light mist to form.
+
 [This game has a built-in tutorial mode for players new to interactive fiction;
 it suggests common commands that you can try. You can turn this off with 
 tutorial off or back on with tutorial on.]
@@ -78,14 +80,15 @@ command: tutorialinfo
 > tutorialinfo
 Tutorial mode (enabled) suggestions:
 #inventory (suggested, performed)
-#examine (suggested)
+#examine-something (suggested, performed)
 #look-self (suggested)
-#take
-#drop
-#wear
-#leave
-#enter
+#take-something
+#drop-something
+#wear-some-clothing
+#go-somewhere
+#enter-something
 #enter-conversation
+#make-conversation
 
 --------------------------------------------------------------------------------
 id: 1736385469777
@@ -96,14 +99,15 @@ command: tutorialinfo
 > tutorialinfo
 Tutorial mode (disabled) suggestions:
 #inventory
-#examine
+#examine-something
 #look-self
-#take
-#drop
-#wear
-#leave
-#enter
+#take-something
+#drop-something
+#wear-some-clothing
+#go-somewhere
+#enter-something
 #enter-conversation
+#make-conversation
 
 --------------------------------------------------------------------------------
 id: 1736385469778
@@ -148,8 +152,6 @@ command: take jacket
 > take jacket
 You take your frilly jacket.
 
-[Your frilly jacket is a piece of clothing; you can wear jacket to put it on.]
-
 --------------------------------------------------------------------------------
 id: 1736385469784
 label: after suggestion narration
@@ -158,10 +160,6 @@ command: wear jacket
 --------------------------------------------------------------------------------
 > wear jacket
 You put on your frilly jacket.
-
-[We try to be kind; if an object is nearby but not actually in your inventory,
-we'll automatically try to pick it up before wearing it. This applies to most
-verbs.]
 
 --------------------------------------------------------------------------------
 id: 1736385469785
@@ -239,6 +237,8 @@ shutters.
 The exception is the pub itself; through the somewhat dusty panes of the window
 you can make out a hint of light and movement.
 
+The mist is thicker and heavier now, giving everything a hazy, unformed look.
+
 --------------------------------------------------------------------------------
 id: 1736385469791
 parent-id: 1736385469788
@@ -271,7 +271,6 @@ Relaxing with a pint or two seems at odds with whatever your purpose is here.
 
 --------------------------------------------------------------------------------
 id: 1736385469796
-label: adjust room descr based on entering
 parent-id: 1736385469788
 command: l
 --------------------------------------------------------------------------------
@@ -301,6 +300,8 @@ shutters.
 The exception is the pub itself; through the somewhat dusty panes of the window
 you can make out a hint of light and movement.
 
+The mist is thicker and heavier now, giving everything a hazy, unformed look.
+
 --------------------------------------------------------------------------------
 id: 1736385469798
 label: so much fun giving NPCs life
@@ -325,6 +326,7 @@ command: roominfo
 > roominfo
 #outside-pub
     #pub-door #in (door, attracted)
+    #mist #in (attracted)
     #window #in (attracted)
     #player #in
         #jacket #wornby (item, handled, wearable)
@@ -341,22 +343,22 @@ command: sceneinfo
 #entering-the-pub (recurring, has started, has completed)
 
 --------------------------------------------------------------------------------
-id: 1736571515918
-parent-id: 1736385469793
-command: convinfo
---------------------------------------------------------------------------------
-> convinfo
-No conversation partner.
-
---------------------------------------------------------------------------------
 id: 1736571515919
-parent-id: 1736571515918
+parent-id: 1736385469793
 command: talk to bartender
 --------------------------------------------------------------------------------
 > talk to bartender
 You catch the bartender's eye, and he's eager to engage with his only customer.
 
-You could ask where is everyone.
+You could ask where everyone is.
+
+[Conversations take the form of connect series of questions or statements
+between you and another character in the world
+
+Here you could ask bartender where everyone is, or (because you are already
+talking to the bartender) ask where everyone is. In fact, you can just type some
+or all of the suggested topic, everyone and the game will figure out that it's
+part of the ongoing conversation.]
 
 --------------------------------------------------------------------------------
 id: 1736571515920
@@ -367,19 +369,29 @@ command: where
 "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't
 it?"
 
+[After each exchange, you are provided with a list of other things you might say
+to continue the subject. There may be other things you can discuss, however,
+that are not mentioned for puzzle or narrative reasons.]
+
 "Right you are sir!" he says, with just a note of agitation. "Been like this for
 too long, I say. But it's not like folks are going to go all dry, is it?" He
 thinks for a moment. "Things will pick up, soon enough; they have to."
 
 --------------------------------------------------------------------------------
-id: 1736571515921
+id: 1736577052086
 parent-id: 1736571515920
-command: convinfo
+command: tutorialinfo
 --------------------------------------------------------------------------------
-> convinfo
-Conversation partner: #bartender -- the bartender
-Quips:
-  Current: #where-is-everyone
-  Previous: none
-  Grandparent: #where-is-everyone
+> tutorialinfo
+Tutorial mode (enabled) suggestions:
+#inventory (suggested, performed)
+#examine-something (suggested, performed)
+#look-self (suggested, performed)
+#take-something (suggested, performed)
+#drop-something (suggested, performed)
+#wear-some-clothing (performed)
+#go-somewhere (suggested, performed)
+#enter-something
+#enter-conversation (suggested, performed)
+#make-conversation (suggested, performed)
 
