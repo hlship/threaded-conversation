@@ -423,7 +423,10 @@ small space. Arrayed around this centerpiece are a few also-rans: a sad little
 dartboard on the far side of the table from the rest of the pub, and a strange
 little machine on a small shelf wedged into one corner.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+The bartender watches you expectantly from the his preferred spot behind the
+bar.
+
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 [Some objects, such as the billiards table, are big enough for you to stand on.
@@ -439,23 +442,8 @@ The beam itself, though large, is non-descript. It's position speaks to the
 considerable age of the pub; the game room almost certainly had a different
 purpose, originally, and was likely not connected to the pub.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
-
---------------------------------------------------------------------------------
-id: 1736659403441
-parent-id: 1736659403440
-command: s
---------------------------------------------------------------------------------
-> s
-You again duck under the low beam, back into the pub proper.
-
-Inside the Pub
-The pub's interior matches your every expectation. Dark wood, a well polished
-bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender endlessly polishing the bar. Through a low overhang,
-an ancient and likely structural wooden beam, you can see a few flashing lights
-from the room to the north.
 
 --------------------------------------------------------------------------------
 id: 1736659403442
@@ -468,7 +456,7 @@ pub simply as a matter of its shear size and solidity. It has great legs of
 carved mahogany, its blue felt is clean and unwrinkled, and the many pockets are
 entirely unmarked by wear.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 --------------------------------------------------------------------------------
@@ -483,7 +471,7 @@ displays a kaledescope of hearts, and coins, and lucky clovers, and pound
 symbols, and other things you don't recognize. A collection of buttons on the
 front apparently serve some purpose, perhaps when playing the game.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 --------------------------------------------------------------------------------
@@ -496,7 +484,7 @@ A rectangular Tiffney lamp hangs from the ceiling; it is off-center with the
 table below, offset by a large and somewhat battered trap door mounted into the
 ceiling.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 --------------------------------------------------------------------------------
@@ -509,55 +497,55 @@ Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
 it gives access to an upper floor, or more likely, a crawl-space above the game
 room.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 --------------------------------------------------------------------------------
-id: 1736659403448
+id: 1736659403455
 parent-id: 1736659403439
+command: open door
+--------------------------------------------------------------------------------
+> open door
+You can't reach the trap door from down here.
+
+--------------------------------------------------------------------------------
+id: 1736659403457
+label: Bartender visible in game room
+parent-id: 1736659403440
+command: x bartender
+--------------------------------------------------------------------------------
+> x bartender
+Younger than you'd think, he wears a lightly stained apron, and has rolled up
+the sleeves of his button-down shirt. He never seems to stop moving, even though
+he also seems rooted in place.
+
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403459
+parent-id: 1736659403457
 command: climb table
 --------------------------------------------------------------------------------
 > climb table
-You get onto the billiards table.
+As you start to climb up to to the table, you are interrupted by the bartender.
+"Hold up then!" he says in a much louder voice than he's used before, "What do
+you think you're up to? I just got that felt refinished, and you're not to be
+getting it mucked up now then."
 
-[After climbing something, you can get down (or just down, or even just d) to
-return to floor level.
+You obviously aren't going to climb up on the table while he's watching.
 
-We try to be kind. If you enter a command that requires getting down first, that
-will happen automatically.]
-
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 
 --------------------------------------------------------------------------------
-id: 1736659403449
-parent-id: 1736659403448
-command: * Above will shortly be prevented by the observant bartender.
+id: 1736659403460
+parent-id: 1736659403459
+command: g
 --------------------------------------------------------------------------------
-> * Above will shortly be prevented by the observant bartender.
---------------------------------------------------------------------------------
-id: 1736659403450
-parent-id: 1736659403449
-command: l
---------------------------------------------------------------------------------
-> l
-Game Room (on the billiards table)
-The main attraction of this room is a huge billiards table, centered in the
-small space. Arrayed around this centerpiece are a few also-rans: a sad little
-dartboard on the far side of the table from the rest of the pub, and a strange
-little machine on a small shelf wedged into one corner.
+> g
+You obviously aren't going to climb up on the table while he's watching.
 
-A cacacaphony of bells, chimes, and buzzers come from the strange little
-machine.
-
---------------------------------------------------------------------------------
-id: 1736659403451
-parent-id: 1736659403450
-command: get down
---------------------------------------------------------------------------------
-> get down
-You get off the billiards table.
-
-A cacacaphony of bells, chimes, and buzzers come from the strange little
+A cacacaphony of bells, chimes, and buzzers surges from the strange little
 machine.
 

@@ -5,6 +5,12 @@
     The main attraction of this room is a huge billiards table, centered in the small space. Arrayed around
     this centerpiece are a few also-rans: a sad little dartboard on the far side of the table from the rest of the pub,
     and a strange little machine on a small shelf wedged into one corner.
+    (if) (#bartender is in scope)
+    (then)
+    (par) 
+    The bartender watches you expectantly from the his preferred spot behind the bar.
+    (endif)
+
 (from * go #south to #pub-interior)
 (* attracts #beam)
 (narrate leaving * #south)
@@ -12,8 +18,10 @@
 (#lamp/#billiards-table/#trap-door/#fruit-game/#dartboard is #in *)
 (on every tick in *)
     (par)
-    A cacacaphony of bells, chimes, and buzzers come from the strange little machine.
-
+    A cacacaphony of bells, chimes, and buzzers surges from the strange little machine.
+(add #bartender to scope)
+    (current room *)
+    (#bartender has parent #pub-interior)
 
 #billiards-table
 (name *) billiards table
@@ -24,6 +32,17 @@
     of its shear size and solidity. It has great legs of carved mahogany,   
     its blue felt is clean and unwrinkled, and the many pockets are entirely
     unmarked by wear.
+(prevent [climb *])
+    (#bartender is in scope)
+    (select)
+    As you start to climb up to to the table, you are interrupted by the bartender.
+    "Hold up then!" he says in a much louder voice than he's used before,
+    "What do you think you're up to?  I just got that felt refinished, and you're not
+    to be getting it mucked up now then."
+    (par)
+    (or) (stopping)
+    You obviously aren't going to climb up on the table while he's watching.
+
 
 #lamp
 (name *) ceiling lamp
@@ -35,8 +54,10 @@
 (name *) trap door
 (dict *) handle
 (openable *) 
-(out of reach *)
-    ~(#player is #on #billiards-table)
+(when * is out of reach)
+    ~(#player is #on #billiards-table) 
+    You can't reach the trap door from down here.
+
 (descr *)
     (* is open) 
     The trap door is open, leaing up into a very dim crawl space above the game room.
