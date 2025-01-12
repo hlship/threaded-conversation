@@ -44,5 +44,5 @@
 (* is performed by [perform quip $])
 (narrate after suggestion *)
     After each exchange, you are provided with a list of other things you might say
-    to continue the subject. There may be other things you can discuss, however, that
-    are not mentioned for puzzle or narrative reasons.
+    to continue the subject. There may be further topics you can discuss, however, that
+    are not suggested for puzzle or narrative reasons.

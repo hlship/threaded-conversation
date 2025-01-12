@@ -1,5 +1,5 @@
 (intro)
-    Well, that was odd.  Your were just ... someplace?  And now you're ... someplace else?
+    Well, that was odd.  You were just ... someplace?  And now you're ... someplace else?
     (banner)
     (try [look])
     (enable tutorial mode)
@@ -11,7 +11,7 @@
 (room *)
 (look *)
     You're on a narrow cobblestone path that threads between closely-set, squat stone houses.  It's
-    just after sunset and, and in the dimness, you can make out a number of doors, all closed,
+    just after sunset, and in the dimness, you can make out a number of doors, all closed,
     and a few windows, all barricaded behind sturdy shutters.
     (par)
     The exception is the pub itself; through the somewhat dusty panes of the window you can make out a hint of

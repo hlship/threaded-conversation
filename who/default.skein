@@ -4,7 +4,7 @@ label: START
 --------------------------------------------------------------------------------
 
 
-Well, that was odd. Your were just... someplace? And now you're... someplace
+Well, that was odd. You were just... someplace? And now you're... someplace
 else?
 
 Who Goes There
@@ -16,7 +16,7 @@ Dialog Libs 0.8 by Howard Lewis Ship
 
 Outside The Lamp And The Egg Pub
 You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset and, and in the dimness, you can make out a
+stone houses. It's just after sunset, and in the dimness, you can make out a
 number of doors, all closed, and a few windows, all barricaded behind sturdy
 shutters.
 
@@ -230,7 +230,7 @@ You walk west through the pub door.
 
 Outside The Lamp And The Egg Pub
 You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset and, and in the dimness, you can make out a
+stone houses. It's just after sunset, and in the dimness, you can make out a
 number of doors, all closed, and a few windows, all barricaded behind sturdy
 shutters.
 
@@ -293,7 +293,7 @@ You walk west through the pub door.
 
 Outside The Lamp And The Egg Pub
 You're on a narrow cobblestone path that threads between closely-set, squat
-stone houses. It's just after sunset and, and in the dimness, you can make out a
+stone houses. It's just after sunset, and in the dimness, you can make out a
 number of doors, all closed, and a few windows, all barricaded behind sturdy
 shutters.
 
@@ -357,8 +357,8 @@ between you and another character in the world
 
 Here you could ask bartender where everyone is, or (because you are already
 talking to the bartender) ask where everyone is. In fact, you can just type some
-or all of the suggested topic, everyone and the game will figure out that it's
-part of the ongoing conversation.]
+or all of the suggested topic, for example, everyone, and the game will figure
+out that it's part of the ongoing conversation.]
 
 --------------------------------------------------------------------------------
 id: 1736571515920
@@ -370,28 +370,10 @@ command: where
 it?"
 
 [After each exchange, you are provided with a list of other things you might say
-to continue the subject. There may be other things you can discuss, however,
-that are not mentioned for puzzle or narrative reasons.]
+to continue the subject. There may be further topics you can discuss, however,
+that are not suggested for puzzle or narrative reasons.]
 
 "Right you are sir!" he says, with just a note of agitation. "Been like this for
 too long, I say. But it's not like folks are going to go all dry, is it?" He
 thinks for a moment. "Things will pick up, soon enough; they have to."
-
---------------------------------------------------------------------------------
-id: 1736577052086
-parent-id: 1736571515920
-command: tutorialinfo
---------------------------------------------------------------------------------
-> tutorialinfo
-Tutorial mode (enabled) suggestions:
-#inventory (suggested, performed)
-#examine-something (suggested, performed)
-#look-self (suggested, performed)
-#take-something (suggested, performed)
-#drop-something (suggested, performed)
-#wear-some-clothing (performed)
-#go-somewhere (suggested, performed)
-#enter-something
-#enter-conversation (suggested, performed)
-#make-conversation (suggested, performed)
 
