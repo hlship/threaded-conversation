@@ -88,6 +88,7 @@ Tutorial mode (enabled) suggestions:
 #wear-some-clothing
 #go-somewhere
 #enter-something
+#climb-something
 #enter-conversation
 #make-conversation
 
@@ -107,6 +108,7 @@ Tutorial mode (disabled) suggestions:
 #wear-some-clothing
 #go-somewhere
 #enter-something
+#climb-something
 #enter-conversation
 #make-conversation
 
@@ -211,7 +213,9 @@ You walk east through the pub door.
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender endlessly polishing the bar.
+empty but for the bartender endlessly polishing the bar. Through a low overhang,
+an ancient and likely structural wooden beam, you can see a few flashing lights
+from the room to the north.
 
 [The world is not on a perfect grid; sometimes you go east, and return to where
 you started by going south (not west). Sometimes a direction is a one-way trip,
@@ -280,7 +284,9 @@ command: l
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender endlessly polishing the bar.
+empty but for the bartender endlessly polishing the bar. Through a low overhang,
+an ancient and likely structural wooden beam, you can see a few flashing lights
+from the room to the north.
 
 [There are other characters about, such as the bartender. We can strike up a
 conversation with them, with talk to bartender (or hello bartender).]
@@ -317,7 +323,9 @@ You walk east through the pub door.
 Inside the Pub
 The pub's interior matches your every expectation. Dark wood, a well polished
 bar, several deep booths. Despite the early hour and chill outside, the pub is
-empty but for the bartender endlessly polishing the bar.
+empty but for the bartender endlessly polishing the bar. Through a low overhang,
+an ancient and likely structural wooden beam, you can see a few flashing lights
+from the room to the north.
 
 "Back again?" says the bartender, "You're quite the eager beaver."
 
@@ -399,4 +407,157 @@ command: x egg
 The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
 light radiate out at uniform angles to form the the backdrop. In the other hand
 is a shiny gold egg decorated with intricate, baroque patterns.
+
+--------------------------------------------------------------------------------
+id: 1736659403439
+parent-id: 1736385469798
+command: n
+--------------------------------------------------------------------------------
+> n
+You bend down quite low to squeeze under the wooden beam as you make your way
+into the game room.
+
+Game Room
+The main attraction of this room is a huge billiards table, centered in the
+small space. Arrayed around this centerpiece are a few also-rans: a sad little
+dartboard on the far side of the table from the rest of the pub, and a strange
+little machine on a small shelf wedged into one corner.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+[Some objects, such as the billiards table, are big enough for you to stand on.
+Try climb table.]
+
+--------------------------------------------------------------------------------
+id: 1736659403440
+parent-id: 1736659403439
+command: x beam
+--------------------------------------------------------------------------------
+> x beam
+The beam itself, though large, is non-descript. It's position speaks to the
+considerable age of the pub; the game room almost certainly had a different
+purpose, originally, and was likely not connected to the pub.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403441
+parent-id: 1736659403440
+command: s
+--------------------------------------------------------------------------------
+> s
+You again duck under the low beam, back into the pub proper.
+
+Inside the Pub
+The pub's interior matches your every expectation. Dark wood, a well polished
+bar, several deep booths. Despite the early hour and chill outside, the pub is
+empty but for the bartender endlessly polishing the bar. Through a low overhang,
+an ancient and likely structural wooden beam, you can see a few flashing lights
+from the room to the north.
+
+--------------------------------------------------------------------------------
+id: 1736659403442
+parent-id: 1736659403439
+command: x table
+--------------------------------------------------------------------------------
+> x table
+A billiards table from a older, more grandious era, it is out of place in the
+pub simply as a matter of its shear size and solidity. It has great legs of
+carved mahogany, its blue felt is clean and unwrinkled, and the many pockets are
+entirely unmarked by wear.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403443
+parent-id: 1736659403442
+command: x machine
+--------------------------------------------------------------------------------
+> x machine
+The machine sits on a shelf, at a height that would be comfortable if you were
+seated in front of it, though you don't see a chair. There's a video screen that
+displays a kaledescope of hearts, and coins, and lucky clovers, and pound
+symbols, and other things you don't recognize. A collection of buttons on the
+front apparently serve some purpose, perhaps when playing the game.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403444
+parent-id: 1736659403443
+command: x lamp
+--------------------------------------------------------------------------------
+> x lamp
+A rectangular Tiffney lamp hangs from the ceiling; it is off-center with the
+table below, offset by a large and somewhat battered trap door mounted into the
+ceiling.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403445
+parent-id: 1736659403444
+command: x door
+--------------------------------------------------------------------------------
+> x door
+Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
+it gives access to an upper floor, or more likely, a crawl-space above the game
+room.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403448
+parent-id: 1736659403439
+command: climb table
+--------------------------------------------------------------------------------
+> climb table
+You get onto the billiards table.
+
+[After climbing something, you can get down (or just down, or even just d) to
+return to floor level.
+
+We try to be kind. If you enter a command that requires getting down first, that
+will happen automatically.]
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403449
+parent-id: 1736659403448
+command: * Above will shortly be prevented by the observant bartender.
+--------------------------------------------------------------------------------
+> * Above will shortly be prevented by the observant bartender.
+--------------------------------------------------------------------------------
+id: 1736659403450
+parent-id: 1736659403449
+command: l
+--------------------------------------------------------------------------------
+> l
+Game Room (on the billiards table)
+The main attraction of this room is a huge billiards table, centered in the
+small space. Arrayed around this centerpiece are a few also-rans: a sad little
+dartboard on the far side of the table from the rest of the pub, and a strange
+little machine on a small shelf wedged into one corner.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736659403451
+parent-id: 1736659403450
+command: get down
+--------------------------------------------------------------------------------
+> get down
+You get off the billiards table.
+
+A cacacaphony of bells, chimes, and buzzers come from the strange little
+machine.
 

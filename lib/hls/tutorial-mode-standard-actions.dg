@@ -145,5 +145,24 @@
 (* is performed by [enter $])
 (narrate after suggestion *)
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
-
+ 
+#climb-something
+(tutorial suggestion *)
+(can perform * with $Supporter)
+    (current room $Room)
+    *($Supporter is #in $Room)
+    (actor supporter $Supporter)
+    (player can see $Supporter)
+    ~(ignored by tutorial $Supporter)    
+(suggest * with $Supporter)
+    Some objects, such as (the $Supporter), are big enough for you to stand on.
+    Try (suggest command [climb $Supporter]).
+(* is performed by [climb $])
+(narrate after suggestion *)
+    After climbing something, you can (suggest command [get down]) 
+    \(or just (suggest command [down]), or even just (suggest command [d])
+    \) to return to floor level.
+    (par)
+    We try to be (italic) kind (roman).  
+    If you enter a command that requires getting down first, that will happen automatically.
 

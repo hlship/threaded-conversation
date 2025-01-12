@@ -1,0 +1,62 @@
+#game-room 
+(room *)
+(name *) Game Room
+(look *)
+    The main attraction of this room is a huge billiards table, centered in the small space. Arrayed around
+    this centerpiece are a few also-rans: a sad little dartboard on the far side of the table from the rest of the pub,
+    and a strange little machine on a small shelf wedged into one corner.
+(from * go #south to #pub-interior)
+(* attracts #beam)
+(narrate leaving * #south)
+    You again duck under the low beam, back into the pub proper.
+(#lamp/#billiards-table/#trap-door/#fruit-game/#dartboard is #in *)
+(on every tick in *)
+    (par)
+    A cacacaphony of bells, chimes, and buzzers come from the strange little machine.
+
+
+#billiards-table
+(name *) billiards table
+(dict *) pool 
+(actor supporter *)
+(descr *)
+    A billiards table from a older, more grandious era, it is out of place in the pub simply as a matter
+    of its shear size and solidity. It has great legs of carved mahogany,   
+    its blue felt is clean and unwrinkled, and the many pockets are entirely
+    unmarked by wear.
+
+#lamp
+(name *) ceiling lamp
+(descr *)
+    A rectangular Tiffney lamp hangs from the ceiling; it is off-center with the table below, offset by a large and
+    somewhat battered trap door mounted into the ceiling.
+
+#trap-door
+(name *) trap door
+(dict *) handle
+(openable *) 
+(out of reach *)
+    ~(#player is #on #billiards-table)
+(descr *)
+    (* is open) 
+    The trap door is open, leaing up into a very dim crawl space above the game room.
+    That low beam separating the game room from the rest of the pub is still lower than the
+    hanging door.
+(descr *)
+    Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume it gives access to
+    an upper floor, or more likely, a crawl-space above the game room.
+
+#fruit-game
+(name *) gambling machine
+(dict *) fruit shelf
+(descr *)
+    The machine sits on a shelf, at a height that would be comfortable if you were seated in front of it, though you don't see
+    a chair.  There's a video screen that displays a kaledescope of hearts, and coins, and lucky clovers, and pound symbols, and
+    other things you don't recognize. A collection of buttons on the front apparently serve some purpose, perhaps when playing the 
+    game.
+
+#dartboard
+(name *) dartboard
+(dict *) dart board
+(descr *)
+    The board is pocked by long use. You don't see any sign of any darts, however.

@@ -5,10 +5,29 @@
 (look *)
     The pub's interior matches your every expectation. Dark wood, a well polished bar, several deep booths.
     Despite the early hour and chill outside, the pub is empty but for the bartender endlessly
-    polishing the bar.
+    polishing the bar. Through a low overhang, an ancient and likely structural wooden beam, you can 
+    see a few flashing lights from the room to the north.
 (from * go #west through #pub-door to #outside-pub)
-(#bartender/#booths is #in *)
+(from * go #north to #game-room)
+(narrate leaving * #north)
+    You bend down quite low to squeeze under the wooden beam as you make your way into the game room.
+(#bartender/#booths/#bar is #in *)
+(* attracts #beam)
+
+#beam
+(name *) heavy wood beam
+(descr *)
+    The beam itself, though large, is non-descript.  It's position speaks to the considerable age of the pub; the game room
+    almost certainly had a different purpose, originally, and was likely not connected to the pub.
+
     
+#bar
+(name *) polished bar
+(supporter *)
+(descr *)
+    The bar is made of a lighter wood with a more visible grain to it. It's looks large enough to hold 
+    drinks for the entire town.
+
 #bartender
 (male *)
 (name *) bartender
