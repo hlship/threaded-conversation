@@ -495,8 +495,8 @@ This quip then becomes the current quip (if it wasn't already).  In most cases, 
 the player just discussed in the previous tick, and this is the chance for the NPCs reply to be printed.
 
 If the current quip is dead ended (no further quips follow it directly or indirectly) and there's any additional
-queued quips for the NPC, then the next quip is taken from the NPCs queue and its reply is printed (and the
-quip becomes the current quip).
+queued quips for the NPC, then the next quip is taken from the NPCs queue, its reply is printed, and the
+quip becomes the current quip.
 
 Quips may be queued in one of four ways:
 
@@ -518,7 +518,7 @@ There are a number of predicates for queuing quips:
 
 `(queue $Quip)` queues the quip, for the current conversation partner, as `#immediate-obligatory`.
 
-`(casually queue $Quip)` queues the quip for the current conversation partner, as `#postponed-optional`, if the following holds:
+`(casually queue $Quip)` queues the quip for the current conversation partner, as `#postponed-optional`, but if the following holds:
 - The current quip is not restrictive
 - The conversation partner can discuss the quip (the quip supplies the NPC, or is universally applicable)
 - The conversation partner does not recollect the quip
@@ -573,9 +573,17 @@ When the Dialog predicate `(library links enabled)` succeeds, then the `(describ
 involving quips will print links, not just text. 
 The link will discuss the identified quip.
 
-## convinfo command
+## debug commands
 
-The `lib/hls/debug/convinfo.dg` library provides a `convinfo` command that prints information about the NPC, current quip, and related quips.
+The `lib/hls/debug/tc-debug.dg` library provides three commands:
+
+* `convinfo` - print current state of conversation
+* `conversation debug on`
+* `conversation debug off`
+
+### convinfo
+
+`convinfo` command that prints information about the NPC, current quip, and related quips.
 
 For example, after `ask barmaid about rumors`, you would see:
 
@@ -604,3 +612,20 @@ Quips annotated as `relevant` are considered part of the current thread (and are
 to the player).
 
 When the conversation partner has queued quips, those are also identified.
+
+### conversation debug on/off
+
+When conversation debugging is enabled, additional debug logging (via `(log)`) occurs to provide even
+more information than `convinfo`.  The logged data primarily announces when quips are queued
+for an NPC, and what the full set of discussable quips (not merely the selected ones) are:
+
+```
+"Still, on billiards night, I have to turn it off. Too much of a distraction."
+conv: queue #play-billiards for #bartender as #postponed-obligatory
+conv: #bartender discussable quips [#where-everyone-is #turn-noisy-machine-off]
+
+You can make out a muffled, electronic whine, coming from above you, past the
+ceiling.
+
+You could ask where everyone is or ask to turn it off.
+```

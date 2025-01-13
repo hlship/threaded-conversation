@@ -10,18 +10,22 @@
     (par) 
     The bartender watches you expectantly from the his preferred spot behind the bar.
     (endif)
-
+(instead of [listen to *])
+    (#fruit-machine is on)
+    (try [listen to #fruit-game])
 (from * go #south to #pub-interior)
 (* attracts #beam)
 (narrate leaving * #south)
     You again duck under the low beam, back into the pub proper.
 (#lamp/#billiards-table/#trap-door/#fruit-game/#dartboard is #in *)
 (on every tick in *)
-    (par)
-    A cacacaphony of bells, chimes, and buzzers surges from the strange little machine.
+    (#fruit-game plays sounds)
 (add #bartender to scope)
     (current room *)
     (#bartender has parent #pub-interior)
+
+%% TODO: This describes a pool table, not a billiards table.
+%% https://en.wikipedia.org/wiki/Billiard_table
 
 #billiards-table
 (name *) billiards table
@@ -35,19 +39,19 @@
 (prevent [climb *])
     (#bartender is in scope)
     (select)
-    As you start to climb up to to the table, you are interrupted by the bartender.
-    "Hold up then!" he says in a much louder voice than he's used before,
+    As you start to climb up on to the table, you are interrupted by the bartender.
+    "Hold up then!" he says in, a much louder voice than he's used before,
     "What do you think you're up to?  I just got that felt refinished, and you're not
     to be getting it mucked up now then."
     (par)
     (or) (stopping)
-    You obviously aren't going to climb up on the table while he's watching.
+    You obviously aren't going to climb up on the billiards table while he's watching.
 
 
 #lamp
 (name *) ceiling lamp
 (descr *)
-    A rectangular Tiffney lamp hangs from the ceiling; it is off-center with the table below, offset by a large and
+    A rectangular Tiffany lamp hangs from the ceiling; it is off-center with the table below, offset by a large and
     somewhat battered trap door mounted into the ceiling.
 
 #trap-door
@@ -57,10 +61,9 @@
 (when * is out of reach)
     ~(#player is #on #billiards-table) 
     You can't reach the trap door from down here.
-
 (descr *)
     (* is open) 
-    The trap door is open, leaing up into a very dim crawl space above the game room.
+    The trap door is open, leading up into a very dim crawl space above the game room.
     That low beam separating the game room from the rest of the pub is still lower than the
     hanging door.
 (descr *)
@@ -69,12 +72,67 @@
 
 #fruit-game
 (name *) gambling machine
-(dict *) fruit shelf
+(dict *) fruit shelf screen buttons switch
+(switchable *)
 (descr *)
     The machine sits on a shelf, at a height that would be comfortable if you were seated in front of it, though you don't see
-    a chair.  There's a video screen that displays a kaledescope of hearts, and coins, and lucky clovers, and pound symbols, and
-    other things you don't recognize. A collection of buttons on the front apparently serve some purpose, perhaps when playing the 
+    a chair. 
+    (if) (* is on) (then)
+        There's a color video screen that displays a frenetic kaledescope of hearts, coins, lucky clovers, 
+        pound symbols, and other things you don't recognize. 
+    (else)
+        The machine's video display is now peacefully dark.
+    (endif)
+    A collection of buttons on the front apparently serve some purpose, perhaps when playing the 
     game.
+(* plays sounds)
+    (* is on)
+    (par)
+    (select)
+        A cacacaphony of bells, chimes, and buzzers surge from the strange little machine.
+        (or)
+        The little machine plays a short little tune, desperately trying to get your attention.
+        (or)
+        The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets, then makes 
+        a sound like a bucketful of coins spilling into its tray.
+        (or)
+        You hear the sound of rockets launching from the little machine in the corner, and see a little
+        fireworks display animated on its screen. The explosions fade to the word "WIN!".
+        (or)
+        The gambling machine falls silent for a moment, as if it's exhausted from all of
+        its efforts to entice you to play.
+        (if) (#sonic-screwdriver is pristine) (then)
+        (par)
+        In this moment of relative quiet, you can barely make out another sound ... an insistent
+        high-pitched whine, strangely familar. The sound is muffled, as it appears to be coming
+        from above the ceiling.
+        (endif)
+     (then at random)
+(* plays sounds)
+    (#sonic-screwdriver is pristine)
+    (par)
+    You can make out a muffled, electronic whine, coming from above you, past the ceiling.
+    (now) (screwdriver has been hinted)
+(narrate switching off *)
+    You reach behind the machine and toggle its power switch, bringing a pause to its
+    endless cacapony.
+(when play begins)
+    (now) (* is on)
+(perform [listen to *])
+    (* is on)
+    You can't help but listen to the machine, given the cacphony it is continuously making.
+(perform [listen to *])
+    Now that it's switched off, it doesn't make any sound at all, which is so vastly preferable.
+(perform [search *])
+    You reach around and behind the machine searching for ... yes, an on/off switch is just 
+    reachable on the back of it.
+ 
+%% Move to crawl space
+
+#sonic-screwdriver
+(item *)    
+(name *) sonic screwdriver
+
 
 #dartboard
 (name *) dartboard

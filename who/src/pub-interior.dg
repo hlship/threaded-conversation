@@ -50,12 +50,67 @@
 (name *) where everyone is
 (command word *) everyone
 (comment *)
-    "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't it?"
+    "Hey mate," you say, 
+    (if) (current room #pub-interior) 
+    (then)
+        approaching the bar, 
+    (endif)
+    "awfully quiet night in here, isn't it?"
 (reply *)
     "Right you are sir!" he says, with just a note of agitation. "Been like this for too long, I say. But it's not
     like folks are going to go all dry, is it?"  He thinks for a moment. "Things will pick up, soon enough; they have to."
 
+#noisy-machine
+(telling quip *)
+(name *) that the machine is quite noisy
+(* supplies #bartender)
+(off limits *)
+    (#game-room is unvisited)
+(comment *)
+    (if) (current room #game-room)
+    (then)
+        "This thing," you say, pointing at the game machine, "
+    (else)
+        "That machine of yours, in the game room, 
+    (endif)
+    makes quite the racket, doesn't it?" you state.
+(reply *)
+    "Don't know that you can have a proper pub, these days, without at least one of 'em. Brings
+    in quite the crowd, I reckon." He half-smiles, a bit sardonically, while glancing around the empty pub.
+    (par)
+    "Still, on billiards night, I have to turn it off. Too much of a distraction."
+    (queue #play-billiards for #bartender as #postponed-obligatory)
 
+#turn-noisy-machine-off
+(asking quip *)
+(name *) to turn it off
+(* follows #noisy-machine)
+(comment *)
+    "I have no intention of engaging with that thing, could you bloody well pull the plug?".
+(reply *)
+    "Sorry, no," he replies "I like to keep tabs on the bar, unless I need to nip into the kitchen."
+
+#play-billiards
+(reply *)
+    "You know," says the bartender, "I could pull out the cue and balls for you, if you'd like
+    to get in some practice. We have ourselves a little tourney, first Fridays," he adds, looking 
+    around the empty pub, "most months."
+
+
+#not-enough-dimensions
+(telling quip *)
+(name *) not enough dimensions
+(* follows #play-billiards)
+(comment *)
+    "I'm afraid your table doesn't have enough dimensions for me."
+(reply *)
+    "It's absolutely regulation size!" the bartender admonishes.
+    (par) 
+    "I'm sure it is, chap" you reply, "but a merely two dimensional field lacks interest for me."
+    (par)
+    The bartender looks dissapointed and confused.
+
+ 
 #booths
 (actor container *)
 (ignored by tutorial *)

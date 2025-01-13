@@ -1,4 +1,3 @@
-engine: :dgdebug
 --------------------------------------------------------------------------------
 id: 0
 label: START
@@ -129,7 +128,7 @@ Quips:
   Grandparent: #whether-rumors-tell-truly
 
 Discussable quips:
-  #what-the-wanderer-knows (recollected, repeatable)
+  #what-the-wanderer-knows (recollected, repeatable, mid-thread)
     Follows: #whether-rumors-tell-truly
     Followers: #see-miniature
 

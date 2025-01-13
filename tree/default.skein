@@ -1,4 +1,3 @@
-engine: :dgdebug
 --------------------------------------------------------------------------------
 id: 0
 label: START
@@ -72,14 +71,14 @@ Quips:
   Grandparent: #animal
 
 Discussable quips:
-  #vegetable (changes the subject)
+  #vegetable (changes the subject, dead-ended)
   #mineral (changes the subject)
     Followers: #metal, #stone
-  #invertebrate
+  #invertebrate (dead-ended)
     Follows: #animal
-  #primate (relevant)
+  #primate (dead-ended, relevant)
     Follows: #mammal
-  #fish (relevant)
+  #fish (dead-ended, relevant)
     Follows: #vertebrate
 
 --------------------------------------------------------------------------------
@@ -148,13 +147,13 @@ Quips:
   Grandparent: #vegetable
 
 Discussable quips:
-  #invertebrate
+  #invertebrate (dead-ended)
     Follows: #animal
-  #fish
+  #fish (dead-ended)
     Follows: #vertebrate
-  #metal (relevant)
+  #metal (dead-ended, relevant)
     Follows: #mineral
-  #stone (relevant)
+  #stone (dead-ended, relevant)
     Follows: #mineral
 
 --------------------------------------------------------------------------------

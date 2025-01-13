@@ -1,4 +1,4 @@
-%% dependencies: annoations.dg
+%% dependencies: annotations.dg
 
 %%
 %% Debugging tools for Threaded Conversation
@@ -90,6 +90,22 @@
 (annotate (quip $Quip) with [changes the subject])
     ($Quip changes the subject)
 
+(annotate (quip $Quip) with @dead-ended)
+    ($Quip is dead-ended)
+
+(annotate (quip $Quip) with @mid-thread)
+    ($Quip is mid-thread)
+
 (annotate (dubious $) with @dubious)
 
 (annotate ($ is relevant to current thread) with @relevant)
+
+(understand command [conversation debug on])
+
+(perform [conversation debug on])
+    (now) (conversation debug logging)
+
+(understand command [conversation debug off])
+
+(perform [conversation debug off])
+    (now) ~(conversation debug logging)

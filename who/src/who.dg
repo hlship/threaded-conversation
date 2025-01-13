@@ -1,4 +1,5 @@
 (intro)
+    (exhaust) *(when play begins)
     Well, that was odd.  You were just ... someplace?  And now you're ... someplace else?
     (banner)
     (try [look])

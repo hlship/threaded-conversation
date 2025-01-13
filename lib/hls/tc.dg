@@ -260,6 +260,10 @@
     %% how it is queued. That just doesn't feel right.
     { ($NPC has conversation queue $Queue) (or) ($Queue = []) }
     %% TODO: May need to ensure quip or tuple not already queued?
+    (if) (conversation debug logging)
+    (then)
+        (log) { conv: queue $Quip for $NPC as $Precedence}
+    (endif)
     (now) ($NPC has conversation queue [[$Precedence $Quip] | $Queue])
     
 (interface (extract next quip for $<NPC as $>Quip))
@@ -291,6 +295,11 @@
 (purge optional conversation for $NPC)
     (purge #postponed-optional from conversation queue for $NPC)
     (purge #immediate-optional from conversation queue for $NPC)
+    (if) (conversation debug logging)
+    (then)
+      { ($NPC has conversation queue $NewQueue) (or) ($NewQueue = []) }
+      (log) { conv: $NPC queue is now $NewQueue }
+    (endif)
 
 (interface (record current quip $<Quip))
 
@@ -393,6 +402,10 @@
     (conversation partner $NPC)
     ($NPC has discussable quips $Quips)
     (now) (discussable quips $Quips)
+    (if) (conversation debug logging)
+    (then)
+        (log) { conv: $NPC discussable quips $Quips }
+    (endif)
 
 %% When the player does anything but discuss a quip when there's a quip hanging
 %% properly, output the nag.

@@ -8,7 +8,8 @@
                       "quest"
                       "tree"
                       "wanderer"
-                      "penny"]]
+                      "penny" 
+                      "who"]]
            (println "Testing " dir " ...")
            (shell {:continue true
                    :dir dir}

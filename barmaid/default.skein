@@ -221,7 +221,7 @@ Quips:
 Discussable quips:
   #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
     Followers: #where-garrick-lives, #heard-the-stories
-  #where-barmaid-comes-from (changes the subject)
+  #where-barmaid-comes-from (changes the subject, dead-ended)
 
 --------------------------------------------------------------------------------
 id: 1736025190749
@@ -268,7 +268,7 @@ Quips:
 Discussable quips:
   #whether-rumors-tell-truly (repeatable, changes the subject)
     Followers: #where-garrick-lives, #heard-the-stories
-  #where-barmaid-comes-from (changes the subject)
+  #where-barmaid-comes-from (changes the subject, dead-ended)
 
 --------------------------------------------------------------------------------
 id: 1736025190753
@@ -331,9 +331,9 @@ Quips:
 Discussable quips:
   #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
     Followers: #where-garrick-lives, #heard-the-stories
-  #where-garrick-lives (relevant)
+  #where-garrick-lives (dead-ended, relevant)
     Follows: #whether-rumors-tell-truly
-  #heard-the-stories (relevant)
+  #heard-the-stories (dead-ended, relevant)
     Follows: #whether-rumors-tell-truly
 
 --------------------------------------------------------------------------------
@@ -365,7 +365,7 @@ Quips:
 Discussable quips:
   #whether-rumors-tell-truly (recollected, repeatable, changes the subject)
     Followers: #where-garrick-lives, #heard-the-stories
-  #where-garrick-lives (relevant)
+  #where-garrick-lives (dead-ended, relevant)
     Follows: #whether-rumors-tell-truly
 
 --------------------------------------------------------------------------------
