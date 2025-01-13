@@ -69,14 +69,14 @@
 (comment *)
     (if) (current room #game-room)
     (then)
-        "This thing," you say, pointing at the game machine, "
+        "This thing," you say, pointing at the game machine, " (no space)
     (else)
         "That machine of yours, in the game room, 
     (endif)
     makes quite the racket, doesn't it?" you state.
 (reply *)
     "Don't know that you can have a proper pub, these days, without at least one of 'em. Brings
-    in quite the crowd, I reckon." He half-smiles, a bit sardonically, while glancing around the empty pub.
+    in quite the crowd, I gather." He half-smiles, a bit sardonically, while glancing around the empty pub.
     (par)
     "Still, on billiards night, I have to turn it off. Too much of a distraction."
     (queue #play-billiards for #bartender as #postponed-obligatory)
@@ -108,7 +108,7 @@
     (par) 
     "I'm sure it is, chap" you reply, "but a merely two dimensional field lacks interest for me."
     (par)
-    The bartender looks dissapointed and confused.
+    The bartender looks disappointed and confused.
 
  
 #booths

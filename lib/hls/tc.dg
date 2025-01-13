@@ -821,3 +821,16 @@
         *($Term is one of $List)
         ~($Term = $Value)
     (into $NewList)
+
+%%
+%% Control over logging
+%%
+
+(interface (enable conversation debug logging))
+(interface (disable conversation debug logging))
+
+(enable conversation debug logging)
+    (now) (conversation debug logging)
+
+(disable conversation debug logging)
+    (now) ~(conversation debug logging)

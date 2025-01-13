@@ -667,7 +667,7 @@ command: machine
 --------------------------------------------------------------------------------
 > machine
 conv: #bartender queue is now []
-"This thing," you say, pointing at the game machine, " makes quite the racket,
+"This thing," you say, pointing at the game machine, "makes quite the racket,
 doesn't it?" you state.
 conv: queue #noisy-machine for #bartender as #immediate-obligatory
 
@@ -676,7 +676,7 @@ to continue the subject. There may be further topics you can discuss, however,
 that are not suggested for puzzle or narrative reasons.]
 
 "Don't know that you can have a proper pub, these days, without at least one of
-'em. Brings in quite the crowd, I reckon." He half-smiles, a bit sardonically,
+'em. Brings in quite the crowd, I gather." He half-smiles, a bit sardonically,
 while glancing around the empty pub.
 
 "Still, on billiards night, I have to turn it off. Too much of a distraction."
@@ -703,7 +703,7 @@ conv: queue #not-enough-dimensions for #bartender as #immediate-obligatory
 "I'm sure it is, chap" you reply, "but a merely two dimensional field lacks
 interest for me."
 
-The bartender looks dissapointed and confused.
+The bartender looks disappointed and confused.
 conv: #bartender discussable quips [#where-everyone-is]
 
 You can make out a muffled, electronic whine, coming from above you, past the
@@ -762,4 +762,19 @@ parent-id: 1736659403468
 command: conversation debug on
 --------------------------------------------------------------------------------
 > conversation debug on
+
+--------------------------------------------------------------------------------
+id: 1736727647596
+parent-id: 1736726344147
+command: look up
+--------------------------------------------------------------------------------
+> look up
+Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
+it gives access to an upper floor, or more likely, a crawl-space above the game
+room.
+
+conv: #bartender discussable quips []
+
+You can make out a muffled, electronic whine, coming from above you, past the
+ceiling.
 

@@ -23,6 +23,9 @@
 (add #bartender to scope)
     (current room *)
     (#bartender has parent #pub-interior)
+(instead of [look #up])
+    (current room *)
+    (try [examine #trap-door])
 
 %% TODO: This describes a pool table, not a billiards table.
 %% https://en.wikipedia.org/wiki/Billiard_table

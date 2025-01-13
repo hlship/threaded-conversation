@@ -103,9 +103,9 @@
 (understand command [conversation debug on])
 
 (perform [conversation debug on])
-    (now) (conversation debug logging)
-
+    (enable conversation debug logging)
+    
 (understand command [conversation debug off])
 
 (perform [conversation debug off])
-    (now) ~(conversation debug logging)
+    (disable conversation debug logging)
