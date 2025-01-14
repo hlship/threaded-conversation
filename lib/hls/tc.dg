@@ -253,6 +253,14 @@
     ~($NPC recollects $Quip)
     (queue $Quip for $NPC as #postponed-optional)
 
+%% Queues the quip for the current NPC as #postponed-obligatory
+
+(interface (queue postponed $<Quip))
+
+(queue postponed $Quip)
+    (conversation partner $NPC) 
+    (queue $Quip for $NPC as #postponed-obligatory)
+
 (interface (queue $<Quip for $<NPC as $<Precedence))
 
 (queue $Quip for $NPC as $Precedence)

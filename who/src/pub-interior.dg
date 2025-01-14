@@ -1,5 +1,6 @@
 #pub-interior
 (name *) Inside the Pub
+(proper *)
 (room *)
 (* attracts #pub-door/#window)
 (look *)
@@ -92,7 +93,7 @@
     in quite the crowd, I gather." He half-smiles, a bit sardonically, while glancing around the empty pub.
     (par)
     "Still, on billiards night, I have to turn it off. Too much of a distraction."
-    (queue #play-billiards for #bartender as #postponed-obligatory)
+    (queue postponed #play-billiards)
 
 #turn-noisy-machine-off
 (asking quip *)

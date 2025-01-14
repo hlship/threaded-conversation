@@ -165,8 +165,8 @@ command: take key
 > take key
 You take the small key.
 
-[We try to be kind. If you are in doubt, try exits to list all the ways you can
-move. Well, except for any secret ones!]
+[We try to be kind. If you are in doubt, try exits to list all the directions
+you can move. Well, except for any secret ones!]
 
 --------------------------------------------------------------------------------
 id: 1736385469785
@@ -353,9 +353,12 @@ You could ask where everyone is.
 between you and another character in the world
 
 Here you could ask bartender where everyone is, or (because you are already
-talking to the Bartender) ask where everyone is. In fact, you can just type some
-or all of the suggested topic, everyone and the game will figure out that it's
-part of the ongoing conversation.]
+talking to the Bartender) you don't have to mention their name, and can just ask
+where everyone is.
+
+In fact, you can just type some or all of the words in the suggested topic, 
+everyone, and the game will figure out that it's part of the ongoing
+conversation.]
 
 --------------------------------------------------------------------------------
 id: 1736571515920
@@ -367,8 +370,8 @@ command: where
 it?"
 
 [After each exchange, you are provided with a list of other things you might say
-to continue the subject. There may be further topics you can discuss, however,
-that are not suggested for puzzle or narrative reasons.]
+to continue the subject (if there are any). There may also be further topics you
+can discuss, however, that are not suggested for puzzle or narrative reasons.]
 
 "Right you are sir!" he says, with just a note of agitation. "Been like this for
 too long, I say. But it's not like folks are going to go all dry, is it?" He
@@ -450,8 +453,8 @@ pub simply as a matter of its shear size and solidity. It has great legs of
 carved mahogany, its blue felt is clean and unwrinkled, and the many pockets are
 entirely unmarked by wear.
 
-The annoying machine plays a short little tune, desperately trying to get your
-attention.
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
 
 You could ask where everyone is, say that the machine is quite noisy, or say no
 need to shout.
@@ -569,8 +572,8 @@ command: take machine
 > take machine
 You can't take the gambling machine.
 
-The annoying machine plays a short little tune, desperately trying to get your
-attention.
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
 
 --------------------------------------------------------------------------------
 id: 1736659403464
@@ -578,8 +581,8 @@ parent-id: 1736659403461
 command: listen
 --------------------------------------------------------------------------------
 > listen
-You can't help but listen to the machine, given the cacphony it is continuously
-making.
+You can't help but listen to the machine, given the endless bararge of sounds
+and music it produces.
 
 The gambling machine falls silent for a moment, as if it's exhausted from all of
 its efforts to entice you to play.
@@ -620,8 +623,8 @@ command: turn it on
 > turn it on
 You switch the gambling machine on.
 
-The annoying machine plays a short little tune, desperately trying to get your
-attention.
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
 
 --------------------------------------------------------------------------------
 id: 1736659403470
@@ -788,9 +791,12 @@ You could ask where everyone is.
 between you and another character in the world
 
 Here you could ask bartender where everyone is, or (because you are already
-talking to the Bartender) ask where everyone is. In fact, you can just type some
-or all of the suggested topic, everyone and the game will figure out that it's
-part of the ongoing conversation.]
+talking to the Bartender) you don't have to mention their name, and can just ask
+where everyone is.
+
+In fact, you can just type some or all of the words in the suggested topic, 
+everyone, and the game will figure out that it's part of the ongoing
+conversation.]
 
 --------------------------------------------------------------------------------
 id: 1736727647600
@@ -802,13 +808,13 @@ command: say no need to shout
 chat later."
 
 [After each exchange, you are provided with a list of other things you might say
-to continue the subject. There may be further topics you can discuss, however,
-that are not suggested for puzzle or narrative reasons.]
+to continue the subject (if there are any). There may also be further topics you
+can discuss, however, that are not suggested for puzzle or narrative reasons.]
 
 He face reveals a mixture of annoyance and relief.
 
-The annoying machine plays a short little tune, desperately trying to get your
-attention.
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
 
 --------------------------------------------------------------------------------
 id: 1736727647601
@@ -820,8 +826,8 @@ command: no need to shout
 chat later."
 
 [After each exchange, you are provided with a list of other things you might say
-to continue the subject. There may be further topics you can discuss, however,
-that are not suggested for puzzle or narrative reasons.]
+to continue the subject (if there are any). There may also be further topics you
+can discuss, however, that are not suggested for puzzle or narrative reasons.]
 
 He face reveals a mixture of annoyance and relief.
 
@@ -838,8 +844,8 @@ Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
 it gives access to an upper floor, or more likely, a crawl-space above the game
 room.
 
-The annoying machine plays a short little tune, desperately trying to get your
-attention.
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
 
 --------------------------------------------------------------------------------
 id: 1736727647603
@@ -874,7 +880,7 @@ parent-id: 1736727647604
 command: push machine
 --------------------------------------------------------------------------------
 > push machine
-You punch at some of the buttons on the annoying machine, and nothing of note
+You punch at some of the buttons on the annoying machine, but nothing of note
 happens.
 
 You hear the sound of rockets launching from the little machine in the corner,
@@ -900,9 +906,93 @@ parent-id: 1736727647606
 command: push buttons
 --------------------------------------------------------------------------------
 > push buttons
-You punch at some of the buttons on the annoying machine, and nothing of note
+You punch at some of the buttons on the annoying machine, but nothing of note
 happens. You doubt much more would happen if it were switched on.
 
 You can make out a muffled, electronic whine, coming from above you, past the
 ceiling.
+
+--------------------------------------------------------------------------------
+id: 1736727647608
+parent-id: 1736571515920
+command: exits
+--------------------------------------------------------------------------------
+> exits
+Obvious exits are:
+West through the pub door to Outside The Lamp And The Egg Pub.
+North.
+
+--------------------------------------------------------------------------------
+id: 1736727647609
+parent-id: 1736727647608
+command: n
+--------------------------------------------------------------------------------
+> n
+You bend down quite low to squeeze under the wooden beam as you make your way
+into the game room.
+
+"If it's all right with you, sir," the Bartender says, "I'll just stay here and
+keep an eye on the door. I can hear you fine on a quiet night like this. I'm
+sure we'll have a little more company in here, soon enough." You don't think he
+quite believes it, either.
+
+Game Room
+The main attraction of this room is a huge billiards table, centered in the
+small space. Arrayed around this centerpiece are a few also-rans: a sad little
+dartboard on the far side of the table from the rest of the pub, and a strange
+little machine on a small shelf wedged into one corner.
+
+The bartender watches you expectantly from the his preferred spot behind the
+bar.
+
+A cacacaphony of bells, chimes, and buzzers surge from the strange little
+machine.
+
+You could say that the machine is quite noisy or say no need to shout.
+
+[Some objects, such as the billiards table, are big enough for you to stand on.
+Try climb table.]
+
+--------------------------------------------------------------------------------
+id: 1736727647610
+parent-id: 1736727647609
+command: exits
+--------------------------------------------------------------------------------
+> exits
+Obvious exits are:
+South to Inside the Pub.
+
+The little machine plays a short cascade of notes, desperately trying to get
+your attention.
+
+You could say that the machine is quite noisy or say no need to shout.
+
+--------------------------------------------------------------------------------
+id: 1736727647611
+parent-id: 1736727647610
+command: s
+--------------------------------------------------------------------------------
+> s
+You again duck under the low beam, back into the pub proper.
+
+Inside the Pub
+The pub's interior matches your every expectation. Dark wood, a well polished
+bar, several deep booths. Despite the early hour and chill outside, the pub is
+empty but for the bartender endlessly polishing the bar. Through a low overhang,
+an ancient and likely structural wooden beam, you can see a few flashing lights
+from the room to the north.
+
+You could say that the machine is quite noisy.
+
+--------------------------------------------------------------------------------
+id: 1736727647612
+parent-id: 1736727647611
+command: exits
+--------------------------------------------------------------------------------
+> exits
+Obvious exits are:
+West through the pub door to Outside The Lamp And The Egg Pub.
+North to the Game Room.
+
+You could say that the machine is quite noisy.
 

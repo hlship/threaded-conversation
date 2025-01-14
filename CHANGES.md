@@ -2,8 +2,11 @@
 
 - Renamed repository to 'dialog-libs' since its not just about threaded conversation anymore
 - Split out debug code into several smaller libraries
-- Add the scenes library
+- Added the scenes library
 - Split up the documentation
+- Threaded Conversation
+  - Added `(queue postponed $<Quip)`
+  - Added debug logging support, and the `conversation debug on/off` commands
 
 # 0.7.1 -- 8 Jan 2021
 

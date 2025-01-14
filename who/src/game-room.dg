@@ -94,7 +94,7 @@
     (select)
         A cacacaphony of bells, chimes, and buzzers surge from the strange little machine.
         (or)
-        The annoying machine plays a short little tune, desperately trying to get your attention.
+        The little machine plays a short cascade of notes, desperately trying to get your attention.
         (or)
         The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets, then makes 
         a sound like a bucketful of coins spilling into its tray.
@@ -122,16 +122,16 @@
     (now) (* is on)
 (perform [listen to *])
     (* is on)
-    You can't help but listen to the machine, given the cacphony it is continuously making.
+    You can't help but listen to the machine, given the endless bararge of sounds and music it produces.
 (perform [listen to *])
     Now that it's switched off, it doesn't make any sound at all, which is so vastly preferable.
 (perform [search *])
     You check around and behind the machine searching for ... yes, an on/off switch is just 
     reachable on the back side of the machine.
 (instead of [feel *])
-        (try [search *])
+    (try [search *])
 (perform [push *])
-    You punch at some of the buttons on the annoying machine, and nothing of note happens.
+    You punch at some of the buttons on the annoying machine, but nothing of note happens.
     (if) (* is off)
     (then)
         You doubt much more would happen if it were switched on.
