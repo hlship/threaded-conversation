@@ -12,7 +12,6 @@
 #examine-something
 (tutorial suggestion *)
 (can perform * with $Object) 
-
     (current player $Player)
     %% Choose an object in the current room
     (current room $Room)
@@ -64,7 +63,7 @@
 (can perform * with $Item)
     (#inventory has been performed)
     (current player $Player)
-    *($Item is $ $Player)
+    *($Item is #heldby $Player)     %% not clothing
     ~(ignored by tutorial $Item)
 (suggest * with $Item)
     You are carrying (a $Item); you can leave (them $Item) here with
@@ -128,6 +127,15 @@
     where you started by going south \(not west\).  
     Sometimes a direction is a one-way trip, and you have to find an entirely different
     route back to where you started, if that is even possible.
+
+#ask-for-exits
+(tutorial suggestion *)
+(can perform * with [])
+(suggest * with $)
+    We try to be (italic)kind(roman). If you are in doubt, try
+    (suggest command [exits]) to list all the directions you can move.
+    Well, except for any secret ones!
+(* is performed by [exits])
 
 #enter-something
 (tutorial suggestion *)

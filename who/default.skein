@@ -88,6 +88,7 @@ Tutorial mode (enabled) suggestions:
 #drop-something
 #wear-some-clothing
 #go-somewhere
+#ask-for-exits
 #enter-something
 #climb-something
 #enter-conversation
@@ -108,6 +109,7 @@ Tutorial mode (disabled) suggestions:
 #drop-something
 #wear-some-clothing
 #go-somewhere
+#ask-for-exits
 #enter-something
 #climb-something
 #enter-conversation
@@ -124,20 +126,17 @@ You glance down down with the odd feeling that you'll be surprised by what you
 see. You are a tall, lean figure, with a shock of white hair over a clean-shaven
 and somewhat long face.
 
-[You are carrying your frilly jacket; you can leave it here with drop jacket.]
+[You are carrying a small key; you can leave it here with drop key.]
 
 --------------------------------------------------------------------------------
 id: 1736385469780
-parent-id: 1736385469787
-command: drop jacket
+parent-id: 1736385469778
+command: drop key
 --------------------------------------------------------------------------------
-> drop jacket
-(first attempting to remove your frilly jacket)
-You take off your frilly jacket.
+> drop key
+The small key falls to the ground.
 
-Your frilly jacket falls to the ground.
-
-[Your frilly jacket is nearby. You could take jacket to pick it up.]
+[A small key is nearby. You could take key to pick it up.]
 
 --------------------------------------------------------------------------------
 id: 1736385469781
@@ -148,26 +147,30 @@ command: drop trousers
 (first attempting to remove your grey trousers)
 That sounds somewhat unseemly.
 
+[The world consists of distinct locations you can visit. You started in Outside
+The Lamp And The Egg Pub, but could go east (or just east) to move to a
+different location.
+
+Direction names include the eight cardinal directions (north, northeast, east,
+etc.) as well as up, down, in, and out.
+
+Finally, you can abbreviate most directions: n for north, ne for northeast, and
+so forth.]
+
 --------------------------------------------------------------------------------
 id: 1736385469783
 parent-id: 1736385469781
-command: take jacket
+command: take key
 --------------------------------------------------------------------------------
-> take jacket
-You take your frilly jacket.
+> take key
+You take the small key.
 
---------------------------------------------------------------------------------
-id: 1736385469784
-label: after suggestion narration
-parent-id: 1736385469783
-command: wear jacket
---------------------------------------------------------------------------------
-> wear jacket
-You put on your frilly jacket.
+[We try to be kind. If you are in doubt, try exits to list all the ways you can
+move. Well, except for any secret ones!]
 
 --------------------------------------------------------------------------------
 id: 1736385469785
-parent-id: 1736385469784
+parent-id: 1736727647598
 command: x door
 --------------------------------------------------------------------------------
 > x door
@@ -186,26 +189,8 @@ microscopic scratches and pits. Even so, you can sense some warmth and movement
 inside.
 
 --------------------------------------------------------------------------------
-id: 1736385469787
-parent-id: 1736385469778
-command: z
---------------------------------------------------------------------------------
-> z
-A moment slips away.
-
-[The world consists of distinct locations you can visit. You started in Outside
-The Lamp And The Egg Pub, but could go east (or just east) to move to a
-different location.
-
-Direction names include the eight cardinal directions (north, northeast, east,
-etc.) as well as up, down, in, and out.
-
-Finally, you can abbreviate most directions: n for north, ne for northeast, and
-so forth.]
-
---------------------------------------------------------------------------------
 id: 1736385469788
-parent-id: 1736385469784
+parent-id: 1736385469783
 command: e
 --------------------------------------------------------------------------------
 > e
@@ -256,7 +241,7 @@ Younger than you'd think, he wears a lightly stained apron, and has rolled up
 the sleeves of his button-down shirt. He never seems to stop moving, even though
 he also seems rooted in place.
 
-[There are other characters about, such as the bartender. We can strike up a
+[There are other characters about, such as the Bartender. We can strike up a
 conversation with them, with talk to bartender (or hello bartender).]
 
 --------------------------------------------------------------------------------
@@ -289,7 +274,7 @@ empty but for the bartender endlessly polishing the bar. Through a low overhang,
 an ancient and likely structural wooden beam, you can see a few flashing lights
 from the room to the north.
 
-[There are other characters about, such as the bartender. We can strike up a
+[There are other characters about, such as the Bartender. We can strike up a
 conversation with them, with talk to bartender (or hello bartender).]
 
 --------------------------------------------------------------------------------
@@ -341,9 +326,9 @@ command: roominfo
     #mist #in (attracted)
     #windows #in (attracted)
     #player #in
-        #jacket #wornby (item, handled, wearable)
+        #key #heldby (item, handled)
         #trousers #wornby (item, wearable, ignored by tutorial)
-        #key #heldby (item)
+        #jacket #wornby (item, wearable)
     #sign #in
 
 --------------------------------------------------------------------------------
@@ -368,7 +353,7 @@ You could ask where everyone is.
 between you and another character in the world
 
 Here you could ask bartender where everyone is, or (because you are already
-talking to the bartender) ask where everyone is. In fact, you can just type some
+talking to the Bartender) ask where everyone is. In fact, you can just type some
 or all of the suggested topic, everyone and the game will figure out that it's
 part of the ongoing conversation.]
 
@@ -411,12 +396,17 @@ is a shiny gold egg decorated with intricate, baroque patterns.
 
 --------------------------------------------------------------------------------
 id: 1736659403439
-parent-id: 1736385469798
+parent-id: 1736727647599
 command: n
 --------------------------------------------------------------------------------
 > n
 You bend down quite low to squeeze under the wooden beam as you make your way
 into the game room.
+
+"If it's all right with you, sir," the Bartender says, "I'll just stay here and
+keep an eye on the door. I can hear you fine on a quiet night like this. I'm
+sure we'll have a little more company in here, soon enough." You don't think he
+quite believes it, either.
 
 Game Room
 The main attraction of this room is a huge billiards table, centered in the
@@ -430,12 +420,15 @@ bar.
 A cacacaphony of bells, chimes, and buzzers surge from the strange little
 machine.
 
+You could ask where everyone is, say that the machine is quite noisy, or say no
+need to shout.
+
 [Some objects, such as the billiards table, are big enough for you to stand on.
 Try climb table.]
 
 --------------------------------------------------------------------------------
 id: 1736659403440
-parent-id: 1736659403439
+parent-id: 1736727647600
 command: x beam
 --------------------------------------------------------------------------------
 > x beam
@@ -443,8 +436,8 @@ The beam itself, though large, is non-descript. It's position speaks to the
 considerable age of the pub; the game room almost certainly had a different
 purpose, originally, and was likely not connected to the pub.
 
-The little machine plays a short little tune, desperately trying to get your
-attention.
+The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets,
+then makes a sound like a bucketful of coins spilling into its tray.
 
 --------------------------------------------------------------------------------
 id: 1736659403442
@@ -457,12 +450,15 @@ pub simply as a matter of its shear size and solidity. It has great legs of
 carved mahogany, its blue felt is clean and unwrinkled, and the many pockets are
 entirely unmarked by wear.
 
-The little machine plays a short little tune, desperately trying to get your
+The annoying machine plays a short little tune, desperately trying to get your
 attention.
+
+You could ask where everyone is, say that the machine is quite noisy, or say no
+need to shout.
 
 --------------------------------------------------------------------------------
 id: 1736659403443
-parent-id: 1736659403442
+parent-id: 1736727647601
 command: x machine
 --------------------------------------------------------------------------------
 > x machine
@@ -472,8 +468,9 @@ screen that displays a frenetic kaledescope of hearts, coins, lucky clovers,
 pound symbols, and other things you don't recognize. A collection of buttons on
 the front apparently serve some purpose, perhaps when playing the game.
 
-The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets,
-then makes a sound like a bucketful of coins spilling into its tray.
+You hear the sound of rockets launching from the little machine in the corner,
+and see a fireworks display animated on its screen. The explosions fade to the
+word "WIN!".
 
 --------------------------------------------------------------------------------
 id: 1736659403444
@@ -485,9 +482,12 @@ A rectangular Tiffany lamp hangs from the ceiling; it is off-center with the
 table below, offset by a large and somewhat battered trap door mounted into the
 ceiling.
 
-You hear the sound of rockets launching from the little machine in the corner,
-and see a little fireworks display animated on its screen. The explosions fade
-to the word "WIN!".
+The gambling machine falls silent for a moment, as if it's exhausted from all of
+its efforts to entice you to play.
+
+In this moment of relative quiet, you can barely make out another sound... an
+insistent high-pitched whine, strangely familar. The sound is muffled, as it
+appears to be coming from some place above the ceiling.
 
 --------------------------------------------------------------------------------
 id: 1736659403445
@@ -499,12 +499,9 @@ Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
 it gives access to an upper floor, or more likely, a crawl-space above the game
 room.
 
-The gambling machine falls silent for a moment, as if it's exhausted from all of
-its efforts to entice you to play.
-
-In this moment of relative quiet, you can barely make out another sound... an
-insistent high-pitched whine, strangely familar. The sound is muffled, as it
-appears to be coming from above the ceiling.
+You hear the sound of rockets launching from the little machine in the corner,
+and see a fireworks display animated on its screen. The explosions fade to the
+word "WIN!".
 
 --------------------------------------------------------------------------------
 id: 1736659403455
@@ -525,8 +522,9 @@ Younger than you'd think, he wears a lightly stained apron, and has rolled up
 the sleeves of his button-down shirt. He never seems to stop moving, even though
 he also seems rooted in place.
 
-The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets,
-then makes a sound like a bucketful of coins spilling into its tray.
+You hear the sound of rockets launching from the little machine in the corner,
+and see a fireworks display animated on its screen. The explosions fade to the
+word "WIN!".
 
 --------------------------------------------------------------------------------
 id: 1736659403459
@@ -542,9 +540,12 @@ getting it mucked up now then."
 You obviously aren't going to climb up on the billiards table while he's
 watching.
 
-You hear the sound of rockets launching from the little machine in the corner,
-and see a little fireworks display animated on its screen. The explosions fade
-to the word "WIN!".
+The gambling machine falls silent for a moment, as if it's exhausted from all of
+its efforts to entice you to play.
+
+In this moment of relative quiet, you can barely make out another sound... an
+insistent high-pitched whine, strangely familar. The sound is muffled, as it
+appears to be coming from some place above the ceiling.
 
 --------------------------------------------------------------------------------
 id: 1736659403460
@@ -555,12 +556,9 @@ command: g
 You obviously aren't going to climb up on the billiards table while he's
 watching.
 
-The gambling machine falls silent for a moment, as if it's exhausted from all of
-its efforts to entice you to play.
-
-In this moment of relative quiet, you can barely make out another sound... an
-insistent high-pitched whine, strangely familar. The sound is muffled, as it
-appears to be coming from above the ceiling.
+You hear the sound of rockets launching from the little machine in the corner,
+and see a fireworks display animated on its screen. The explosions fade to the
+word "WIN!".
 
 --------------------------------------------------------------------------------
 id: 1736659403461
@@ -571,9 +569,8 @@ command: take machine
 > take machine
 You can't take the gambling machine.
 
-You hear the sound of rockets launching from the little machine in the corner,
-and see a little fireworks display animated on its screen. The explosions fade
-to the word "WIN!".
+The annoying machine plays a short little tune, desperately trying to get your
+attention.
 
 --------------------------------------------------------------------------------
 id: 1736659403464
@@ -584,8 +581,12 @@ command: listen
 You can't help but listen to the machine, given the cacphony it is continuously
 making.
 
-The little machine plays a short little tune, desperately trying to get your
-attention.
+The gambling machine falls silent for a moment, as if it's exhausted from all of
+its efforts to entice you to play.
+
+In this moment of relative quiet, you can barely make out another sound... an
+insistent high-pitched whine, strangely familar. The sound is muffled, as it
+appears to be coming from some place above the ceiling.
 
 --------------------------------------------------------------------------------
 id: 1736659403467
@@ -593,15 +594,11 @@ parent-id: 1736659403464
 command: search machine
 --------------------------------------------------------------------------------
 > search machine
-You reach around and behind the machine searching for... yes, an on/off switch
-is just reachable on the back of it.
+You check around and behind the machine searching for... yes, an on/off switch
+is just reachable on the back side of the machine.
 
-The gambling machine falls silent for a moment, as if it's exhausted from all of
-its efforts to entice you to play.
-
-In this moment of relative quiet, you can barely make out another sound... an
-insistent high-pitched whine, strangely familar. The sound is muffled, as it
-appears to be coming from above the ceiling.
+A cacacaphony of bells, chimes, and buzzers surge from the strange little
+machine.
 
 --------------------------------------------------------------------------------
 id: 1736659403468
@@ -623,8 +620,8 @@ command: turn it on
 > turn it on
 You switch the gambling machine on.
 
-A cacacaphony of bells, chimes, and buzzers surge from the strange little
-machine.
+The annoying machine plays a short little tune, desperately trying to get your
+attention.
 
 --------------------------------------------------------------------------------
 id: 1736659403470
@@ -635,8 +632,12 @@ command: z
 > z
 A moment slips away.
 
-The little machine plays a short little tune, desperately trying to get your
-attention.
+The gambling machine falls silent for a moment, as if it's exhausted from all of
+its efforts to entice you to play.
+
+In this moment of relative quiet, you can barely make out another sound... an
+insistent high-pitched whine, strangely familar. The sound is muffled, as it
+appears to be coming from some place above the ceiling.
 
 --------------------------------------------------------------------------------
 id: 1736659403473
@@ -652,14 +653,6 @@ ceiling.
 
 You could ask where everyone is or say that the machine is quite noisy.
 
-[Conversations take the form of connect series of questions or statements
-between you and another character in the world
-
-Here you could ask bartender where everyone is, or (because you are already
-talking to the bartender) ask where everyone is. In fact, you can just type some
-or all of the suggested topic, everyone and the game will figure out that it's
-part of the ongoing conversation.]
-
 --------------------------------------------------------------------------------
 id: 1736659403474
 parent-id: 1736659403473
@@ -670,10 +663,6 @@ conv: #bartender queue is now []
 "This thing," you say, pointing at the game machine, "makes quite the racket,
 doesn't it?" you state.
 conv: queue #noisy-machine for #bartender as #immediate-obligatory
-
-[After each exchange, you are provided with a list of other things you might say
-to continue the subject. There may be further topics you can discuss, however,
-that are not suggested for puzzle or narrative reasons.]
 
 "Don't know that you can have a proper pub, these days, without at least one of
 'em. Brings in quite the crowd, I gather." He half-smiles, a bit sardonically,
@@ -695,13 +684,13 @@ parent-id: 1736726344146
 command: dimensions
 --------------------------------------------------------------------------------
 > dimensions
-"I'm afraid your table doesn't have enough dimensions for me."
+"I'm afraid your table doesn't have quite enough dimensions for me."
 conv: queue #not-enough-dimensions for #bartender as #immediate-obligatory
 
 "It's absolutely regulation size!" the bartender admonishes.
 
-"I'm sure it is, chap" you reply, "but a merely two dimensional field lacks
-interest for me."
+"I'm sure it is, chap" you reply, "but playing in a merely two dimensional field
+just doesn't hold my interest."
 
 The bartender looks disappointed and confused.
 conv: #bartender discussable quips [#where-everyone-is]
@@ -724,9 +713,7 @@ conv: queue #turn-noisy-machine-off for #bartender as #immediate-obligatory
 "Sorry, no," he replies "I like to keep tabs on the bar, unless I need to nip
 into the kitchen."
 
-He looks down for a bit, working his rag over a spot that looks mirror-smooth to
-you.
-
+The Bartender cranes his head awkwardly to find you in the game room.
 conv: #bartender queue is now []
 "You know," says the bartender, "I could pull out the cue and balls for you, if
 you'd like to get in some practice. We have ourselves a little tourney, first
@@ -736,7 +723,7 @@ conv: #bartender discussable quips [#where-everyone-is #not-enough-dimensions]
 You can make out a muffled, electronic whine, coming from above you, past the
 ceiling.
 
-You could ask where everyone is or say not enough dimensions.
+You could ask where everyone is or say the table is lacking dimensions.
 
 --------------------------------------------------------------------------------
 id: 1736726344147
@@ -774,6 +761,147 @@ it gives access to an upper floor, or more likely, a crawl-space above the game
 room.
 
 conv: #bartender discussable quips []
+
+You can make out a muffled, electronic whine, coming from above you, past the
+ceiling.
+
+--------------------------------------------------------------------------------
+id: 1736727647598
+parent-id: 1736385469783
+command: exits
+--------------------------------------------------------------------------------
+> exits
+Obvious exits are:
+East through the pub door.
+
+--------------------------------------------------------------------------------
+id: 1736727647599
+parent-id: 1736385469798
+command: hello bartender
+--------------------------------------------------------------------------------
+> hello bartender
+You catch the bartender's eye, and he's eager to engage with his only customer.
+
+You could ask where everyone is.
+
+[Conversations take the form of connect series of questions or statements
+between you and another character in the world
+
+Here you could ask bartender where everyone is, or (because you are already
+talking to the Bartender) ask where everyone is. In fact, you can just type some
+or all of the suggested topic, everyone and the game will figure out that it's
+part of the ongoing conversation.]
+
+--------------------------------------------------------------------------------
+id: 1736727647600
+parent-id: 1736659403439
+command: say no need to shout
+--------------------------------------------------------------------------------
+> say no need to shout
+"That's quite all right," you say, "plenty to keep me occupied in here. We'll
+chat later."
+
+[After each exchange, you are provided with a list of other things you might say
+to continue the subject. There may be further topics you can discuss, however,
+that are not suggested for puzzle or narrative reasons.]
+
+He face reveals a mixture of annoyance and relief.
+
+The annoying machine plays a short little tune, desperately trying to get your
+attention.
+
+--------------------------------------------------------------------------------
+id: 1736727647601
+parent-id: 1736659403442
+command: no need to shout
+--------------------------------------------------------------------------------
+> no need to shout
+"That's quite all right," you say, "plenty to keep me occupied in here. We'll
+chat later."
+
+[After each exchange, you are provided with a list of other things you might say
+to continue the subject. There may be further topics you can discuss, however,
+that are not suggested for puzzle or narrative reasons.]
+
+He face reveals a mixture of annoyance and relief.
+
+The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets,
+then makes a sound like a bucketful of coins spilling into its tray.
+
+--------------------------------------------------------------------------------
+id: 1736727647602
+parent-id: 1736659403460
+command: look up
+--------------------------------------------------------------------------------
+> look up
+Mounted into the ceiling, next to the lamp, is a sizable trap door; you presume
+it gives access to an upper floor, or more likely, a crawl-space above the game
+room.
+
+The annoying machine plays a short little tune, desperately trying to get your
+attention.
+
+--------------------------------------------------------------------------------
+id: 1736727647603
+parent-id: 1736727647602
+command: feel machine
+--------------------------------------------------------------------------------
+> feel machine
+You check around and behind the machine searching for... yes, an on/off switch
+is just reachable on the back side of the machine.
+
+The gambling machine falls silent for a moment, as if it's exhausted from all of
+its efforts to entice you to play.
+
+In this moment of relative quiet, you can barely make out another sound... an
+insistent high-pitched whine, strangely familar. The sound is muffled, as it
+appears to be coming from some place above the ceiling.
+
+--------------------------------------------------------------------------------
+id: 1736727647604
+parent-id: 1736659403470
+command: x dart
+--------------------------------------------------------------------------------
+> x dart
+The board is pocked by long use. You don't see sign of any darts, however.
+
+A cacacaphony of bells, chimes, and buzzers surge from the strange little
+machine.
+
+--------------------------------------------------------------------------------
+id: 1736727647605
+parent-id: 1736727647604
+command: push machine
+--------------------------------------------------------------------------------
+> push machine
+You punch at some of the buttons on the annoying machine, and nothing of note
+happens.
+
+You hear the sound of rockets launching from the little machine in the corner,
+and see a fireworks display animated on its screen. The explosions fade to the
+word "WIN!".
+
+--------------------------------------------------------------------------------
+id: 1736727647606
+parent-id: 1736727647605
+command: turn machine off
+--------------------------------------------------------------------------------
+> turn machine off
+You reach behind the machine and toggle its power switch, bringing a pause to
+its endless cacapony.
+
+You can make out a muffled, electronic whine, coming from above you, past the
+ceiling.
+
+--------------------------------------------------------------------------------
+id: 1736727647607
+label: run machine through its paces
+parent-id: 1736727647606
+command: push buttons
+--------------------------------------------------------------------------------
+> push buttons
+You punch at some of the buttons on the annoying machine, and nothing of note
+happens. You doubt much more would happen if it were switched on.
 
 You can make out a muffled, electronic whine, coming from above you, past the
 ceiling.

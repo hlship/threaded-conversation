@@ -4,3 +4,20 @@
     (banner)
     (try [look])
     (enable tutorial mode)
+
+(style class @status)
+	height: 1em;    
+
+(style class @conversation)
+    float: right;
+    width: 30ch;
+
+(redraw status bar)
+	(status bar @status) {
+        (location headline)
+        (if) (conversation partner $NPC)
+        (then)
+        (div @conversation) {  (The $NPC) }
+        (endif)
+	}
+

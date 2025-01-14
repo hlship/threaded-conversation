@@ -94,12 +94,12 @@
     (select)
         A cacacaphony of bells, chimes, and buzzers surge from the strange little machine.
         (or)
-        The little machine plays a short little tune, desperately trying to get your attention.
+        The annoying machine plays a short little tune, desperately trying to get your attention.
         (or)
         The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets, then makes 
         a sound like a bucketful of coins spilling into its tray.
         (or)
-        You hear the sound of rockets launching from the little machine in the corner, and see a little
+        You hear the sound of rockets launching from the little machine in the corner, and see a
         fireworks display animated on its screen. The explosions fade to the word "WIN!".
         (or)
         The gambling machine falls silent for a moment, as if it's exhausted from all of
@@ -108,14 +108,13 @@
         (par)
         In this moment of relative quiet, you can barely make out another sound ... an insistent
         high-pitched whine, strangely familar. The sound is muffled, as it appears to be coming
-        from above the ceiling.
+        from some place above the ceiling.
         (endif)
      (then at random)
 (* plays sounds)
     (#sonic-screwdriver is pristine)
     (par)
     You can make out a muffled, electronic whine, coming from above you, past the ceiling.
-    (now) (screwdriver has been hinted)
 (narrate switching off *)
     You reach behind the machine and toggle its power switch, bringing a pause to its
     endless cacapony.
@@ -127,8 +126,17 @@
 (perform [listen to *])
     Now that it's switched off, it doesn't make any sound at all, which is so vastly preferable.
 (perform [search *])
-    You reach around and behind the machine searching for ... yes, an on/off switch is just 
-    reachable on the back of it.
+    You check around and behind the machine searching for ... yes, an on/off switch is just 
+    reachable on the back side of the machine.
+(instead of [feel *])
+        (try [search *])
+(perform [push *])
+    You punch at some of the buttons on the annoying machine, and nothing of note happens.
+    (if) (* is off)
+    (then)
+        You doubt much more would happen if it were switched on.
+    (endif)
+
  
 %% Move to crawl space
 
@@ -141,4 +149,4 @@
 (name *) dartboard
 (dict *) dart board
 (descr *)
-    The board is pocked by long use. You don't see any sign of any darts, however.
+    The board is pocked by long use. You don't see sign of any darts, however.

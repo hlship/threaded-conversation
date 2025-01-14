@@ -11,6 +11,14 @@
 (from * go #north to #game-room)
 (narrate leaving * #north)
     You bend down quite low to squeeze under the wooden beam as you make your way into the game room.
+    (if) (conversation partner #bartender) 
+    (then)
+        (par)
+        "If it's all right with you, sir," the Bartender says, "I'll just stay here and keep an eye on the
+        door. I can hear you fine on a quiet night like this.
+        I'm sure we'll have a little more company in here, soon enough."  You don't think he
+        quite believes it, either. 
+    (endif)
 (#bartender/#booths/#bar is #in *)
 (* attracts #beam)
 
@@ -30,7 +38,7 @@
 
 #bartender
 (male *)
-(name *) bartender
+(name *) Bartender
 (dict *) man
 (descr *)
     Younger than you'd think, he wears a lightly stained apron, and has rolled up the sleeves
@@ -39,7 +47,10 @@
 (narrate * expressing ignorance)
     "Not sure I follow you there" he says.
 (beat $)
-    He looks down for a bit, working his rag over a spot that looks mirror-smooth to you.
+    (current room #game-room)
+    (The *) cranes his head awkwardly to find you in the game room. 
+(beat $)
+    He looks down for a bit, working his rag over a spot that already seems mirror-smooth to you.
     (par)
 (narrate greeting *)
     You catch the bartender's eye, and he's eager to engage with his only customer.
@@ -66,6 +77,8 @@
 (* supplies #bartender)
 (off limits *)
     (#game-room is unvisited)
+    (or) 
+    (#fruit-machine is off)
 (comment *)
     (if) (current room #game-room)
     (then)
@@ -99,17 +112,28 @@
 
 #not-enough-dimensions
 (telling quip *)
-(name *) not enough dimensions
+(name *) the table is lacking dimensions
 (* follows #play-billiards)
 (comment *)
-    "I'm afraid your table doesn't have enough dimensions for me."
+    "I'm afraid your table doesn't have quite enough dimensions for me."
 (reply *)
     "It's absolutely regulation size!" the bartender admonishes.
     (par) 
-    "I'm sure it is, chap" you reply, "but a merely two dimensional field lacks interest for me."
+    "I'm sure it is, chap" you reply, "but playing in a merely two dimensional field just doesn't hold my interest."
     (par)
     The bartender looks disappointed and confused.
 
+#no-need-to-shout
+(telling quip *)
+(name *) no need to shout
+(* supplies #bartender)
+(off limits *)
+    ~(current room #game-room)
+(comment *)
+    "That's quite all right," you say, "plenty to keep me occupied in here. We'll chat later."
+(reply *)
+    He face reveals a mixture of annoyance and relief.
+    (reset conversation partner)
  
 #booths
 (actor container *)

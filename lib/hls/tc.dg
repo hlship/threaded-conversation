@@ -63,7 +63,7 @@
 %% Quips are usually available; a quip that is off limits is simply treated
 %% as if it does not exist. This is not the final word, as quips may be
 %% further filtered down based on other factors, such as following prior quips,
-%% repeatablilty etc.
+%% repeatablilty, and so forth.
 
 @(available $Quip)   ~(off limits $Quip)
 (off limits $) (fail)
