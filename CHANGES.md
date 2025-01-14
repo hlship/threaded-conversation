@@ -22,7 +22,7 @@
 
 # 0.6 -- 9 Oct 2020
 
-Broke the debugging code into a companion library, `lib/hlsdebug.dg`.
+Broke the debugging code into a companion library, `lib/tcdebug.dg`.
 
 Added the `convinfo` debugging command, which displays the conversation status.
 
