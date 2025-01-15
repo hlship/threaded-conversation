@@ -1,8 +1,7 @@
 
 # Threaded Conversation
 
-The `lib/ext/tc.dg` library adds threaded conversation with non-player characters (NPCs) to
-[Dialog](https://linusakesson.net/dialog/index.php).
+The `lib/ext/tc.dg` library adds threaded conversation with non-player characters (NPCs).
 
 Conversations are designed to flow naturally, giving NPCs (the illusion of) understanding
 the conversation and having agency. Command parsing is more sophisticated than the 
@@ -292,14 +291,14 @@ The `(immediately following)` predicate will succeed when the quip is immediatel
     "From the grey castle beyond those mountains" she replies.
 
 #how-to-find-castle
-(asking quip *
+(asking quip *)
 (name *) how to find the castle
 (* follows #where-she-came-from)
 (comment *)
     (immediately following)
-    How can I find it?
+    "How can I find it?" you ask.
 (comment *)
-    And how might I locate your castle?
+    "And how might I locate your castle?" you ask.
 ```
 
 ## Controlling Availability

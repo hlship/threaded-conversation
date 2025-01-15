@@ -10,7 +10,7 @@ game it is included in.
 Tutorial mode is available in the library `lib/ext/tutorial-mode.dg`.
 A second file, `lib/ext/tutorial-mode-standard-actions.dg` provides suggestions
 for many of Dialog's built in actions, and
-`lib/ext/tutorial-moe-tc.dg` provides suggestions related to
+`lib/ext/tutorial-mode-tc.dg` provides suggestions related to
 [threaded conversation](conversation.md).
 
 This is an example from the tutorial mode test suite, the first few moves of a game
