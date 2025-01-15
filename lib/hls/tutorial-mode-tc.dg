@@ -22,7 +22,8 @@
     (conversation partner $NPC)
     (discussable quips $Quips)
     *($Quip is one of $Quips)
-    %% Picky here because otherwise much of the suggestion will be 
+    %% Picky here because otherwise much of the suggestion will be phrased oddly
+    %% as the text is set up for an asking quip.
     (asking quip $Quip)
     ~(about $Quip)
     ($Quip is discussable with $NPC)
@@ -42,11 +43,10 @@
     
     (par)
     In fact, you can just type some or all of the words in the suggested topic,
-    %% This is tricky, if because that last word may be ambiguous, in which case, the game author
-    %% should mark the quips as ignored, or provide a command name to the quip.
+    %% This is tricky, because that last word may be ambiguous, in which case, the game author
+    %% should mark the quip as ignored, or provide a command name to the quip.
     (suggest command [$Quip]), and the game will figure out that it's part of the ongoing conversation.
 (* is performed by [perform quip $])
-(narrate after suggestion *)
-    After each exchange, you are provided with a list of other things you might say
-    to continue the subject \(if there are any\). There may also be further topics you can discuss, however, that
+(after performance suggest  *)    After each exchange, you are provided with a list of other things you might say
+    to continue the conversation \(if there are any\). There may also be further topics you can discuss, however, that
     are not suggested for puzzle or narrative reasons.

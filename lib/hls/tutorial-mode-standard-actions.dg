@@ -84,8 +84,7 @@
     (The $Item) is a piece of clothing; you can
     (suggest command [wear $Item]) to put it on.
 (* is performed by [wear $])
-(narrate after suggestion *)
-    %% This is slightly wasted if the clothing was already held, but it still reads ok.
+(after performance suggest  *)    %% This is slightly wasted if the clothing was already held, but it still reads ok.
     We try to be (italic)kind(roman); 
     if an object is nearby but not actually in your inventory, we'll automatically try to pick it up
     before wearing it. This applies to most verbs.
@@ -122,8 +121,7 @@
     (suggest command [n]) for (suggest command [north]),
     (suggest command [ne]) for (suggest command [northeast]), and so forth.
 (* is performed by [go $])
-(narrate after suggestion *)
-    The world is not on a perfect grid; sometimes you go east, and return to
+(after performance suggest  *)    The world is not on a perfect grid; sometimes you go east, and return to
     where you started by going south \(not west\).  
     Sometimes a direction is a one-way trip, and you have to find an entirely different
     route back to where you started, if that is even possible.
@@ -151,7 +149,7 @@
     you can (suggest command [enter $Container])
     to see what's inside (the $Container).
 (* is performed by [enter $])
-(narrate after suggestion *)
+(after performance suggest  *)
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
  
 #climb-something
@@ -166,8 +164,7 @@
     Some objects, such as (the $Supporter), are big enough for you to stand on.
     Try (suggest command [climb $Supporter]).
 (* is performed by [climb $])
-(narrate after suggestion *)
-    After climbing something, you can (suggest command [get down]) 
+(after performance suggest  *)    After climbing something, you can (suggest command [get down]) 
     \(or just (suggest command [down]), or even just (suggest command [d])
     \) to return to floor level.
     (par)

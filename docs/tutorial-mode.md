@@ -148,10 +148,10 @@ You may have cases where particular objects are not ideal as examples in a tutor
 
 
 Occasionally, you may want to add some additional explanation _after_ the player performs the suggestion.
-The `(narrate after suggestion $)` predicate provides this opportunity.
+The `(after performance suggest $)` predicate provides this opportunity.
 
 ```
-#enter 
+#enter-something
 (tutorial suggestion *)
 (can perform * with $Container)
     (current room $Room)
@@ -165,7 +165,7 @@ The `(narrate after suggestion $)` predicate provides this opportunity.
     you can (suggest command [enter $Container])
     to see what's inside (the $Container).
 (* is performed by [enter $])
-(narrate after suggestion *)
+(after performance suggest  *)
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
 ```
 

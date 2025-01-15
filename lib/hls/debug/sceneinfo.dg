@@ -21,7 +21,7 @@
     (exhaust) {
         *(scene $Scene)
         $Scene
-        (output annotations for $Scene)
+        (print annotations for $Scene)
 
         (line)
     }

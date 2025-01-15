@@ -19,8 +19,22 @@
     (make tutorial suggestion)
 
 (late on every tick)
-    (tutorial mode enabled)
+    ~(make suggestion after performance)
     (make tutorial suggestion)
+ 
+(late on every tick)
+    (now) ~(suggestion $ was just performed)
+
+(make suggestion after performance)
+    (suggestion $Suggestion was just performed)
+    %% This is clumsy, but keeps each narrate after from having to supply the (par)
+    %% and brackets.
+    (collect words)
+       (after performance suggest $Suggestion)
+    (into $Output)
+    ~(empty $Output)
+    (par)
+    \[ (after performance suggest $Suggestion) \]
 
 (interface (enable tutorial mode))
 
@@ -48,7 +62,6 @@
     }
 
 (make tutorial suggestion)
-    ~(just narrated after suggestion)
     *(tutorial suggestion $Suggestion)
     ~($Suggestion has been performed)
     ~($Suggestion has been suggested)
@@ -57,28 +70,18 @@
     \[(suggest $Suggestion with $Operand)\]
     (now) ($Suggestion has been suggested)
 
-(after $Command)
-    (now) ~(just narrated after suggestion)
+(global variable (suggestion $ was just performed))
+
+(after $Action)
+    ~(suggestion $ was just performed)
     *(tutorial suggestion $Suggestion)
     ~($Suggestion has been performed)
-    ($Suggestion is performed by $Command)
-    (now) ($Suggestion has been performed)
-    (tutorial mode enabled)
     %% Only want to narrate the after if the suggestion has been made; otherwise
     %% the after is a non-sequitur.
     ($Suggestion has been suggested)
-    %% This is clumsy, but keeps each narrate after from having to supply the (par)
-    %% and brackets.
-    (collect words)
-       (narrate after suggestion $Suggestion)
-    (into $Output)
-    ~(empty $Output)
-    (par)
-    \[
-    (narrate after suggestion $Suggestion)
-    \]
-    (now) (just narrated after suggestion)
-
+    ($Suggestion is performed by $Action)
+    (now) ($Suggestion has been performed)
+    (now) (suggestion $Suggestion was just performed)
 
 %% Optional rule for objects that want to override how (suggest command $) operates.
 

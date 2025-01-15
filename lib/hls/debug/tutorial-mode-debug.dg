@@ -11,7 +11,7 @@
         *(tutorial suggestion $Suggestion)
         (line)
         $Suggestion
-        (output annotations for $Suggestion)
+        (print annotations for $Suggestion)
     }
 
 (annotate ($ has been suggested) with @suggested)

@@ -11,7 +11,7 @@
 (room info)
     (current room $Room)
     $Room
-    (output annotations for $Room)
+    (print annotations for $Room)
     (line)
     (exhaust) {
         *($Obj has parent $Room)
@@ -22,7 +22,7 @@
     ($Obj has relation $Rel)
     (space $Indent)
     $Obj $Rel
-    (output annotations for $Obj)
+    (print annotations for $Obj)
     (line)
     ($Indent plus 4 into $ChildIndent)
     (exhaust) {

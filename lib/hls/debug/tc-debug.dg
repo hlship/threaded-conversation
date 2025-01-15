@@ -40,7 +40,7 @@
         (line)
         (space 2) 
         $Quip
-        (output annotations for $Quip)
+        (print annotations for $Quip)
         (collect $Earlier)
             *($Quip continues from $Earlier)
         (into $Continues)
@@ -104,7 +104,7 @@
 
 (perform [conversation debug on])
     (enable conversation debug logging)
-    
+
 (understand command [conversation debug off])
 
 (perform [conversation debug off])

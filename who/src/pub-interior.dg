@@ -133,7 +133,7 @@
 (comment *)
     "That's quite all right," you say, "plenty to keep me occupied in here. We'll chat later."
 (reply *)
-    He face reveals a mixture of annoyance and relief.
+    His face reveals a mixture of annoyance and relief.
     (reset conversation partner)
  
 #booths

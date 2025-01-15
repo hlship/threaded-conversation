@@ -203,13 +203,13 @@ empty but for the bartender endlessly polishing the bar. Through a low overhang,
 an ancient and likely structural wooden beam, you can see a few flashing lights
 from the room to the north.
 
+The bartender glances up and gives you a welcoming nod before returning to his
+polishing efforts.
+
 [The world is not on a perfect grid; sometimes you go east, and return to where
 you started by going south (not west). Sometimes a direction is a one-way trip,
 and you have to find an entirely different route back to where you started, if
 that is even possible.]
-
-The bartender glances up and gives you a welcoming nod before returning to his
-polishing efforts.
 
 --------------------------------------------------------------------------------
 id: 1736385469790
@@ -369,13 +369,14 @@ command: where
 "Hey mate," you say, approaching the bar, "awfully quiet night in here, isn't
 it?"
 
-[After each exchange, you are provided with a list of other things you might say
-to continue the subject (if there are any). There may also be further topics you
-can discuss, however, that are not suggested for puzzle or narrative reasons.]
-
 "Right you are sir!" he says, with just a note of agitation. "Been like this for
 too long, I say. But it's not like folks are going to go all dry, is it?" He
 thinks for a moment. "Things will pick up, soon enough; they have to."
+
+[After each exchange, you are provided with a list of other things you might say
+to continue the conversation (if there are any). There may also be further
+topics you can discuss, however, that are not suggested for puzzle or narrative
+reasons.]
 
 --------------------------------------------------------------------------------
 id: 1736577052091
@@ -387,6 +388,8 @@ The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
 light radiate out at uniform angles to form the the backdrop. In the other hand
 is a shiny gold egg decorated with intricate, baroque patterns.
 
+[Try inventory (or just i) to see what you are carrying.]
+
 --------------------------------------------------------------------------------
 id: 1736577052092
 parent-id: 1736577052091
@@ -396,6 +399,9 @@ command: x egg
 The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
 light radiate out at uniform angles to form the the backdrop. In the other hand
 is a shiny gold egg decorated with intricate, baroque patterns.
+
+[Often, there will be interesting objects nearby; you can get more information
+about them by examining them; try examine door (or just x door).]
 
 --------------------------------------------------------------------------------
 id: 1736659403439
@@ -807,14 +813,15 @@ command: say no need to shout
 "That's quite all right," you say, "plenty to keep me occupied in here. We'll
 chat later."
 
-[After each exchange, you are provided with a list of other things you might say
-to continue the subject (if there are any). There may also be further topics you
-can discuss, however, that are not suggested for puzzle or narrative reasons.]
-
-He face reveals a mixture of annoyance and relief.
+His face reveals a mixture of annoyance and relief.
 
 The little machine plays a short cascade of notes, desperately trying to get
 your attention.
+
+[After each exchange, you are provided with a list of other things you might say
+to continue the conversation (if there are any). There may also be further
+topics you can discuss, however, that are not suggested for puzzle or narrative
+reasons.]
 
 --------------------------------------------------------------------------------
 id: 1736727647601
@@ -825,14 +832,15 @@ command: no need to shout
 "That's quite all right," you say, "plenty to keep me occupied in here. We'll
 chat later."
 
-[After each exchange, you are provided with a list of other things you might say
-to continue the subject (if there are any). There may also be further topics you
-can discuss, however, that are not suggested for puzzle or narrative reasons.]
-
-He face reveals a mixture of annoyance and relief.
+His face reveals a mixture of annoyance and relief.
 
 The gambling machine plays a triumpant fanfare, all buzzy electronic trumpets,
 then makes a sound like a bucketful of coins spilling into its tray.
+
+[After each exchange, you are provided with a list of other things you might say
+to continue the conversation (if there are any). There may also be further
+topics you can discuss, however, that are not suggested for puzzle or narrative
+reasons.]
 
 --------------------------------------------------------------------------------
 id: 1736727647602
