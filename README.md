@@ -1,7 +1,7 @@
-# Dialog Libs
+# Dialog Extensions
 
-This repository is a collection of small libraries to extend
-[Dialog](https://linusakesson.net/dialog/index.php).
+This repository is a collection of small extension libraries for use with the
+[Dialog](https://linusakesson.net/dialog/index.php) interactive fiction language.
 
 - [Threaded Conversation](docs/conversation.md) - make NPCs more interactive with complex conversations
 - [Scenes](docs/scenes.md)  - organize game logic

@@ -149,7 +149,7 @@
     you can (suggest command [enter $Container])
     to see what's inside (the $Container).
 (* is performed by [enter $])
-(after performance suggest  *)
+(after performance suggest *)
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
  
 #climb-something

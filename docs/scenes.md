@@ -13,7 +13,7 @@ Example ideas for scenes:
   making yourself visible or making noise; the scene ends when the home owner goes upstairs.
 - Your game features combat sections; once combat begins, certain commands are not allowed, until the combat is resolved.
 - Once you've gathered all the suspects and evidence in your detective game, the reveal of the
-  murderer can begin
+  murderer can begin.
 
 The library tracks which scenes are active at any given time, and asks inactive scenes if they should start, and 
 active scenes if they are complete, on every tick.
@@ -51,7 +51,7 @@ The order is:
 
 # Scene Properties
 
-- `($ has started)` succeeds if the scene has been started at least one
+- `($ has started)` succeeds if the scene has been started at least once
 - `($ in progress)` succeeds if the scene is currently in progress
 - `($ has completed)` succeeds if the scene has ever completed
 
@@ -154,7 +154,6 @@ check in several places, to adjust the room description.  In a real project, the
 a scene may be much more complicated, so the query `($ in progress)` is both more accurate and more concise.
 
 In fact, you might have scenes that only start when other scenes are completed, `($ has completed)` or even in progress `($ in progress)`.
-
 
 By design, there isn't a way to directly start a scene: you must provide necessary preconditions that
 can be checked inside `(start $)`.  However, those can be as simple as a property of an object:

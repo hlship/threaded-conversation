@@ -9,7 +9,9 @@ game it is included in.
 
 Tutorial mode is available in the library `lib/ext/tutorial-mode.dg`.
 A second file, `lib/ext/tutorial-mode-standard-actions.dg` provides suggestions
-for many of Dialog's built in actions.
+for many of Dialog's built in actions, and
+`lib/ext/tutorial-moe-tc.dg` provides suggestions related to
+[threaded conversation](conversation.md).
 
 This is an example from the tutorial mode test suite, the first few moves of a game
 under development:
@@ -119,7 +121,7 @@ this prevents tutorial mode from suggesting things the player has already demons
 A more complicated example:
 
 ```
-#examine
+#examine-something
 (tutorial suggestion *)
 (can perform * with $Object) 
     (current player $Player)
@@ -136,7 +138,8 @@ A more complicated example:
     about them by examining them;
     try (suggest command [examine $Item])
     \(or just (suggest command [x $Item]) \).
-(* is performed by [examine])
+(* is performed by [examine $])
+
 ```
 
 Here, the `(can perform $ with $)` rule does a search for a specific kind of object, which gets provided
@@ -144,7 +147,7 @@ to the `(suggest $ with $)` rule.
 
 The `(ignored by tutorial $)` trait can be used to have suggestions ignore certain objects (this is the responsibility
 of the suggestion's `(can perform $ with $)` rule). All hidden objects `($ is hidden)` are ignored by tutorial.
-You may have cases where particular objects are not ideal as examples in a tutorial and can be made ignored explicitly.
+You may have cases where particular objects are not ideal as examples in a tutorial and should be ignored explicitly.
 
 
 Occasionally, you may want to add some additional explanation _after_ the player performs the suggestion.
@@ -165,16 +168,17 @@ The `(after performance suggest $)` predicate provides this opportunity.
     you can (suggest command [enter $Container])
     to see what's inside (the $Container).
 (* is performed by [enter $])
-(after performance suggest  *)
+(after performance suggest *)
     If you can (suggest command [enter]) something, you can probably (suggest command [leave]) as well.
 ```
 
 Note how `($ is performed by $)` doesn't care what you specifically did enter, just the fact that you've successfully
-performed the command.  After doing so, you get the suggestion for how to leave.  Often `(narrate after suggestion $)`
+performed the command.  After doing so, you get the suggestion for how to leave.  Often `(after performance suggest $)`
 is easier and more effective than creating an entirely new suggestion.
 
-`(narrate after suggestion $)` will only be invoked if tutorial mode printed the suggestion at some point; 
-if the player managed to enter something before the #enter suggestion was suggested, then the after narration is skipped.
+`(after performance suggest $)` will only be invoked if tutorial mode printed the suggestion at some point; 
+if the player managed to enter something before the #enter-something suggestion was suggested, then the after-performance
+suggestion is skipped.
 
 When this narration does occur, then no new suggestion will be made that tick; this ensures you only get at
 most one block of tutorial between commands.
@@ -217,14 +221,15 @@ other suggestions have or have not been suggested or performed.
 For example:
 
 ```
-#drop
+#drop-something
 (tutorial suggestion *)
 (can perform * with $Item)
     (#inventory has been performed)
     (current player $Player)
-    *($Item is $ $Player)
+    *($Item is #heldby $Player)     %% not clothing
+    ~(ignored by tutorial $Item)
 (suggest * with $Item)
-    You are carrying (a $Item); you can leave it here with
+    You are carrying (a $Item); you can leave (them $Item) here with
     (suggest command [drop $Item]).
 (* is performed by [drop $])
 ```
@@ -238,16 +243,20 @@ The library `lib/ext/debug/tutorial-mode-debug.dg` adds a `tutorialinfo` command
 The command prints out whether tutorial mode is enabled or disabled, and the state of each suggestion.
 
 ```
- > tutorialinfo
+> tutorialinfo
 Tutorial mode (enabled) suggestions:
 #inventory (suggested, performed)
-#examine (suggested)
+#examine-something (suggested, performed)
 #look-self (suggested)
-#take (suggested, performed)
-#drop (suggested, performed)
-#wear (suggested, performed)
-#leave (suggested)
-#enter
+#take-something
+#drop-something
+#wear-some-clothing
+#go-somewhere
+#ask-for-exits
+#enter-something
+#climb-something
+#enter-conversation
+#make-conversation
 ```
 
 
