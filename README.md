@@ -11,14 +11,14 @@ This repository is a collection of small libraries to extend
 
 # Distribution
 
-Simply copy the `lib/hls` folder into your repository.  Add `lib/hls` to your :library sources, 
-and `lib/hls/debug` to your :debug sources.
+Simply copy the `lib/ext` folder into your repository.  Add `lib/ext` to your :library sources, 
+and `lib/ext/debug` to your :debug sources.
 
 Note that each individual library has a `%% dependencies:` comment at the top; if you choose to use just
 a subset of the libraries in this repository, reference the comment as a guide to what other libraries you must
 include.
 
-Currently, only some of the debug libraries depend on the `lib/hls/debug/annotations.dg` library.
+Currently, only some of the debug libraries depend on the `lib/ext/debug/annotations.dg` library.
 
 
 # License

@@ -1,9 +1,9 @@
 ## roominfo command
 
-This `lib/hls/debug/roominfo.dg` library provides a `roominfo` 
+This `lib/ext/debug/roominfo.dg` library provides a `roominfo` 
 command that prints useful information about the current room and all the objects within it.
 
-For example, `roominfo` near the start of [Sand-dancer](https://github.com/hlship/sanddancer-dialog) yields:
+For example, `roominfo` near the start of [Sand-dancer](https://github.com/exthip/sanddancer-dialog) yields:
 
 ```
 > roominfo

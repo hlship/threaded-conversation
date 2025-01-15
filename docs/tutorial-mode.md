@@ -7,8 +7,8 @@ Tutorial mode (inspired by an Inform 7 extension) watches over the player and gi
 ideas about what they can do.  Tutorial mode automatically adapts to the world of the
 game it is included in.
 
-Tutorial mode is available in the library `lib/hls/tutorial-mode.dg`.
-A second file, `lib/hls/tutorial-mode-standard-actions.dg` provides suggestions
+Tutorial mode is available in the library `lib/ext/tutorial-mode.dg`.
+A second file, `lib/ext/tutorial-mode-standard-actions.dg` provides suggestions
 for many of Dialog's built in actions.
 
 This is an example from the tutorial mode test suite, the first few moves of a game
@@ -233,7 +233,7 @@ The #drop suggestion will not be considered until after the player has performed
 
 ## tutorialinfo command
 
-The library `lib/hls/debug/tutorial-mode-debug.dg` adds a `tutorialinfo` command.
+The library `lib/ext/debug/tutorial-mode-debug.dg` adds a `tutorialinfo` command.
 
 The command prints out whether tutorial mode is enabled or disabled, and the state of each suggestion.
 

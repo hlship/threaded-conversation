@@ -1,7 +1,7 @@
 
 # Threaded Conversation
 
-The `lib/hls/tc.dg` library adds threaded conversation with non-player characters (NPCs) to
+The `lib/ext/tc.dg` library adds threaded conversation with non-player characters (NPCs) to
 [Dialog](https://linusakesson.net/dialog/index.php).
 
 Conversations are designed to flow naturally, giving NPCs (the illusion of) understanding
@@ -577,7 +577,7 @@ The link will discuss the identified quip.
 
 ## debug commands
 
-The `lib/hls/debug/tc-debug.dg` library provides three commands:
+The `lib/ext/debug/tc-debug.dg` library provides three commands:
 
 * `convinfo` - print current state of conversation
 * `conversation debug on`

@@ -388,8 +388,6 @@ The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
 light radiate out at uniform angles to form the the backdrop. In the other hand
 is a shiny gold egg decorated with intricate, baroque patterns.
 
-[Try inventory (or just i) to see what you are carrying.]
-
 --------------------------------------------------------------------------------
 id: 1736577052092
 parent-id: 1736577052091
@@ -399,9 +397,6 @@ command: x egg
 The sign depicts two disembodied hands; one holds an antique brass lamp; rays of
 light radiate out at uniform angles to form the the backdrop. In the other hand
 is a shiny gold egg decorated with intricate, baroque patterns.
-
-[Often, there will be interesting objects nearby; you can get more information
-about them by examining them; try examine door (or just x door).]
 
 --------------------------------------------------------------------------------
 id: 1736659403439

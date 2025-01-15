@@ -18,4 +18,5 @@
 
 - re-nag a non-performed suggestion after a while?
 - use an off-stage container for performed suggestions (save a property)
+- suggest-look: exclude (animate $), reads oddly
 

@@ -2,7 +2,7 @@
  :name "whogoesthere"
  :sources
  {:main ["src"]
-  :debug ["../lib/hls/debug"
+  :debug ["../lib/ext/debug"
           "../lib/dialog/debug"]
-  :library ["../lib/hls"
+  :library ["../lib/ext"
             "../lib/dialog"]}}

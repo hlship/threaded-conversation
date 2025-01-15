@@ -19,6 +19,7 @@
     (make tutorial suggestion)
 
 (late on every tick)
+    (tutorial mode enabled)
     ~(make suggestion after performance)
     (make tutorial suggestion)
  
